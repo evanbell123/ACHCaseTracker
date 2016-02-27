@@ -1,0 +1,38 @@
+#%RAML 1.0
+title: ACHCaseManager
+version: v1
+baseUri: http://localhost:8080/ACHCaseManager/api/
+types:
+  TestType:
+    type: object
+    properties:
+      id: number
+      optional?: string
+      expanded:
+        type: object
+        properties:
+          count: number
+
+/cases:
+  description: Respond with ALL cases
+  get:
+/users:
+  description: Respond with ALL users
+  get:
+/case/{id}:
+  /fields:
+    description: Respond with all fields and values for this case
+    get:
+  /audits:
+    description: Respond with all audits of this case
+    get:
+  /payments:
+    description: Respond with all payments for this case
+    get:
+/user/{id}:
+  /cases:
+    description: Respond with all cases assigned to this user
+    get:
+  /audits/{startDate}/{endDate}:
+    description: Respond with all audits made by this user within a given date range
+    get:
