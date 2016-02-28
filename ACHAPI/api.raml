@@ -16,6 +16,24 @@ types:
 /cases:
   description: Respond with ALL cases
   get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [{
+                "id": 1,
+                "beneficiaryName": "Alice Stewart",
+                "sla": "6/24/2015"
+              }, {
+                "id": 2,
+                "beneficiaryName": "Harold Gray",
+                "sla": "4/27/2015"
+              }, {
+                "id": 3,
+                "beneficiaryName": "Jack Gilbert",
+                "sla": "5/4/2015"
+              }]
 /users:
   description: Respond with ALL users
   get:
