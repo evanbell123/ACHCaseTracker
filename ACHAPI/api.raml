@@ -1,0 +1,59 @@
+#%RAML 1.0
+title: ACHCaseManager
+version: v1
+baseUri: http://localhost:8080/ACHCaseManager/api/
+types:
+  TestType:
+    type: object
+    properties:
+      id: number
+      optional?: string
+      expanded:
+        type: object
+        properties:
+          count: number
+
+/cases:
+  description: Respond with ALL cases
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [{
+              "id": 1,
+              "beneficiaryName": "Alice Stewart",
+              "sla": "6/24/2015",
+              "caseNotes": ["This case is hard"]
+              }, {
+              "id": 2,
+              "beneficiaryName": "Harold Gray",
+              "sla": "4/27/2015",
+              "caseNotes": ["I don't like this project...", "I wish they would stop rapping!"]
+              }, {
+              "id": 3,
+              "beneficiaryName": "Jack Gilbert",
+              "sla": "5/4/2015",
+              "caseNotes": ["This case is almost done!", "Is this case over yet?", "Another note"]
+              }]
+/users:
+  description: Respond with ALL users
+  get:
+/case/{id}:
+  /fields:
+    description: Respond with all fields and values for this case
+    get:
+  /audits:
+    description: Respond with all audits of this case
+    get:
+  /payments:
+    description: Respond with all payments for this case
+    get:
+/user/{id}:
+  /cases:
+    description: Respond with all cases assigned to this user
+    get:
+  /audits/{startDate}/{endDate}:
+    description: Respond with all audits made by this user within a given date range
+    get:
