@@ -3,8 +3,6 @@ package umkc.devs.deft;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
@@ -14,12 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
-
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,17 +22,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @SpringBootApplication
 public class Application
 {
-    @Bean
-    CommandLineRunner init(CaseRepository caseRepository)
-    {
-        return (evt) ->
-                Arrays.asList("3,1,2,4".split(","))
-                        .forEach(c -> {
-                            caseRepository.save(new ACHCase(Integer.parseInt(c), "Beneficiary Name", 2938.44,
-                                    new DateTime(DateTimeZone.UTC), new LocalDate(), 3, "Open"));
-                        });
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -54,63 +36,61 @@ class CaseResource extends ResourceSupport
         this.achCase = achCase;
         this.add(new Link(achCase.getStatus(), "case-status"));
         this.add(linkTo(CaseRestController.class, assignedTo).withRel("cases"));
-        this.add(linkTo(methodOn(CaseRestController.class, assignedTo).readBookmark(assignedTo, achCase.getId())).withSelfRel());
+        this.add(linkTo(methodOn(CaseRestController.class, assignedTo).readCase(achCase.getId())).withSelfRel());
     }
 
     public ACHCase getCase() { return achCase; }
 }
 
 @RestController
-@RequestMapping("/cases")
+@RequestMapping("api/cases")
 class CaseRestController
 {
-    private final CaseRepository caseRepository;
+    private final ACHCaseRepository achCaseRepository;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)  // http://localhost:8080/api/cases
     ResponseEntity<?> add(@RequestBody ACHCase input)
     {
-        //this.validateUser(assignedTo);
-
-        ACHCase achCase = caseRepository.save(new ACHCase(input.assignedTo, input.beneficiary, input.totalAmt,
-                                         input.openedOn, input.sla, input.daysOpen, input.status));
+        ACHCase achCase = achCaseRepository.save(new ACHCase(input.assignedTo, input.beneficiaryName, input.totalAmt,
+                                         input.openedDate, input.sla, input.daysOpen, input.status, input.notes));
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        Link forOneBookmark = new CaseResource(achCase).getLink("self");
-        httpHeaders.setLocation(URI.create(forOneBookmark.getHref()));
+        Link forOneCase = new CaseResource(achCase).getLink("self");
+        httpHeaders.setLocation(URI.create(forOneCase.getHref()));
 
         return new ResponseEntity<>(null, httpHeaders, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{caseId}", method = RequestMethod.GET)
-    CaseResource readBookmark(@PathVariable Integer assignedTo, @PathVariable Long caseId)
+    @RequestMapping(value = "/{caseId}", method = RequestMethod.GET)  // http://localhost:8080/api/cases/1
+    CaseResource readCase(@PathVariable Long caseId)
     {
-        //this.validateUser(assignedTo);
-        return new CaseResource(this.caseRepository.findOne(caseId));
+        return new CaseResource(this.achCaseRepository.findOne(caseId));
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    Resources<CaseResource> readBookmarks()
+    @RequestMapping(method = RequestMethod.GET)  // http://localhost:8080/api/cases/
+    Resources<CaseResource> readCases()
     {
-        //this.validateUser(assignedTo);
-
-        List<CaseResource> bookmarkResourceList = caseRepository.findAll()
+        List<CaseResource> caseResourceList = achCaseRepository.findAll()
                 .stream()
                 .map(CaseResource::new)
                 .collect(Collectors.toList());
-        return new Resources<>(bookmarkResourceList);
+        return new Resources<>(caseResourceList);
     }
 
     @Autowired
-    CaseRestController(CaseRepository caseRepository)
+    CaseRestController(ACHCaseRepository achCaseRepository)
     {
-        this.caseRepository = caseRepository;
+        this.achCaseRepository = achCaseRepository;
     }
 
-   /* private void validateUser(String userId)
+    // Leaving this as a reminder to use a similar validation method when necessary later on.
+    /*
+    private void validateUser(String userId)
     {
         this.accountRepository.findByUsername(userId).orElseThrow(() -> new UserNotFoundException(userId));
-    }*/
+    }
+    */
 }
 
 @ControllerAdvice
@@ -125,6 +105,7 @@ class CaseControllerAdvice
     }
 }
 
+// Not used but left as a reminder for future reference.
 class UserNotFoundException extends RuntimeException
 {
     public UserNotFoundException(String userId)

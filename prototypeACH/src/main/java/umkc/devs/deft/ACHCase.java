@@ -16,33 +16,36 @@ import javax.persistence.Id;
 @Entity
 public class ACHCase
 {
-    @Id
-    @GeneratedValue
-    private Long id;
-
     ACHCase()
     {
         // jpa only
     }
 
-    public ACHCase(Integer assignedTo, String beneficiary, Double totalAmt, DateTime openedOn, LocalDate sla, Integer daysOpen, String status)
+    public ACHCase(Integer assignedTo, String beneficiaryName, Double totalAmt,
+                   DateTime openedDate, LocalDate sla, Integer daysOpen, String status, String notes)
     {
         this.assignedTo = assignedTo;
-        this.beneficiary = beneficiary;
+        this.beneficiaryName = beneficiaryName;
         this.totalAmt = totalAmt;
-        this.openedOn = openedOn;
+        this.openedDate = openedDate;
         this.sla = sla;
         this. daysOpen = daysOpen;
         this.status = status;
+        this.notes = notes;
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     public Integer assignedTo;
     public String status;
-    public String beneficiary;
+    public String beneficiaryName;
     public Double totalAmt;
-    public DateTime openedOn;
+    public DateTime openedDate;
     public LocalDate sla;
     public Integer daysOpen;
+    public String notes;
 
     public Long getId() {
         return id;
@@ -52,16 +55,16 @@ public class ACHCase
         return assignedTo;
     }
 
-    public String getBeneficiary() {
-        return beneficiary;
+    public String getBeneficiaryName() {
+        return beneficiaryName;
     }
 
     public Double getTotalAmt() {
         return totalAmt;
     }
 
-    public DateTime getOpenedOn() {
-        return openedOn;
+    public DateTime getOpenedDate() {
+        return openedDate;
     }
 
     public LocalDate getSla() {
