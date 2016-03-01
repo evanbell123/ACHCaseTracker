@@ -23,20 +23,35 @@ types:
             example: |
               [{
               "id": 1,
-              "beneficiaryName": "Alice Stewart",
-              "sla": "6/24/2015",
+              "openedBy": "Anna Nguyen",
+              "updatedBy": "Lisa Hawkins",
+              "openedDate": "5/29/2015",
+              "sla": "11/13/2015",
+              "beneficiaryName": "Gary Ford",
+              "status": "opened",
               "caseNotes": ["This case is hard"]
-              }, {
+              },
+              {
               "id": 2,
-              "beneficiaryName": "Harold Gray",
-              "sla": "4/27/2015",
+              "openedBy": "Joan Wagner",
+              "updatedBy": "Chris Murphy",
+              "openedDate": "9/9/2015",
+              "sla": "12/22/2015",
+              "beneficiaryName": "Carl Ray",
+              "status": "opened",
               "caseNotes": ["I don't like this project...", "I wish they would stop rapping!"]
-              }, {
+              },
+              {
               "id": 3,
-              "beneficiaryName": "Jack Gilbert",
-              "sla": "5/4/2015",
+              "openedBy": "Frances Williamson",
+              "updatedBy": "Daniel Hudson",
+              "openedDate": "8/7/2015",
+              "sla": "10/11/2015",
+              "beneficiaryName": "Rose Jordan",
+              "status": "assigned",
               "caseNotes": ["This case is almost done!", "Is this case over yet?", "Another note"]
-              }]
+              }
+              ]
 /users:
   description: Respond with ALL users
   get:
