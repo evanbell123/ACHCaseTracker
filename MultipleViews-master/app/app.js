@@ -142,29 +142,44 @@ app.controller('casesController', ['$scope', '$http', '$timeout', function ($sco
         };
 
         $scope.gridOptions.columnDefs = [
-            {name: 'id', enableCellEdit: false, width: '5%'},
-            {name: 'beneficiaryName', displayName: 'Beneficiary Name (editable)', width: '5%'},
-            {name: 'assignedTo', displayName: 'Assigned To', width: '10%'},
-            {name: 'sla', displayName: 'SLA', type: 'date', cellFilter: 'date:"yyyy-MM-dd"', width: '10%'},
-            {name: 'totalAmt', displayName: 'Total Amount', type: 'number', width: '15%'},
-            {name: 'openedDate', displayName: 'Date Opened', type: 'date', cellFilter: 'date:"yyyy-MM-dd"', width: '10%'},
-            {name: 'daysOpen', displayName: 'Days Open', type: 'number', width: '5%'},
-            {name: 'notes', displayName: 'Notes', width:'20%'},
+            {name: 'id', enableCellEdit: false, width: '10%'},
+            {name: 'name', displayName: 'Name (editable)', width: '20%'},
+            {name: 'age', displayName: 'Age', type: 'number', width: '10%'},
             {
-                name: 'status', displayName: 'Status', width: '10%', editableCellTemplate: 'ui-grid/dropdownEditor',
+                name: 'gender', displayName: 'Gender', editableCellTemplate: 'ui-grid/dropdownEditor', width: '20%',
+                cellFilter: 'mapGender', editDropdownValueLabel: 'gender', editDropdownOptionsArray: [
+                {id: 1, gender: 'male'},
+                {id: 2, gender: 'female'}
+            ]
+            },
+            {name: 'registered', displayName: 'Registered', type: 'date', cellFilter: 'date:"yyyy-MM-dd"', width: '20%'},
+            {name: 'address', displayName: 'Address', type: 'object', cellFilter: 'address', width: '30%'},
+            {
+                name: 'address.city', displayName: 'Address (even rows editable)', width: '20%',
+                cellEditableCondition: function ($scope) {
+                    return $scope.rowRenderIndex % 2;
+                }
+            },
+            {name: 'isActive', displayName: 'Active', type: 'boolean', width: '10%'},
+            {
+                name: 'pet', displayName: 'Pet', width: '20%', editableCellTemplate: 'ui-grid/dropdownEditor',
+                editDropdownRowEntityOptionsArrayPath: 'foo.bar[0].options', editDropdownIdLabel: 'value'
+            },
+            {
+                name: 'status', displayName: 'Status', width: '20%', editableCellTemplate: 'ui-grid/dropdownEditor',
                 cellFilter: 'mapStatus',
                 editDropdownOptionsFunction: function (rowEntity, colDef) {
-                    var closed = {id: 1, value: 'Closed'};
-                    var open = {id: 2, value: 'Open'};
-                   /* if (rowEntity.status === 1) {
-                        closed = {id: 1, value: 'Closed'};
-                        return [open, closed];
+                    var single;
+                    var married = {id: 3, value: 'Married'};
+                    if (rowEntity.gender === 1) {
+                        single = {id: 1, value: 'Bachelor'};
+                        return [single, married];
                     } else {
-                        closed = {id: 2, value: 'Re-opened'};
+                        single = {id: 2, value: 'Nubile'};
                         return $timeout(function () {
-                            return [open, closed];
+                            return [single, married];
                         }, 100);
-                    }*/
+                    }
                 }
             },
             {
@@ -183,46 +198,51 @@ app.controller('casesController', ['$scope', '$http', '$timeout', function ($sco
                 $scope.$apply();
             });
         };
-<!-------------------------------------------------------->
-        $http.get('http://localhost:8080/api/cases')
+
+        $http.get('data/sampleData.json')
             .success(function (data) {
-                for (i = 0; i < data.length; i++) 
-                {
+                for (i = 0; i < data.length; i++) {
                     data[i].registered = new Date(data[i].registered);
+                    data[i].gender = data[i].gender === 'male' ? 1 : 2;
+                    if (i % 2) {
+                        data[i].pet = 'fish';
+                        data[i].foo = {bar: [{baz: 2, options: [{value: 'fish'}, {value: 'hamster'}]}]};
+                    } else {
+                        data[i].pet = 'dog';
+                        data[i].foo = {bar: [{baz: 2, options: [{value: 'dog'}, {value: 'cat'}]}]};
+                    }
                 }
                 $scope.gridOptions.data = data;
             });
     }])
-<!-------------------------------------------------------->
 
-    /*
     .filter('mapGender', function () {
         var genderHash = {
             1: 'male',
             2: 'female'
         };
-    */
 
-     /*   return function (input) {
+        return function (input) {
             if (!input) {
                 return '';
             } else {
                 return genderHash[input];
             }
         };
-    
     })
-   
+
     .filter('mapStatus', function () {
         var genderHash = {
             1: 'Bachelor',
             2: 'Nubile',
             3: 'Married'
         };
-     */    
+
         return function (input) {
             if (!input) {
                 return '';
+            } else {
+                return genderHash[input];
             }
         };
     });
