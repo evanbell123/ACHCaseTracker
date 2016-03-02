@@ -2,12 +2,10 @@ package umkc.devs.deft;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.sql.Date;
 //import javax.persistence.ManyToOne;
 
 /**
@@ -22,7 +20,7 @@ public class ACHCase
     }
 
     public ACHCase(Integer assignedTo, String beneficiaryName, Double totalAmt,
-                   DateTime openedDate, LocalDate sla, Integer daysOpen, String status, String notes)
+                   Date openedDate, Date sla, Integer daysOpen, String status, String notes)
     {
         this.assignedTo = assignedTo;
         this.beneficiaryName = beneficiaryName;
@@ -42,8 +40,8 @@ public class ACHCase
     public String status;
     public String beneficiaryName;
     public Double totalAmt;
-    public DateTime openedDate;
-    public LocalDate sla;
+    public Date openedDate;
+    public Date sla;
     public Integer daysOpen;
     public String notes;
 
@@ -63,11 +61,11 @@ public class ACHCase
         return totalAmt;
     }
 
-    public DateTime getOpenedDate() {
+    public Date getOpenedDate() {
         return openedDate;
     }
 
-    public LocalDate getSla() {
+    public Date getSla() {
         return sla;
     }
 
