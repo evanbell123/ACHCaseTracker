@@ -95,10 +95,16 @@ app.config(function ($routeProvider) {
             controller: 'importController'
         })
 
+        .when('/caseForm', {
+            templateUrl: 'pages/caseForm.html',
+            controller: 'caseFormController as vm'
+        })
+
         .when('/cases', {
             templateUrl: 'pages/cases.html',
             controller: 'casesController'
         });
+
 });
 
 
@@ -258,6 +264,131 @@ angular.module('staticSelect', [])
             $scope.data.singleSelect = 'nonsense';
         };
     }]);
+
+app.controller('caseFormController', ['$scope', '$http', function ($scope, $http) {
+    var vm = this;
+
+    vm.onSubmit = onSubmit;
+
+    vm.model = {
+        awesome: true
+    };
+
+    vm.options = {
+        formState: {
+            awesomeIsForced: false
+        }
+    };
+
+    // The model object that we reference
+    // on the <formly-form> element in index.html
+    vm.model = {};
+
+
+    // An array of our form fields with configuration
+    // and options set. We make reference to this in
+    // the 'fields' attribute on the <formly-form> element
+    vm.fields = [
+        {
+            key: 'assignedTo',
+            type: 'input',
+            templateOptions: {
+                type: 'number',
+                label: 'Assigned To ID',
+                placeholder: 'Enter the id of the user this case is assigned to',
+                required: true
+            }
+        },
+        {
+            key: 'beneficiaryName',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Beneficiary Name',
+                placeholder: "Enter the beneficiary's name",
+                required: true
+            }
+        },
+        {
+            key: 'totalAmt',
+            type: 'input',
+            templateOptions: {
+                type: 'number',
+                label: 'Total Amount',
+                placeholder: 'Enter total amount',
+                required: true
+            }
+        },
+        {
+            key: 'openedDate',
+            type: 'input',
+            templateOptions: {
+                type: 'date',
+                label: 'Opened Date',
+                placeholder: 'Enter the opened date',
+                required: true
+            }
+        },
+        {
+            key: 'daysOpen',
+            type: 'input',
+            templateOptions: {
+                type: 'number',
+                label: 'Days Open',
+                placeholder: 'days open',
+                required: true
+            }
+        },
+        {
+            key: 'sla',
+            type: 'input',
+            templateOptions: {
+                type: 'date',
+                label: 'SLA',
+                placeholder: 'SLA',
+                required: true
+            }
+        },
+        {
+            key: 'status',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'status',
+                placeholder: 'status',
+                required: true
+            }
+        },
+        {
+            key: 'notes',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Notes',
+                placeholder: 'notes',
+                required: true
+            }
+        },
+    ];
+
+    function onSubmit() {
+        //vm.model.openedDate = vm.model.openedDate.getTime();
+        //vm.model.sla = vm.model.sla.getTime();
+
+        console.log(vm.model.openedDate, vm.model.sla);
+        $http({
+            method: 'POST',
+            url: 'http://localhost:8080/api/cases',
+            data: vm.model
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    }
+}]);
 
 app.controller('myCasesController', ['$scope', '$http', function ($scope, $http) {
     $scope.gridOptions = {
