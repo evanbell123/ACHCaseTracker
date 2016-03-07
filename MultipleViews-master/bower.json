@@ -10,6 +10,7 @@
     "angular-touch": "1.4.9",
     "angular-animate": "1.4.9",
     "angular-route": "1.4.9",
+    "angular-resource": "1.4.9",
     "jquery": "2.2.0",
     "bootstrap": "3.3.6",
     "angular-ui-grid": "3.1.1",
@@ -17,7 +18,11 @@
     "pdfmake": "0.1.20",
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
-    "html5-boilerplate": "~5.2.0"
+    "html5-boilerplate": "~5.2.0",
+    "angular-formly": "7.3.9",
+    "angular-formly-templates-bootstrap": "6.2.0",
+    "api-check": "7.5.5"
+
   },
   "resolutions": {
     "angular": "1.4.9"
