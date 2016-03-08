@@ -181,6 +181,8 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
         awesome: true
     };
 
+
+
     vm.options = {
         formState: {
             awesomeIsForced: false
@@ -197,85 +199,203 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
     // the 'fields' attribute on the <formly-form> element
     vm.fields = [
         {
-            key: 'assignedTo',
+            "type": "radio",
+            "key": "status",
+            defaultValue: 'open',
+            "templateOptions": {
+                "options": [
+                    {
+                        "name": "Open",
+                        "value": "open"
+                    },
+                    {
+                        "name": "In Process",
+                        "value": "process"
+                    },
+                    {
+                        "name": "Closed",
+                        "value": "closed"
+                    }
+                ],
+                "label": "Field Type",
+                "required": true
+            }
+        },
+        {
+            className:'row',
+            fieldGroup:[
+
+                {
+                    className:'col-xs-4',
+                    key: 'type',
+                    type: 'select',
+                    templateOptions: {
+                        label: 'Case Type',
+                        required: true,
+                        options: [
+                            {name: 'Government Reclamations', value: 'gov_re'},
+                            {name: 'POA', value: 'poa'},
+                            {name: 'Reversals/Deletions', value: 'rev/del'},
+                            {name: 'Returns', value: 'returns'},
+                            {name: 'Unresolved/Dishonored Returns', value: 'unres/dish_returns'}
+                        ]
+                    }
+                },
+                {
+                    className: 'col-xs-4',
+                    key: 'subtype',
+                    type: 'select',
+                    templateOptions: {
+                        label: 'Case Subtype',
+                        required: true,
+                        options: [
+                            {name: 'Government Reclamations', value: 'gov_re_sub'},
+                            {name: 'CRF', value: 'crf'},
+                            {name: 'DCN', value: 'dcn'},
+                            {name: 'DNE', value: 'dne'},
+                            {name: 'Treasury Referral', value: 'trea_refe'},
+                            {name: 'Treasury Refund', value: 'trea_refund'}
+                        ]
+                    }
+
+            },
+                {
+                    className: 'col-xs-4',
+                    key: 'sla',
+                    type: 'input',
+                    templateOptions: {
+                        type: 'date',
+                        label: 'SLA',
+                        placeholder: 'SLA',
+                        required: true
+                    }
+                }
+            ]
+        },
+        {
+            className: 'section-label',
+            template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>'
+        },
+        {
+            className: 'row',
+            fieldGroup: [
+                {
+                    className: 'col-xs-6',
+                    type: 'input',
+                    key: 'firstName',
+                    templateOptions: {
+                        label: 'First Name',
+                        required: true
+                    }
+
+                },
+                {
+                    className: 'col-xs-6',
+                    type: 'input',
+                    key: 'lastName',
+                    templateOptions: {
+                        label: 'Last Name',
+                        required: true
+                    }
+                }
+            ]
+        },
+        {
+            className: 'row',
+            fieldGroup: [
+                {
+                    className: 'col-xs-6',
+                    type: 'input',
+                    key: 'account_number',
+                    templateOptions: {
+                        label: 'Account Number',
+                        required: true
+                    }
+
+                },
+                {
+                    className: 'col-xs-6',
+                    type: 'input',
+                    key: 'ssn',
+                    templateOptions: {
+                        type:'password',
+                        label: 'Social Security Number',
+                        required: true
+                    }
+
+                }
+            ]
+        },
+
+        {
+            className: 'section-label',
+            template: '<hr /><div><strong><font size ="6px">Payment Information:</font></strong></div>'
+        },
+
+        {
+            className: 'row',
+            fieldGroup: [
+                {
+                    className: 'col-xs-6',
+            key: 'pay_Amt',
             type: 'input',
             templateOptions: {
                 type: 'number',
-                label: 'Assigned To ID',
-                placeholder: 'Enter the id of the user this case is assigned to',
+                label: 'Payment Amount',
+                placeholder: 'Enter payment amount',
                 required: true
-            }
+                }
+                },
+                {
+                    className: 'col-xs-6',
+                    key: 'recovery_method',
+                    type: 'select',
+                    templateOptions: {
+                        label: 'Recovery Method',
+                        required: true,
+                        options: [
+                            {name: 'Commerce Bank', value: 'commerce'},
+                            {name: 'Customer DDA', value: 'customer_dda'},
+                            {name: 'Other', value: 'other'}
+
+                        ]
+                    }
+                }
+            ]
         },
+
         {
-            key: 'beneficiaryName',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Beneficiary Name',
-                placeholder: "Enter the beneficiary's name",
-                required: true
-            }
+            className:'row',
+            fieldGroup:[
+                {
+                    className: 'col-xs-6',
+                    key: 'completed_Date',
+                    type: 'input',
+                    templateOptions: {
+                        type: 'date',
+                        label: 'Completed Date',
+                        placeholder: 'Enter completed date',
+                        required: true
+                    }
+                }]
         },
+
+
         {
-            key: 'totalAmt',
-            type: 'input',
-            templateOptions: {
-                type: 'number',
-                label: 'Total Amount',
-                placeholder: 'Enter total amount',
-                required: true
-            }
+            className: 'section-label',
+            template: '<hr /><div><strong><font size ="6px">Notes:</font></strong></div>'
         },
-        {
-            key: 'openedDate',
-            type: 'input',
-            templateOptions: {
-                type: 'date',
-                label: 'Opened Date',
-                placeholder: 'Enter the opened date',
-                required: true
-            }
-        },
-        {
-            key: 'daysOpen',
-            type: 'input',
-            templateOptions: {
-                type: 'number',
-                label: 'Days Open',
-                placeholder: 'days open',
-                required: true
-            }
-        },
-        {
-            key: 'sla',
-            type: 'input',
-            templateOptions: {
-                type: 'date',
-                label: 'SLA',
-                placeholder: 'SLA',
-                required: true
-            }
-        },
-        {
-            key: 'status',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'status',
-                placeholder: 'status',
-                required: true
-            }
-        },
+
         {
             key: 'notes',
-            type: 'input',
+            type: 'textarea',
             templateOptions: {
                 type: 'text',
-                label: 'Notes',
-                placeholder: 'notes',
-                required: true
+                placeholder: 'This has 5 rows',
+                rows:5
+
             }
-        },
+        }
     ];
 
     function onSubmit() {
