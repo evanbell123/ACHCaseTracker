@@ -113,3 +113,11 @@ li a:hover:not(.active) {
     margin: 4px 2px;
     cursor: pointer;
 }
+
+.formly.row{
+    display:block;
+}
+
+.formly-field.section-label {
+    margin-bottom: 8px
+}
