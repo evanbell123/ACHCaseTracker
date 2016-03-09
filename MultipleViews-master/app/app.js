@@ -1,6 +1,58 @@
 // create the module and name it scotchApp
 // also include ngRoute for all our routing needs
-var app = angular.module('app', ['ngRoute', 'ngTouch', 'ui.grid', 'ui.grid.edit', 'ui.grid.exporter', 'formly', 'formlyBootstrap']);
+var app = angular.module('app', ['ngRoute', 'ngTouch', 'ui.grid', 'ui.grid.edit', 'ui.grid.exporter', 'formly', 'formlyBootstrap'], function config(formlyConfigProvider) {
+    // set templates here
+    formlyConfigProvider.setType({
+        name: 'createCase',
+        templateUrl: 'caseForm.html',
+        name: 'repeatSection',
+        templateUrl: 'caseForm.html',
+        controller: function ($scope) {
+            $scope.formOptions = {formState: $scope.formState};
+            $scope.addNew = addNew;
+
+            $scope.copyFields = copyFields;
+
+            function copyFields(fields) {
+                fields = angular.copy(fields);
+                addRandomIds(fields);
+                return fields;
+            }
+
+            function addNew() {
+                $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
+                var repeatsection = $scope.model[$scope.options.key];
+                var lastSection = repeatsection[repeatsection.length - 1];
+                var newsection = {};
+                if (lastSection) {
+                    newsection = angular.copy(lastSection);
+                }
+                repeatsection.push(newsection);
+            }
+
+            function addRandomIds(fields) {
+                unique++;
+                angular.forEach(fields, function (field, index) {
+                    if (field.fieldGroup) {
+                        addRandomIds(field.fieldGroup);
+                        return; // fieldGroups don't need an ID
+                    }
+
+                    if (field.templateOptions && field.templateOptions.fields) {
+                        addRandomIds(field.templateOptions.fields);
+                    }
+
+                    field.id = field.id || (field.key + '_' + index + '_' + unique + getRandomInt(0, 9999));
+                });
+            }
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+        }
+    });
+
+});
 
 app.directive('onReadFile', function ($parse) {
     return {
@@ -284,14 +336,29 @@ angular.module('staticSelect', [])
         };
     }]);
 
-app.controller('caseFormController', ['$scope', '$http', function ($scope, $http) {
+app.controller('caseFormController', ['$scope', '$http', function ($scope, $http, formlyVersion) {
     var vm = this;
 
     vm.onSubmit = onSubmit;
+    // variable assignment
+    vm.author = { // optionally fill in your info below :-)
+        name: 'Joe Zhou',
+        url: 'https://plus.google.com/u/0/111062476999618400219/posts' // a link to your twitter/github/blog/whatever
+    };
+    // variable assignment
+    vm.baseUrl = 'https://github.com/formly-js/angular-formly';
+    vm.issueNumber = 345;
+    vm.env = {
+        angularVersion: angular.version.full,
+        formlyVersion: formlyVersion
+    };
+
+    vm.formData = {};
 
     vm.model = {
         awesome: true
     };
+    vm.exampleTitle = 'Repeating Section';
 
 
     vm.options = {
@@ -300,219 +367,265 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
         }
     };
 
+    init();
+
+    vm.originalFields = angular.copy(vm.fields);
+
     // The model object that we reference
     // on the <formly-form> element in index.html
     vm.model = {};
 
+    function init() {
 
-    // An array of our form fields with configuration
-    // and options set. We make reference to this in
-    // the 'fields' attribute on the <formly-form> element
-    vm.fields = [
-        {
-            "type": "radio",
-            "key": "status",
-            defaultValue: 'open',
-            "templateOptions": {
-                "options": [
+
+
+
+
+        // An array of our form fields with configuration
+        // and options set. We make reference to this in
+        // the 'fields' attribute on the <formly-form> element
+        vm.fields = [
+            {
+                "type": "radio",
+                "key": "status",
+                defaultValue: 'open',
+                "templateOptions": {
+                    "options": [
+                        {
+                            "name": "Open",
+                            "value": "open"
+                        },
+                        {
+                            "name": "In Process",
+                            "value": "process"
+                        },
+                        {
+                            "name": "Closed",
+                            "value": "closed"
+                        }
+                    ],
+                    "label": "Field Type",
+                    "required": true
+                }
+            },
+            {
+                className: 'row',
+                fieldGroup: [
+
                     {
-                        "name": "Open",
-                        "value": "open"
+                        className: 'col-xs-4',
+                        key: 'type',
+                        type: 'select',
+                        templateOptions: {
+                            label: 'Case Type',
+                            required: true,
+                            options: [],
+                            valueProp: 'id',
+                            labelProp: 'name'
+                        },
+                        controller: /* @ngInject */ function ($scope, DataService) {
+                            $scope.to.loading = DataService.type().then(function (response) {
+                                $scope.to.options = response;
+                                return response;
+                            });
+
+                        }
                     },
                     {
-                        "name": "In Process",
-                        "value": "process"
+                        className: 'col-xs-4',
+                        key: 'subtype',
+                        type: 'select',
+                        templateOptions: {
+                            label: 'Case Subtype',
+                            options: [],
+                            valueProp: 'id',
+                            labelProp: 'name'
+
+                        },
+                        controller: /* @ngInject */ function ($scope, DataService) {
+                            $scope.$watch('model.type', function (newValue, oldValue, theScope) {
+                                if (newValue !== oldValue) {
+                                    // logic to reload this select's options asynchronusly based on state's value (newValue)
+                                    console.log('new value is different from old value');
+                                    if ($scope.model[$scope.options.key] && oldValue) {
+                                        // reset this select
+                                        $scope.model[$scope.options.key] = '';
+                                    }
+                                    // Reload options
+                                    $scope.to.loading = DataService.subtype(newValue).then(function (res) {
+                                        $scope.to.options = res;
+                                    });
+                                }
+                            });
+
+                        }
+
                     },
                     {
-                        "name": "Closed",
-                        "value": "closed"
+                        className: 'col-xs-4',
+                        key: 'sla',
+                        type: 'input',
+                        templateOptions: {
+                            type: 'date',
+                            label: 'SLA',
+                            placeholder: 'SLA',
+                            required: true
+                        }
                     }
-                ],
-                "label": "Field Type",
-                "required": true
+                ]
+            },
+            {
+                className: 'section-label',
+                template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>'
+            },
+            {
+                className: 'row',
+                fieldGroup: [
+                    {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'firstName',
+                        templateOptions: {
+                            label: 'First Name',
+                            required: true
+                        }
+
+                    },
+                    {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'lastName',
+                        templateOptions: {
+                            label: 'Last Name',
+                            required: true
+                        }
+                    }
+                ]
+            },
+            {
+                className: 'row',
+                fieldGroup: [
+                    {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'account_number',
+                        templateOptions: {
+                            label: 'Account Number',
+                            required: true
+                        }
+
+                    },
+                    {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'ssn',
+                        templateOptions: {
+                            type: 'password',
+                            label: 'Social Security Number',
+                            required: true
+                        }
+
+                    }
+                ]
+            },
+
+            {
+                className: 'section-label',
+                template: '<hr /><div><strong><font size ="6px">Payment Information:</font></strong></div>'
+            },
+
+            {
+                className: 'row',
+                //type: 'repeatSection',
+                //key: 'payments',
+                //templateOptions: {
+                //    btnText: 'Add another payment',
+
+                fieldGroup: [
+                    {
+                        className: 'col-xs-4',
+                        key: 'pay_Amt',
+                        type: 'input',
+                        templateOptions: {
+                            type: 'number',
+                            label: 'Payment Amount',
+                            placeholder: 'Enter payment amount',
+                            required: true
+                        }
+                    },
+                    {
+                        className: 'col-xs-4',
+                        key: 'recovery_method',
+                        type: 'select',
+                        templateOptions: {
+                            label: 'Recovery Method',
+                            required: true,
+                            options: [],
+                            valueProp: 'id',
+                            labelProp: 'name'
+                        },
+                        controller: /* @ngInject */ function ($scope, DataService) {
+                            $scope.$watch('model.subtype', function (newValue, oldValue, theScope) {
+                                if (newValue !== oldValue) {
+                                    // logic to reload this select's options asynchronusly based on state's value (newValue)
+                                    console.log('new value is different from old value');
+                                    if ($scope.model[$scope.options.key] && oldValue) {
+                                        // reset this select
+                                        $scope.model[$scope.options.key] = '';
+                                    }
+                                    // Reload options
+                                    $scope.to.loading = DataService.recovery(newValue).then(function (res) {
+                                        $scope.to.options = res;
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                className: 'col-xs-4',
+                                key: 'completed_Date',
+                                type: 'input',
+                                templateOptions: {
+                                    type: 'date',
+                                    label: 'Completed Date',
+                                    placeholder: 'Enter completed date',
+                                    required: true
+                                }
+                            }]
+                    }
+
+                ]
+
+            },
+
+
+            {
+                className: 'section-label',
+                template: '<hr /><div><strong><font size ="6px">Notes:</font></strong></div>'
+            },
+
+            {
+                key: 'notes',
+                type: 'textarea',
+                templateOptions: {
+                    type: 'text',
+                    placeholder: 'This has 5 rows',
+                    rows: 5
+
+                }
             }
-        },
-        {
-            className: 'row',
-            fieldGroup: [
+        ];
+    }
 
-                {
-                    className: 'col-xs-4',
-                    key: 'type',
-                    type: 'select',
-                    templateOptions: {
-                        label: 'Case Type',
-                        required: true,
-                        options: [
-                            {name: 'Government Reclamations', value: 'gov_re'},
-                            {name: 'POA', value: 'poa'},
-                            {name: 'Reversals/Deletions', value: 'rev/del'},
-                            {name: 'Returns', value: 'returns'},
-                            {name: 'Unresolved/Dishonored Returns', value: 'unres/dish_returns'}
-                        ]
-                    }
-                },
-                {
-                    className: 'col-xs-4',
-                    key: 'subtype',
-                    type: 'select',
-                    templateOptions: {
-                        label: 'Case Subtype',
-                        required: true,
-                        options: [
-                            {name: 'Government Reclamations', value: 'gov_re_sub'},
-                            {name: 'CRF', value: 'crf'},
-                            {name: 'DCN', value: 'dcn'},
-                            {name: 'DNE', value: 'dne'},
-                            {name: 'Treasury Referral', value: 'trea_refe'},
-                            {name: 'Treasury Refund', value: 'trea_refund'}
-                        ]
-                    }
-
-                },
-                {
-                    className: 'col-xs-4',
-                    key: 'sla',
-                    type: 'input',
-                    templateOptions: {
-                        type: 'date',
-                        label: 'SLA',
-                        placeholder: 'SLA',
-                        required: true
-                    }
-                }
-            ]
-        },
-        {
-            className: 'section-label',
-            template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>'
-        },
-        {
-            className: 'row',
-            fieldGroup: [
-                {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'firstName',
-                    templateOptions: {
-                        label: 'First Name',
-                        required: true
-                    }
-
-                },
-                {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'lastName',
-                    templateOptions: {
-                        label: 'Last Name',
-                        required: true
-                    }
-                }
-            ]
-        },
-        {
-            className: 'row',
-            fieldGroup: [
-                {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'account_number',
-                    templateOptions: {
-                        label: 'Account Number',
-                        required: true
-                    }
-
-                },
-                {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'ssn',
-                    templateOptions: {
-                        type: 'password',
-                        label: 'Social Security Number',
-                        required: true
-                    }
-
-                }
-            ]
-        },
-
-        {
-            className: 'section-label',
-            template: '<hr /><div><strong><font size ="6px">Payment Information:</font></strong></div>'
-        },
-
-        {
-            className: 'row',
-            fieldGroup: [
-                {
-                    className: 'col-xs-6',
-                    key: 'pay_Amt',
-                    type: 'input',
-                    templateOptions: {
-                        type: 'number',
-                        label: 'Payment Amount',
-                        placeholder: 'Enter payment amount',
-                        required: true
-                    }
-                },
-                {
-                    className: 'col-xs-6',
-                    key: 'recovery_method',
-                    type: 'select',
-                    templateOptions: {
-                        label: 'Recovery Method',
-                        required: true,
-                        options: [
-                            {name: 'Commerce Bank', value: 'commerce'},
-                            {name: 'Customer DDA', value: 'customer_dda'},
-                            {name: 'Other', value: 'other'}
-
-                        ]
-                    }
-                }
-            ]
-        },
-
-        {
-            className: 'row',
-            fieldGroup: [
-                {
-                    className: 'col-xs-6',
-                    key: 'completed_Date',
-                    type: 'input',
-                    templateOptions: {
-                        type: 'date',
-                        label: 'Completed Date',
-                        placeholder: 'Enter completed date',
-                        required: true
-                    }
-                }]
-        },
-
-
-        {
-            className: 'section-label',
-            template: '<hr /><div><strong><font size ="6px">Notes:</font></strong></div>'
-        },
-
-        {
-            key: 'notes',
-            type: 'textarea',
-            templateOptions: {
-                type: 'text',
-                placeholder: 'This has 5 rows',
-                rows: 5
-
-            }
-        }
-    ];
 
     function onSubmit() {
         //vm.model.openedDate = vm.model.openedDate.getTime();
         //vm.model.sla = vm.model.sla.getTime();
 
+        alert(JSON.stringify(vm.formData), null, 2);
         console.log(vm.model.openedDate, vm.model.sla);
         $http({
             method: 'POST',
@@ -526,4 +639,173 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
             // or server returns response with an error status.
         });
     }
+
+
 }]);
+
+app.factory('DataService', function DataService($http, $q) {
+    return {
+        type: type,
+        subtype: subtype,
+        recovery: recovery
+    };
+
+    function type() {
+        var deferred = $q.defer();
+        // dummy data
+        var data = [{
+            id: 1,
+            name: 'Government Reclamations'
+        }, {
+            id: 2,
+            name: 'POA'
+        }, {
+            id: 3,
+            name: 'Reversals/Deletions'
+        }, {
+            id: 4,
+            name: 'Returns'
+        }, {
+            id: 5,
+            name: 'Unresolved/Dishonored Returns'
+        }
+        ];
+        deferred.resolve(data);
+        return deferred.promise;
+    }
+
+    function subtype(type_id) {
+        var deferred = $q.defer();
+        // dummy data
+        var data = [{
+            id: 1,
+            fk: 1,
+            name: 'Government Reclamations'
+        }, {
+            id: 2,
+            fk: 1,
+            name: 'CRF'
+        }, {
+            id: 3,
+            fk: 1,
+            name: 'DCN'
+        }, {
+            id: 4,
+            fk: 1,
+            name: 'DNE'
+        }, {
+            id: 5,
+            fk: 1,
+            name: 'Treasury Referral'
+        }, {
+            id: 6,
+            fk: 1,
+            name: 'Treasury Refund'
+        }];
+        if (!!type_id) {
+            var tmp = [];
+            angular.forEach(data, function (val) {
+                if (val.fk === type_id)
+                    tmp.push(val);
+            });
+            deferred.resolve(tmp);
+        } else {
+            deferred.resolve(data);
+        }
+
+
+        return deferred.promise;
+    }
+
+    function recovery(subtype_id) {
+        var deferred = $q.defer();
+        // dummy data
+        var data = [{
+            id: 1,
+            fk: 1,
+            name: 'ACH Return'
+        }, {
+            id: 2,
+            fk: 1,
+            name: 'Cashiers Check Mailed'
+        }, {
+            id: 3,
+            fk: 1,
+            name: 'Mixed Method'
+        }, {
+            id: 4,
+            fk: 2,
+            name: 'ACH Return'
+        }, {
+            id: 5,
+            fk: 2,
+            name: 'Cashiers Check Mailed'
+        }, {
+            id: 6,
+            fk: 2,
+            name: 'Mixed Method'
+        }, {
+            id: 7,
+            fk: 3,
+            name: 'ACH Return'
+        }, {
+            id: 8,
+            fk: 3,
+            name: 'Cashiers Check Mailed'
+        }, {
+            id: 9,
+            fk: 3,
+            name: 'Mixed Method'
+        }, {
+            id: 10,
+            fk: 4,
+            name: 'ACH Return'
+        }, {
+            id: 11,
+            fk: 4,
+            name: 'Cashiers Check Mailed'
+        }, {
+            id: 12,
+            fk: 4,
+            name: 'Mixed Method'
+        }, {
+            id: 13,
+            fk: 5,
+            name: 'Commerce Bank'
+        }, {
+            id: 14,
+            fk: 5,
+            name: 'Customer DDA'
+        }, {
+            id: 15,
+            fk: 5,
+            name: 'Other'
+        }, {
+            id: 16,
+            fk: 6,
+            name: 'Commerce Bank'
+        }, {
+            id: 17,
+            fk: 6,
+            name: 'Customer DDA'
+        }, {
+            id: 18,
+            fk: 6,
+            name: 'Other'
+        }
+        ];
+        if (!!subtype_id) {
+            var tmp = [];
+            angular.forEach(data, function (val) {
+                if (val.fk === subtype_id)
+                    tmp.push(val);
+            });
+            deferred.resolve(tmp);
+        } else {
+            deferred.resolve(data);
+        }
+
+
+        return deferred.promise;
+    }
+});
