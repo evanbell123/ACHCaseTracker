@@ -57,51 +57,45 @@ app.directive('onReadFile', function ($parse) {
     };
 });
 
-angular.module('addressFormatter', []).filter('address', function () {
-    return function (input) {
-        return input.street + ', ' + input.city + ', ' + input.state + ', ' + input.zip;
-    };
-});
-
 // configure our routes
 app.config(function ($routeProvider) {
     $routeProvider
 
     // route for the home page
         .when('/', {
-            templateUrl: 'pages/home.html',
+            templateUrl: 'partials/home.html',
             controller: 'homeController'
         })
 
         // route for the about page
         .when('/auditlog', {
-            templateUrl: 'pages/auditlog.html',
+            templateUrl: 'partials/auditlog.html',
             controller: 'auditlogController'
         })
 
         // route for the contact page
         .when('/contact', {
-            templateUrl: 'pages/contact.html',
+            templateUrl: 'partials/contact.html',
             controller: 'contactController'
         })
 
         .when('/myCases', {
-            templateUrl: 'pages/myCases.html',
-            controller: 'myCasesController'
+            templateUrl: 'partials/cases.html',
+            controller: 'casesController'
         })
 
         .when('/import', {
-            templateUrl: 'pages/import.html',
+            templateUrl: 'partials/import.html',
             controller: 'importController'
         })
 
         .when('/caseForm', {
-            templateUrl: 'pages/caseForm.html',
+            templateUrl: 'partials/caseForm.html',
             controller: 'caseFormController as vm'
         })
 
         .when('/cases', {
-            templateUrl: 'pages/cases.html',
+            templateUrl: 'partials/cases.html',
             controller: 'casesController'
         });
 
@@ -123,51 +117,169 @@ app.controller('auditlogController', function ($scope) {
     $scope.message = 'Look! I am an audit log.';
 });
 
-app.controller('contactController', function ($scope) {
-    $scope.message = 'Contact us! JK. This is just a demo.';
-});
+app.controller('casesController', ['$location','$scope', '$http', '$timeout', 'uiGridConstants', function ($location, $scope, $http, $timeout, uiGridConstants) {
+        $scope.highlightFilteredHeader = function (row, rowRenderIndex, col, colRenderIndex) {
+            if (col.filters[0].term) {
+                return 'header-filtered';
+            } else {
+                return '';
+            }
+        };
 
-app.controller('casesController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
-    $scope.gridOptions = {};
+        $scope.gridOptions = {
+            enableFiltering: true,
+            enableGridMenu: true,
+            enableSelectAll: true,
+            exporterCsvFilename: 'myFile.csv',
+            exporterPdfDefaultStyle: {fontSize: 9},
+            exporterPdfTableStyle: {margin: [0, 30, 30, 30]},
+            exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+            exporterPdfHeader: {text: "Cases", style: 'headerStyle'},
+            exporterPdfFooter: function (currentPage, pageCount) {
+                return {text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle'};
+            },
+            exporterPdfCustomFormatter: function (docDefinition) {
+                docDefinition.styles.headerStyle = {fontSize: 22, bold: true};
+                docDefinition.styles.footerStyle = {fontSize: 10, bold: true};
+                return docDefinition;
+            },
+            exporterPdfOrientation: 'portrait',
+            exporterPdfPageSize: 'LETTER',
+            exporterPdfMaxGridWidth: 450,
+            exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
+        };
 
-    $scope.gridOptions.columnDefs = [
-        {name: 'case.assignedTo', displayName: 'Assigned To', width: '10%'},
-        {name: '_links.case-status.href', displayName: 'Status', width: '10%'},
-        {name: 'case.beneficiaryName', displayName: 'Beneficiary Name', width: '30%'},
-        {name: 'case.totalAmt', displayName: 'Total Amount', width: '10%'},
-        {name: 'case.openedDate', displayName: 'Opened Date', width: '10%'},
-        {name: 'case.sla', displayName: 'SLA', width: '10%'},
-        {name: 'case.daysOpen', displayName: 'Days Open', width: '10%'}
-    ];
 
-    $scope.msg = {};
+        $scope.gridOptions.columnDefs = [
+            {
+                name: 'case.id',
+                headerCellClass: $scope.highlightFilteredHeader,
+                enableCellEdit: false,
+                displayName: 'Case ID',
+                type: 'number',
+                width: '9%',
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html/#/cases/{{COL_FIELD}}">{{COL_FIELD}}</a></div>'
+            },
+            {
+                name: 'case.assignedTo',
+                enableCellEdit: false,
+                displayName: 'Assigned To',
+                headerCellClass: $scope.highlightFilteredHeader,
+                width: '16%'
+            },
+            {
+                name: 'case.status',
+                displayName: 'Status',
+                headerCellClass: $scope.highlightFilteredHeader,
+                editableCellTemplate: 'ui-grid/dropdownEditor',
+                width: '12%',
+                headerCellClass: $scope.highlightFilteredHeader,
+                filter: {
+                    term: '1',
+                    type: uiGridConstants.filter.SELECT,
+                    selectOptions: [
+                        {value: '1', label: 'opened'},
+                        {value: '2', label: 'closed'}]
+                },
+                cellFilter: 'mapStatus',
+                editDropdownValueLabel: 'status',
+                editDropdownOptionsArray: [
+                    {id: 1, status: 'opened'},
+                    {id: 2, status: 'closed'}
+                ]
+            },
+            {
+                name: 'case.beneficiaryName',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'Beneficiary Name',
+                width: '16%'
+            },
+            {
+                name: 'case.totalAmt',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'Total Amount',
+                type: 'number',
+                cellFilter: 'currency',
+                width: '12%'
+            },
+            {
+                name: 'case.openedDate',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'Opened Date',
+                type: 'date',
+                cellFilter: 'date:"yyyy-MM-dd"',
+                width: '12%'
+            },
+            {
+                name: 'case.sla',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'SLA',
+                type: 'date',
+                cellFilter: 'date:"yyyy-MM-dd"',
+                width: '12%'
+            },
+            {
+                name: 'case.daysOpen',
+                headerCellClass: $scope.highlightFilteredHeader,
+                enableCellEdit: false,
+                displayName: 'Days Open',
+                type: 'number',
+                width: '11%'
+            }
+        ];
 
-    $scope.gridOptions.onRegisterApi = function (gridApi) {
-        //set gridApi on scope
-        $scope.gridApi = gridApi;
-        gridApi.edit.on.afterCellEdit($scope, function (rowEntity, colDef, newValue, oldValue) {
-            $scope.msg.lastCellEdited = 'edited row id:' + rowEntity.id + ' Column:' + colDef.name + ' newValue:' + newValue + ' oldValue:' + oldValue;
-            $scope.$apply();
-        });
-    };
+        $scope.msg = {};
 
-    $http.get("data/cases.json")
-        .then(function(response) {
-            console.log(response);
-            $scope.gridOptions.data = response.data._embedded.caseResources;
-        });
+        $scope.gridOptions.onRegisterApi = function (gridApi) {
+            //set gridApi on scope
+            $scope.gridApi = gridApi;
+            gridApi.edit.on.afterCellEdit($scope, function (rowEntity, colDef, newValue, oldValue) {
+                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.case.id + ' from ' + oldValue + ' to ' + newValue;
+                $scope.$apply();
+            });
+        };
 
-}])
+    console.log($location.path());
+    var request = $location.path();
+
+        $http.get("data" + $location.path() + ".json")
+            .then(function (response) {
+                console.log(response);
+                var data = response.data._embedded.caseResources;
+                console.log(data.length);
+
+                for (var i = 0; i < data.length; i++) {
+                    data[i].case.status = data[i].case.status === 'opened' ? 1 : 2;
+                    data[i].case.sla = new Date(data[i].case.sla);
+                    data[i].case.openedDate = new Date(data[i].case.openedDate);
+                }
+                $scope.gridOptions.data = data;
+            });
+    }])
+    .filter('mapStatus', function () {
+        var statusHash = {
+            1: 'opened',
+            2: 'closed'
+        };
+
+        return function (input) {
+            if (!input) {
+                return '';
+            } else {
+                return statusHash[input];
+            }
+        };
+    });
 
 angular.module('staticSelect', [])
-    .controller('ExampleController', ['$scope', function($scope) {
+    .controller('ExampleController', ['$scope', function ($scope) {
         $scope.data = {
             singleSelect: null,
             multipleSelect: [],
             option1: 'option-1',
         };
 
-        $scope.forceUnknownOption = function() {
+        $scope.forceUnknownOption = function () {
             $scope.data.singleSelect = 'nonsense';
         };
     }]);
@@ -180,7 +292,6 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
     vm.model = {
         awesome: true
     };
-
 
 
     vm.options = {
@@ -222,11 +333,11 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
             }
         },
         {
-            className:'row',
-            fieldGroup:[
+            className: 'row',
+            fieldGroup: [
 
                 {
-                    className:'col-xs-4',
+                    className: 'col-xs-4',
                     key: 'type',
                     type: 'select',
                     templateOptions: {
@@ -258,7 +369,7 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
                         ]
                     }
 
-            },
+                },
                 {
                     className: 'col-xs-4',
                     key: 'sla',
@@ -318,7 +429,7 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
                     type: 'input',
                     key: 'ssn',
                     templateOptions: {
-                        type:'password',
+                        type: 'password',
                         label: 'Social Security Number',
                         required: true
                     }
@@ -337,14 +448,14 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
             fieldGroup: [
                 {
                     className: 'col-xs-6',
-            key: 'pay_Amt',
-            type: 'input',
-            templateOptions: {
-                type: 'number',
-                label: 'Payment Amount',
-                placeholder: 'Enter payment amount',
-                required: true
-                }
+                    key: 'pay_Amt',
+                    type: 'input',
+                    templateOptions: {
+                        type: 'number',
+                        label: 'Payment Amount',
+                        placeholder: 'Enter payment amount',
+                        required: true
+                    }
                 },
                 {
                     className: 'col-xs-6',
@@ -365,8 +476,8 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
         },
 
         {
-            className:'row',
-            fieldGroup:[
+            className: 'row',
+            fieldGroup: [
                 {
                     className: 'col-xs-6',
                     key: 'completed_Date',
@@ -392,7 +503,7 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
             templateOptions: {
                 type: 'text',
                 placeholder: 'This has 5 rows',
-                rows:5
+                rows: 5
 
             }
         }
@@ -416,43 +527,3 @@ app.controller('caseFormController', ['$scope', '$http', function ($scope, $http
         });
     }
 }]);
-
-app.controller('myCasesController', ['$scope', '$http', function ($scope, $http) {
-    $scope.gridOptions = {
-        columnDefs: [
-            {field: 'name'},
-            {field: 'gender', visible: false},
-            {field: 'company'}
-        ],
-        enableGridMenu: true,
-        enableSelectAll: true,
-        exporterCsvFilename: 'myFile.csv',
-        exporterPdfDefaultStyle: {fontSize: 9},
-        exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
-        exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-        exporterPdfHeader: {text: "My Header", style: 'headerStyle'},
-        exporterPdfFooter: function (currentPage, pageCount) {
-            return {text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle'};
-        },
-        exporterPdfCustomFormatter: function (docDefinition) {
-            docDefinition.styles.headerStyle = {fontSize: 22, bold: true};
-            docDefinition.styles.footerStyle = {fontSize: 10, bold: true};
-            return docDefinition;
-        },
-        exporterPdfOrientation: 'portrait',
-        exporterPdfPageSize: 'LETTER',
-        exporterPdfMaxGridWidth: 500,
-        exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-        onRegisterApi: function (gridApi) {
-            $scope.gridApi = gridApi;
-        }
-    };
-
-    $http.get('data/100.json')
-        .success(function (data) {
-            $scope.gridOptions.data = data;
-        });
-
-}]);
-
-

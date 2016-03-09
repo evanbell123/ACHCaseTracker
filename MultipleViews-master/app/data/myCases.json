@@ -1,0 +1,54 @@
+{
+  "_embedded": {
+    "caseResources": [
+      {
+        "case": {
+          "id": 5,
+          "assignedTo": "Mackenzie Stillwater",
+          "status": "opened",
+          "beneficiaryName": "Steven Evans",
+          "totalAmt": 1000.43,
+          "openedDate": "2014-02-18",
+          "sla": "2014-02-27",
+          "daysOpen": 10,
+          "notes": "Here is a note about the case."
+        },
+        "_links": {
+          "case-status": {
+            "href": "opened"
+          },
+          "cases": {
+            "href": "http://localhost:8080/api/cases"
+          },
+          "self": {
+            "href": "http://localhost:8080/api/cases/5"
+          }
+        }
+      },
+      {
+        "case": {
+          "id": 6,
+          "assignedTo": "Mackenzie Stillwater",
+          "status": "closed",
+          "beneficiaryName": "Evan Bell",
+          "totalAmt": 66.99,
+          "openedDate": "1999-05-02",
+          "sla": "1999-05-02",
+          "daysOpen": 4,
+          "notes": "Here is a note about the case."
+        },
+        "_links": {
+          "case-status": {
+            "href": "closed"
+          },
+          "cases": {
+            "href": "http://localhost:8080/api/cases"
+          },
+          "self": {
+            "href": "http://localhost:8080/api/cases/6"
+          }
+        }
+      }
+    ]
+  }
+}
