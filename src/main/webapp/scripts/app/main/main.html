@@ -66,27 +66,27 @@
                 <ul>
 
                     <li>
-                        <a href="#auditlog">
+                        <a ui-sref="audit_log">
                             <i class="fa fa-shield"></i><img src="../assets/images/AuditLog.png" alt="Commerce-Bank" width="80px" height="80px">
                             Audit Log</a>
                     </li>
                     <li>
-                        <a href="#cases">
+                        <a ui-sref="cases">
                             <i class="fa fa-comment"></i><img src="../assets/images/Cases.png" alt="Commerce-Bank" width="80px" height="80px">
                             Cases</a>
                     </li>
                     <li>
-                        <a href="#myCases">
+                        <a ui-sref="myCases">
                             <i class="fa fa-comment"></i><img src="../assets/images/MyCases.png" alt="Commerce-Bank" width="80px" height="80px">
                             My Cases</a>
                     </li>
                     <li>
-                        <a href="#import">
+                        <a ui-sref="import">
                             <i class="fa fa-comment"></i><img src="../assets/images/Import.png" alt="Commerce-Bank" width="80px" height="80px">
                             Import</a>
                     </li>
                     <li>
-                        <a href="#caseForm">
+                        <a ui-sref="caseForm">
                             <i class="fa fa-comment"></i><img src="../assets/images/CreateCase.png" alt="Commerce-Bank" width="80px" height="80px">
                             Create Case</a>
                     </li>
@@ -95,4 +95,12 @@
 
         </div>
     </header>
-</div>
+    <div class="body-custom">
+        <!-- MAIN CONTENT AND INJECTED VIEWS -->
+        <div id="main" class="col-xs-10 col-xs-offset-2 ">
+
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->
+            <div ui-view="audit_log"></div>
+        </div>
+    </div>
