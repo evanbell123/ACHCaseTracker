@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .directive('jhAlert', function(AlertService) {
         return {
             restrict: 'E',
@@ -32,7 +32,7 @@ angular.module('testApp')
 
                     $scope.alerts = [];
 
-                    var cleanHttpErrorListener = $rootScope.$on('testApp.httpError', function (event, httpResponse) {
+                    var cleanHttpErrorListener = $rootScope.$on('achcasetrackerApp.httpError', function (event, httpResponse) {
                         var i;
                         event.stopPropagation();
                         switch (httpResponse.status) {
@@ -42,8 +42,8 @@ angular.module('testApp')
                                 break;
 
                             case 400:
-                                var errorHeader = httpResponse.headers('X-testApp-error');
-                                var entityKey = httpResponse.headers('X-testApp-params');
+                                var errorHeader = httpResponse.headers('X-achcasetrackerApp-error');
+                                var entityKey = httpResponse.headers('X-achcasetrackerApp-params');
                                 if (errorHeader) {
                                     var entityName = entityKey;
                                     addErrorAlert(errorHeader, errorHeader, {entityName: entityName});

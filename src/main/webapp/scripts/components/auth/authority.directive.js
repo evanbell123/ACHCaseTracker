@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .directive('hasAnyAuthority', ['Principal', function (Principal) {
         return {
             restrict: 'A',

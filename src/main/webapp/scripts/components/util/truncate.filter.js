@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .filter('characters', function () {
         return function (input, chars, breakOnWord) {
             if (isNaN(chars)) {

@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .factory('Password', function ($resource) {
         return $resource('api/account/change_password', {}, {
         });
     });
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .factory('PasswordResetInit', function ($resource) {
         return $resource('api/account/reset_password/init', {}, {
         })
     });
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .factory('PasswordResetFinish', function ($resource) {
         return $resource('api/account/reset_password/finish', {}, {
         })

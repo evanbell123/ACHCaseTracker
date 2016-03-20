@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .factory('ConfigurationService', function ($rootScope, $filter, $http) {
         return {
             get: function() {

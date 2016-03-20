@@ -1,12 +1,12 @@
-test-mysql:
-  container_name: test-mysql
+achcasetracker-mysql:
+  container_name: achcasetracker-mysql
   image: mysql:5.7.9
   # volumes:
-  #   - ~/volumes/jhipster/Test/mysql/:/var/lib/mysql/
+  #   - ~/volumes/jhipster/ACHCaseTracker/mysql/:/var/lib/mysql/
   environment:
     - MYSQL_USER=root
     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    - MYSQL_DATABASE=test
+    - MYSQL_DATABASE=achcasetracker
   ports:
     - "3306:3306"
   command: mysqld --lower_case_table_names=1

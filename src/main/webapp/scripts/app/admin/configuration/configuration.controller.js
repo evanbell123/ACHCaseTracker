@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .controller('ConfigurationController', function ($scope, ConfigurationService) {
         ConfigurationService.get().then(function(configuration) {
             $scope.configuration = configuration;

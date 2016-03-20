@@ -20,15 +20,15 @@ spring:
             enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
         driver-class-name: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:file:./target/h2db/db/test;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:file:./target/h2db/db/achcasetracker;DB_CLOSE_DELAY=-1
         name:
-        username: Test
+        username: ACHCaseTracker
         password:
     h2:
         console:
             enabled: false
     jpa:
-        database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
+        database-platform: com.commerce.achcasetracker.domain.util.FixedH2Dialect
         database: H2
         show_sql: true
         properties:
@@ -59,7 +59,7 @@ jhipster:
         ehcache:
             maxBytesLocalHeap: 16M
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: Test@localhost
+        from: ACHCaseTracker@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
@@ -70,4 +70,4 @@ jhipster:
             enabled: false
             host: localhost
             port: 2003
-            prefix: Test
+            prefix: ACHCaseTracker

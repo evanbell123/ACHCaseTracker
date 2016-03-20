@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .factory('Principal', function Principal($q, Account) {
         var _identity,
             _authenticated = false;

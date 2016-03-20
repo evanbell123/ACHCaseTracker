@@ -1,8 +1,8 @@
 {
   "generator-jhipster": {
-    "baseName": "Test",
-    "packageName": "com.mycompany.myapp",
-    "packageFolder": "com/mycompany/myapp",
+    "baseName": "ACHCaseTracker",
+    "packageName": "com.commerce.achcasetracker",
+    "packageFolder": "com/commerce/achcasetracker",
     "authenticationType": "xauth",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": "no",
@@ -16,7 +16,7 @@
     "frontendBuilder": "gulp",
     "enableTranslation": false,
     "enableSocialSignIn": false,
-    "rememberMeKey": "b0000850a27d02ef066c5a91fe8fac6becd31df0",
+    "rememberMeKey": "7b6fdcf6114a50f1a20f53f8c6fdb86bef82d0e0",
     "testFrameworks": [
       "gatling"
     ]

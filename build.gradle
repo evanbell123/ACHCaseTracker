@@ -27,7 +27,7 @@ apply plugin: 'propdeps'
 defaultTasks 'bootRun'
 
 bootRepackage {
-   mainClass = 'com.mycompany.myapp.Application'
+   mainClass = 'com.commerce.achcasetracker.Application'
 }
 
 war {
@@ -35,7 +35,7 @@ war {
 }
 
 springBoot {
-    mainClass = 'com.mycompany.myapp.Application'
+    mainClass = 'com.commerce.achcasetracker.Application'
     executable = true
 }
 
@@ -73,7 +73,7 @@ if (project.hasProperty('prod')) {
   apply from: 'profile_dev.gradle'
 }
 
-group = 'com.mycompany.myapp'
+group = 'com.commerce.achcasetracker'
 version = '0.0.1-SNAPSHOT'
 
 description = ''

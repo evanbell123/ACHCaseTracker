@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('configuration', {

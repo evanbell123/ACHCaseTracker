@@ -13,12 +13,12 @@
 spring:
     datasource:
         driver-class-name: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:Test;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:ACHCaseTracker;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
     jpa:
-        database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
+        database-platform: com.commerce.achcasetracker.domain.util.FixedH2Dialect
         database: H2
         open-in-view: false
         show_sql: true
@@ -66,12 +66,12 @@ jhipster:
                 tokenValidityInSeconds: 1800
         rememberme:
             # security key (this key should be unique for your application, and kept secret)
-            key: b0000850a27d02ef066c5a91fe8fac6becd31df0
+            key: 7b6fdcf6114a50f1a20f53f8c6fdb86bef82d0e0
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
     swagger:
-        title: Test API
-        description: Test API documentation
+        title: ACHCaseTracker API
+        description: ACHCaseTracker API documentation
         version: 0.0.1
         termsOfServiceUrl:
         contact:

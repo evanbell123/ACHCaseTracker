@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp', ['LocalStorageModule', 
+angular.module('achcasetrackerApp', ['LocalStorageModule', 
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     // jhipster-needle-angularjs-add-module JHipster will add new module here
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar'])
@@ -21,7 +21,7 @@ angular.module('testApp', ['LocalStorageModule',
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
-            var titleKey = 'Test' ;
+            var titleKey = 'ACHCaseTracker' ;
 
             // Remember previous state unless we've been redirected to login or we've just
             // reset the state memory after logout. If we're redirected to login, our

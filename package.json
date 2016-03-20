@@ -1,7 +1,7 @@
 {
-  "name": "test",
+  "name": "achcasetracker",
   "version": "0.0.0",
-  "description": "Description for Test",
+  "description": "Description for ACHCaseTracker",
   "private": true,
   "cacheDirectories": [
     "node_modules",

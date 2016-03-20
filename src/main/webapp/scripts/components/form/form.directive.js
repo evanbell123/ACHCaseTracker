@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .directive('showValidation', function() {
         return {
             restrict: 'A',

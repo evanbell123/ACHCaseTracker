@@ -1,4 +1,4 @@
-beforeEach(module('testApp'));
+beforeEach(module('achcasetrackerApp'));
 /**
  * returns a function whose angular will be replaced
  * with whatever mock was supplied.

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp').controller('UserManagementDialogController',
+angular.module('achcasetrackerApp').controller('UserManagementDialogController',
     ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 
         function($scope, $stateParams, $uibModalInstance, entity, User) {
 

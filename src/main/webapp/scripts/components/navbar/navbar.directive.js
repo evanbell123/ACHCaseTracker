@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .directive('activeLink', function(location) {
         return {
             restrict: 'A',

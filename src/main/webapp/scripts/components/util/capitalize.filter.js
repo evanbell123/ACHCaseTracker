@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .filter('capitalize', function () {
         return function (input, scope) {
             if (input != null)

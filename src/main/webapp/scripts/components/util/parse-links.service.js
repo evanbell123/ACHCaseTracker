@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('achcasetrackerApp')
     .service('ParseLinks', function () {
         this.parse = function (header) {
             if (header.length == 0) {

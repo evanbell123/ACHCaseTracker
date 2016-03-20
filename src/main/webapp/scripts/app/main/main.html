@@ -1,5 +1,5 @@
-<div ng-cloak>
-    <div class="row">
+<div ng-cloak ng-switch="isAuthenticated()">
+    <div class="row" ng-switch-when="false">
         <div class="col-md-4">
             <span class="hipster img-responsive img-rounded"></span>
         </div>
@@ -13,11 +13,14 @@
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false">
-                    If you want to <a class="alert-link" href="#/login">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
+                    If you want to
+                    <a class="alert-link" href="#/login">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin")
+                    <br/>- User (login="user" and password="user").
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false">
-                    You don't have an account yet? <a class="alert-link" href="#/register">Register a new account</a>
+                    You don't have an account yet?
+                    <a class="alert-link" href="#/register">Register a new account</a>
                 </div>
             </div>
 
@@ -26,16 +29,70 @@
             </p>
 
             <ul>
-                <li><a href="http://jhipster.github.io/" target="_blank">JHipster homepage</a></li>
-                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank">JHipster on Stack Overflow</a></li>
-                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank">JHipster bug tracker</a></li>
-                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank">JHipster public chat room</a></li>
-                <li><a href="https://twitter.com/java_hipster" target="_blank" >contact @java_hipster on Twitter</a></li>
+                <li>
+                    <a href="http://jhipster.github.io/" target="_blank">JHipster homepage</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/tags/jhipster/info" target="_blank">JHipster on Stack Overflow</a>
+                </li>
+                <li>
+                    <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank">JHipster bug tracker</a>
+                </li>
+                <li>
+                    <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank">JHipster public chat room</a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/java_hipster" target="_blank">contact @java_hipster on Twitter</a>
+                </li>
             </ul>
 
             <p>
-             <span>If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
+                <span>If you like JHipster, don't forget to give us a star on
+                </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
             </p>
         </div>
     </div>
+
+    <!-- HEADER AND NAVBAR -->
+    <header ng-switch-when="true">
+        <div class="header" style="max-width: 970px;">
+
+            <div class="menu-bar col-xs-2">
+                <div class="container2">
+                    <img src="../assets/images/commerce-bank.jpg" alt="Commerce-Bank" width="250px" height="auto">
+                </div>
+                <br>
+                <br>
+                <ul>
+
+                    <li>
+                        <a href="#auditlog">
+                            <i class="fa fa-shield"></i><img src="../assets/images/AuditLog.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Audit Log</a>
+                    </li>
+                    <li>
+                        <a href="#cases">
+                            <i class="fa fa-comment"></i><img src="../assets/images/Cases.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Cases</a>
+                    </li>
+                    <li>
+                        <a href="#myCases">
+                            <i class="fa fa-comment"></i><img src="../assets/images/MyCases.png" alt="Commerce-Bank" width="80px" height="80px">
+                            My Cases</a>
+                    </li>
+                    <li>
+                        <a href="#import">
+                            <i class="fa fa-comment"></i><img src="../assets/images/Import.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Import</a>
+                    </li>
+                    <li>
+                        <a href="#caseForm">
+                            <i class="fa fa-comment"></i><img src="../assets/images/CreateCase.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Create Case</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </header>
 </div>
