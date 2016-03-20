@@ -1,0 +1,13 @@
+<div class="row" style="max-width: 1200px; margin:0">
+    <div class="col-xs-10">
+
+    <strong>Data Length:</strong> {{ gridOptions.data.length | number }}
+    <br>
+    <strong>Last Cell Edited:</strong> {{msg.lastCellEdited}}
+    <br>
+
+    <div id="casesGrid" ui-grid-selection ui-grid-exporter ui-grid-edit ui-grid="gridOptions" class="grid"></div>
+    <br>
+
+</div>
+</div>

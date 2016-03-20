@@ -1,0 +1,8 @@
+<div class="container" style="max-width: 770px; margin:0">
+    <h1>Select text file</h1>
+    <input type="file" on-read-file="showContent($fileContent)" />
+    <div ng-if="content">
+        <h2>File content is:</h2>
+        <pre>{{ content }}</pre>
+    </div>
+</div>
