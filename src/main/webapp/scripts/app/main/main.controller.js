@@ -94,7 +94,6 @@ angular.module('achcasetrackerApp')
             headerCellClass: $scope.highlightFilteredHeader,
             editableCellTemplate: 'ui-grid/dropdownEditor',
             width: '12%',
-            headerCellClass: $scope.highlightFilteredHeader,
             filter: {
                 term: '1',
                 type: uiGridConstants.filter.SELECT,
