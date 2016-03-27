@@ -1,0 +1,43 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "customerid",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "ssn",
+            "fieldType": "String"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "accountNum",
+            "fieldType": "Long"
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "dateOfDeath",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "dateCBAware",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "otherGovBenefits",
+            "fieldType": "Boolean"
+        }
+    ],
+    "dto": "no",
+    "service": "no",
+    "pagination": "infinite-scroll"
+}

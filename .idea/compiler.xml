@@ -18,5 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ach-case-tracking_main" target="1.8" />
+      <module name="ach-case-tracking_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/project/src/main/java/main.iml" filepath="$PROJECT_DIR$/project/src/main/java/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/prototypeACH/src/main/main1.iml" filepath="$PROJECT_DIR$/prototypeACH/src/main/main1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/prototypeACH/src/test/test.iml" filepath="$PROJECT_DIR$/prototypeACH/src/test/test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/project/src/test/test1.iml" filepath="$PROJECT_DIR$/project/src/test/test1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ach-case-tracking.iml" filepath="$PROJECT_DIR$/.idea/modules/ach-case-tracking.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ach-case-tracking_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ach-case-tracking_main.iml" group="ach-case-tracking" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ach-case-tracking_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ach-case-tracking_test.iml" group="ach-case-tracking" />
     </modules>
   </component>
 </project>

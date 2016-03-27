@@ -1,0 +1,48 @@
+
+<div>
+    <h2><span>Beneficiary</span> {{vm.beneficiary.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span>Customerid</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.customerid}}<span>
+        </dd>
+        <hr>
+        <dt><span>Name</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.name}}<span>
+        </dd>
+        <hr>
+        <dt><span>Ssn</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.ssn}}<span>
+        </dd>
+        <hr>
+        <dt><span>AccountNum</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.accountNum}}<span>
+        </dd>
+        <hr>
+        <dt><span>DateOfDeath</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.dateOfDeath | date:'mediumDate'}}</span>
+        </dd>
+        <hr>
+        <dt><span>DateCBAware</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.dateCBAware | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span>OtherGovBenefits</dt></dt>
+        <dd>
+            <span>{{vm.beneficiary.otherGovBenefits}}<span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

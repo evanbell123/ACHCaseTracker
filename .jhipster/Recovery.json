@@ -1,0 +1,38 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "method",
+            "fieldType": "RecoveryMethod",
+            "fieldValues": "ACH_RETURN, CHECK_MAILED, MIXED_METHOD, COMMERCE, CUST_DDA, OTHER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "detailType",
+            "fieldType": "RecoveryDetail",
+            "fieldValues": "CHK_NUM, CL_COST, IN_ACCT, DESC"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "detailValue",
+            "fieldType": "Long"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "comment",
+            "fieldType": "String"
+        },
+		{
+            "fieldId": 5,
+            "fieldName": "fullRecovery",
+            "fieldType": "Boolean"
+        }
+    ],
+    "dto": "no",
+    "service": "no",
+    "pagination": "infinite-scroll"
+}

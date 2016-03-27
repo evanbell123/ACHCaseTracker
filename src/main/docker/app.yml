@@ -1,0 +1,16 @@
+version: '2'
+services:
+    achcasetracking-app:
+        image: achcasetracking
+        external_links:
+            - achcasetracking-mongodb:mongodb
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017
+            - SPRING_DATA_MONGODB_DATABASE=ACHCaseTracking
+        ports:
+            - 8080:8080
+    achcasetracking-mongodb:
+        extends:
+            file: mongodb.yml
+            service: achcasetracking-mongodb

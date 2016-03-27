@@ -1,0 +1,9 @@
+version: '2'
+services:
+    achcasetracking-mongodb:
+        container_name: achcasetracking-mongodb
+        image: mongo:3.2.3
+        # volumes:
+        #     - ~/volumes/jhipster/ACHCaseTracking/mongodb/:/data/db/
+        ports:
+            - 27017:27017
