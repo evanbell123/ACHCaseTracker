@@ -1,4 +1,7 @@
-# ACHCaseTracking
+#ACH Case Tracking Phase I
+###*Created by Deft Developers*
+
+To view our project's development progress and details, visit our [Trello board](https://trello.com/b/DrHS7Cz5/cs-451-project) board.
 
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
