@@ -27,6 +27,8 @@ public class SLA implements Serializable {
     @Field("type_name")
     private String typeName;
 
+    public SLA() {}
+
     public SLA(Long businessDays, String typeName) {
         this.businessDays = businessDays;
         this.typeName = typeName;

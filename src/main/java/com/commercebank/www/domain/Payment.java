@@ -27,6 +27,8 @@ public class Payment implements Serializable {
     @Field("effective_on")
     private ZonedDateTime effectiveOn;
 
+    public Payment() {}
+
     public String getId() {
         return id;
     }

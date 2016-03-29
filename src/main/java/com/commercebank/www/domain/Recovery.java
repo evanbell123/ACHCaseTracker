@@ -40,6 +40,8 @@ public class Recovery implements Serializable {
     @Field("full_recovery")
     private Boolean fullRecovery;
 
+    public Recovery() {}
+
     public String getId() {
         return id;
     }
