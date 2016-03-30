@@ -89,79 +89,116 @@
 
 
         $scope.gridOptions.columnDefs = [{
-            name: 'case.id',
-            headerCellClass: $scope.highlightFilteredHeader,
-            enableCellEdit: false,
-            displayName: 'Case ID',
-            type: 'number',
-            width: '9%',
-            cellTemplate: '<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'
-        }, {
-            name: 'case.assignedTo',
-            enableCellEdit: false,
-            displayName: 'Assigned To',
-            headerCellClass: $scope.highlightFilteredHeader,
-            width: '16%'
-        }, {
-            name: 'case.status',
-            displayName: 'Status',
-            headerCellClass: $scope.highlightFilteredHeader,
-            editableCellTemplate: 'ui-grid/dropdownEditor',
-            width: '12%',
-            filter: {
-                term: '1',
-                type: uiGridConstants.filter.SELECT,
-                selectOptions: [{
-                    value: '1',
-                    label: 'opened'
+
+                name: 'id',
+                headerCellClass: $scope.highlightFilteredHeader,
+                enableCellEdit: false,
+                displayName: 'Case ID',
+                type: 'number',
+                width: '9%',
+                cellTemplate: '<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'
+            }, {
+                name: 'assignedTo',
+                enableCellEdit: false,
+                displayName: 'Assigned To',
+                headerCellClass: $scope.highlightFilteredHeader,
+                width: '16%'
+            }, {
+                name: 'status',
+                displayName: 'Status',
+                headerCellClass: $scope.highlightFilteredHeader,
+                editableCellTemplate: 'ui-grid/dropdownEditor',
+                width: '12%',
+                filter: {
+                    //term: '1',
+                    type: uiGridConstants.filter.SELECT,
+                    selectOptions: [{
+                        value: '1',
+                        label: 'open'
+                    }, {
+                        value: '2',
+                        label: 'closed'
+                    }]
+                },
+                cellFilter: 'mapCaseStatus',
+                editDropdownValueLabel: 'status',
+                editDropdownOptionsArray: [{
+                    id: 1,
+                    status: 'open'
                 }, {
-                    value: '2',
-                    label: 'closed'
+                    id: 2,
+                    status: 'closed'
                 }]
             },
-            cellFilter: 'mapStatus',
-            editDropdownValueLabel: 'status',
-            editDropdownOptionsArray: [{
-                id: 1,
-                status: 'opened'
+
+            {
+                name: 'type',
+                displayName: 'Case Type',
+                //enableCellEdit: false,
+                headerCellClass: $scope.highlightFilteredHeader,
+                editableCellTemplate: 'ui-grid/dropdownEditor',
+                width: '12%',
+                filter: {
+                    //term: '1',
+                    type: uiGridConstants.filter.SELECT,
+                    selectOptions: [{
+                        value: '1',
+                        label: 'GOV_REC'
+                    }, {
+                        value: '2',
+                        label: 'POA'
+                    }, {
+                        value: '3',
+                        label: 'REV_DEL'
+                    }, {
+                        value: '4',
+                        label: 'RETURN'
+                    }, {
+                        value: '5',
+                        label: 'UNRESOLVED'
+                    }, ]
+                },
+                cellFilter: 'mapCaseType',
+                editDropdownValueLabel: 'type',
+                editDropdownOptionsArray: [{
+                    id: 1,
+                    status: 'GOV_REC'
+                }, {
+                    id: 2,
+                    status: 'POA'
+                }, {
+                    id: 3,
+                    status: 'REV_DEL'
+                }, {
+                    id: 4,
+                    status: 'RETURN'
+                }, {
+                    id: 5,
+                    status: 'UNRESOLVED'
+                }, ]
+            },
+
+            {
+                name: 'beneficiary.name',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'Beneficiary Name',
+                width: '16%'
             }, {
-                id: 2,
-                status: 'closed'
-            }]
-        }, {
-            name: 'case.beneficiaryName',
-            headerCellClass: $scope.highlightFilteredHeader,
-            displayName: 'Beneficiary Name',
-            width: '16%'
-        }, {
-            name: 'case.totalAmt',
-            headerCellClass: $scope.highlightFilteredHeader,
-            displayName: 'Total Amount',
-            type: 'number',
-            cellFilter: 'currency',
-            width: '12%'
-        }, {
-            name: 'case.openedDate',
-            headerCellClass: $scope.highlightFilteredHeader,
-            displayName: 'Opened Date',
-            type: 'date',
-            cellFilter: 'date:"yyyy-MM-dd"',
-            width: '12%'
-        }, {
-            name: 'case.sla',
-            headerCellClass: $scope.highlightFilteredHeader,
-            displayName: 'SLA',
-            type: 'date',
-            cellFilter: 'date:"yyyy-MM-dd"',
-            width: '12%'
-        }, {
-            name: 'case.daysOpen',
-            headerCellClass: $scope.highlightFilteredHeader,
-            enableCellEdit: false,
-            displayName: 'Days Open',
-            type: 'number',
-            width: '11%'
-        }];
+                name: 'totalAmount',
+                headerCellClass: $scope.highlightFilteredHeader,
+                displayName: 'Total Amount',
+                type: 'number',
+                cellFilter: 'currency',
+                width: '12%'
+            }, {
+                name: 'daysOpen',
+                headerCellClass: $scope.highlightFilteredHeader,
+                enableCellEdit: false,
+                displayName: 'Days Open',
+                type: 'number',
+                width: '11%'
+            }
+        ];
 
         $scope.msg = {};
 
@@ -169,30 +206,35 @@
             //set gridApi on scope
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.case.id + ' from ' + oldValue + ' to ' + newValue;
+                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
                 name: 'rowHeaderCol',
                 displayName: '',
                 width: 60,
-                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/cases/{{case.id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/a-ch-cases/{{id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
             });
         };
 
         //console.log($location.path());
         var request = $location.path();
 
-        $http.get("sampleData" + $location.path() + ".json")
+        $http.get("api/a-ch-cases")
             .then(function(response) {
-                console.log(response);
-                var data = response.data._embedded.caseResources;
-                console.log(data.length);
+                console.log(response.data);
+                console.log(response.data.length);
+
+                var data = response.data;
 
                 for (var i = 0; i < data.length; i++) {
-                    data[i].case.status = data[i].case.status === 'opened' ? 1 : 2;
-                    data[i].case.sla = new Date(data[i].case.sla);
-                    data[i].case.openedDate = new Date(data[i].case.openedDate);
+                    //console.log(data[i].status);
+                    data[i].status = data[i].status === 'OPEN' ? 1 : 2;
+                    console.log(data[i].status);
+                    data[i].type = assignCaseTypeKey(data[i].type);
+                    //console.log(data[i].type);
+                    data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
+                    data[i].slaDeadline = new Date(data[i].slaDeadline);
                 }
                 $scope.gridOptions.data = data;
             });
@@ -200,20 +242,32 @@
 
     }
 
-    function mapStatusFilter() {
-        var statusHash = {
-            1: 'opened',
-            2: 'closed'
-        };
 
-        return function(input) {
-            if (!input) {
-                return '';
-            } else {
-                return statusHash[input];
-            }
-        };
+
+
+
+
+    function assignCaseTypeKey(typeKey) {
+        switch (typeKey) {
+            case 'GOV_REC':
+                return 1;
+                break;
+            case 'POA':
+                return 2;
+                break;
+            case 'REV_DEL':
+                return 3;
+                break;
+            case 'RETURN':
+                return 4;
+                break;
+            case 'UNRESOLVED':
+                return 5;
+                break;
+        }
     }
+
+        
 
     CaseFormController.$inject = ['$scope', '$http'];
 
@@ -224,13 +278,10 @@
 
         function onSubmit() {
             //vm.model.openedDate = vm.model.openedDate.getTime();
-            //vm.model.sla = vm.model.sla.getTime();
-
-            alert(JSON.stringify(vm.formData), null, 2);
-            console.log(vm.model.openedDate, vm.model.sla);
+            console.log(vm.model.openedDate);
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/cases',
+                url: 'http://localhost:9000/api/a-ch-cases',
                 data: vm.model
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
@@ -241,30 +292,23 @@
             });
         }
 
-        // variable assignment
-        vm.author = { // optionally fill in your info below :-)
-            name: 'Joe Zhou',
-            url: 'https://plus.google.com/u/0/111062476999618400219/posts' // a link to your twitter/github/blog/whatever
-        };
-        // variable assignment
-        vm.baseUrl = 'https://github.com/formly-js/angular-formly';
-        vm.issueNumber = 345;
         vm.env = {
             angularVersion: angular.version.full,
             formlyVersion: formlyVersion
         };
 
         vm.formData = {};
-
+        /*
         vm.model = {
             awesome: true
         };
-        vm.exampleTitle = 'Repeating Section';
+        */
+        //vm.exampleTitle = 'Repeating Section';
 
 
         vm.options = {
             formState: {
-                awesomeIsForced: false
+                awesomeIsForced: true
             }
         };
 
@@ -348,27 +392,20 @@
                                 });
 
                             }
-
-                        }, {
-                            className: 'col-xs-4',
-                            key: 'sla',
-                            type: 'input',
-                            templateOptions: {
-                                type: 'date',
-                                label: 'SLA',
-                                placeholder: 'SLA'
-                            }
                         }
                     ]
                 }, {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>'
+                    template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
+                    ngModelElAttrs: {
+                        'ng-model': 'model["whatever-i-want"]["cool!"].i.know["right?"]'
+                    },
                 }, {
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'firstName',
+                        key: 'first_name',
                         templateOptions: {
                             label: 'First Name'
                         }
@@ -376,7 +413,7 @@
                     }, {
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'lastName',
+                        key: 'last_name',
                         templateOptions: {
                             label: 'Last Name'
                         }
@@ -386,7 +423,7 @@
                     fieldGroup: [{
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'account_number',
+                        key: 'account_num',
                         templateOptions: {
                             label: 'Account Number'
                         }
@@ -396,7 +433,7 @@
                         type: 'input',
                         key: 'ssn',
                         templateOptions: {
-                            type: 'password',
+                            type: 'input',
                             label: 'Social Security Number'
                         }
 
@@ -439,7 +476,7 @@
                         }
                     }, {
                         className: 'col-xs-6',
-                        key: 'completed_Date',
+                        key: 'completed_date',
                         type: 'input',
                         templateOptions: {
                             type: 'date',
@@ -516,7 +553,7 @@
                     templateOptions: {
                         fields: [{
                                 className: 'col-xs-4',
-                                key: 'pay_Amt',
+                                key: 'amount',
                                 type: 'input',
                                 templateOptions: {
                                     type: 'number',
@@ -532,7 +569,7 @@
                                 className: 'row',
                                 fieldGroup: [{
                                     className: 'col-xs-4',
-                                    key: 'effective_Date',
+                                    key: 'effective_on',
                                     type: 'input',
                                     templateOptions: {
                                         type: 'date',

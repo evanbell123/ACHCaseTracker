@@ -34,7 +34,9 @@
 
 
         })
-        .filter('mapStatus', mapStatusFilter)
+        .filter('mapCaseStatus', mapCaseStatusFilter)
+        .filter('mapCaseType', mapCaseTypeFilter)
+        .filter('mapCaseSubtype', mapCaseSubtypeFilter)
         .directive('onReadFile', onReadFileDirective)
         .factory('DataService', FormDataService)
         //.module('CaseFormConfig', CaseFormConfig)
@@ -271,10 +273,10 @@
         };
     }
 
-    function mapStatusFilter() {
+    function mapCaseStatusFilter() {
         var statusHash = {
-            1: 'opened',
-            2: 'closed'
+            1: 'OPEN',
+            2: 'CLOSED'
         };
 
         return function(input) {
@@ -282,6 +284,42 @@
                 return '';
             } else {
                 return statusHash[input];
+            }
+        };
+    }
+
+    function mapCaseTypeFilter() {
+        var typeHash = {
+            1: 'GOV_REC',
+            2: 'POA',
+            3: 'REV_DEL',
+            4: 'RETURN',
+            5: 'UNRESOLVED'
+        };
+
+        return function(input) {
+            if (!input) {
+                return '';
+            } else {
+                return typeHash[input];
+            }
+        };
+    }
+
+    function mapCaseSubtypeFilter() {
+        var subtypeHash = {
+            1: 'GOV_REC',
+            2: 'DNE',
+            3: 'CRF',
+            4: 'TREAS_REFERRAL',
+            5: 'TREAS_REFUND'
+        };
+
+        return function(input) {
+            if (!input) {
+                return '';
+            } else {
+                return subtypeHash[input];
             }
         };
     }
