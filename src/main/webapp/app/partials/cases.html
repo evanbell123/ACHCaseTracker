@@ -1,13 +1,33 @@
 <div class="row" style="max-width: 2000px; margin:0">
+    <label>Which columns should we export?</label>
+    <select ng-model="export_column_type" </select>
+        <option value='all'>All</option>
+        <option value='visible'>Visible</option>
+    </select>
+    <label>Which rows should we export?</label>
+    <select ng-model="export_row_type" </select>
+        <option value='all'>All</option>
+        <option value='visible'>Visible</option>
+        <option value='selected'>Selected</option>
+    </select>
+    <label>What format would you like?</label>
+    <select ng-model="export_format" </select>
+        <option value='csv'>CSV</option>
+        <option value='pdf'>PDF</option>
+    </select>
+    <button ng-click="export()">Export</button>
+    <div class="custom-csv-link-location">
+        <span class="ui-grid-exporter-csv-link">&nbsp</span>
+    </div>
     <div class="col-xs-12">
 
-    <strong>Data Length:</strong> {{ gridOptions.data.length | number }}
-    <br>
-    <strong>Last Cell Edited:</strong> {{msg.lastCellEdited}}
-    <br>
+        <strong>Data Length:</strong> {{ gridOptions.data.length | number }}
+        <br>
+        <strong>Last Cell Edited:</strong> {{msg.lastCellEdited}}
+        <br>
 
-    <div id="casesGrid" ui-grid-selection ui-grid-exporter ui-grid-edit ui-grid="gridOptions" class="grid"></div>
-    <br>
+        <div id="casesGrid" ui-grid-selection ui-grid-exporter ui-grid-edit ui-grid="gridOptions" class="grid"></div>
+        <br>
 
-</div>
+    </div>
 </div>

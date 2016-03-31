@@ -43,9 +43,18 @@
             }
         };
 
+        $scope.export = function() {
+            if ($scope.export_format == 'csv') {
+                var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
+                $scope.gridApi.exporter.csvExport($scope.export_row_type, $scope.export_column_type, myElement);
+            } else if ($scope.export_format == 'pdf') {
+                $scope.gridApi.exporter.pdfExport($scope.export_row_type, $scope.export_column_type);
+            };
+        };
+
         $scope.gridOptions = {
             enableFiltering: true,
-            enableGridMenu: true,
+            //enableGridMenu: true,
             enableSelectAll: true,
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: {
@@ -64,6 +73,21 @@
                 text: "Cases",
                 style: 'headerStyle'
             },
+            exporterFieldCallback: function(grid, row, col, input) {
+                if (col.name == 'status') {
+                    return getCaseStatusLabel(input)
+                }
+                if (col.name == 'type') {
+                    return getCaseTypeLabel(input)
+                }
+                if (col.name == 'subtype') {
+                    return getCaseSubtypeLabel(input)
+                }
+                else {
+                  return input;
+                }
+            },
+
             exporterPdfFooter: function(currentPage, pageCount) {
                 return {
                     text: currentPage.toString() + ' of ' + pageCount.toString(),
@@ -134,9 +158,8 @@
             {
                 name: 'type',
                 displayName: 'Case Type',
-                //enableCellEdit: false,
+                enableCellEdit: false,
                 headerCellClass: $scope.highlightFilteredHeader,
-                editableCellTemplate: 'ui-grid/dropdownEditor',
                 width: '12%',
                 filter: {
                     //term: '1',
@@ -229,9 +252,9 @@
 
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i].status);
-                    data[i].status = data[i].status === 'OPEN' ? 1 : 2;
-                    console.log(data[i].status);
-                    data[i].type = assignCaseTypeKey(data[i].type);
+                    data[i].status = getCaseStatusValue(data[i].status);
+                    //console.log(data[i].status);
+                    data[i].type = getCaseTypeValue(data[i].type);
                     //console.log(data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
@@ -242,13 +265,43 @@
 
     }
 
+    function getCaseStatusValue(statusLabel) {
+        switch (statusLabel) {
+            case 'OPEN':
+                return 1;
+                break;
+            case 'CLOSED':
+                return 2;
+                break;
+            case 'IN_PROCESS':
+                return 3;
+                break;
+            default:
+                return statusValue;
+                break;
 
+        }
+    }
 
+    function getCaseStatusLabel(statusValue) {
+        switch (statusValue) {
+            case 1:
+                return 'OPEN';
+                break;
+            case 2:
+                return 'CLOSED';
+                break;
+            case 3:
+                return 'IN_PROCESS';
+                break;
+            default:
+                return statusKey;
+                break;
+        }
+    }
 
-
-
-    function assignCaseTypeKey(typeKey) {
-        switch (typeKey) {
+    function getCaseTypeValue(typeLabel) {
+        switch (typeLabel) {
             case 'GOV_REC':
                 return 1;
                 break;
@@ -264,10 +317,82 @@
             case 'UNRESOLVED':
                 return 5;
                 break;
+            default:
+                return typeValue;
+                break;
         }
     }
 
-        
+    function getCaseTypeLabel(typeValue) {
+        switch (typeValue) {
+            case 1:
+                return 'GOV_REC';
+                break;
+            case 2:
+                return 'POA';
+                break;
+            case 3:
+                return 'REV_DEL';
+                break;
+            case 4:
+                return 'RETURN';
+                break;
+            case 5:
+                return 'UNRESOLVED';
+                break;
+            default:
+                return typeKey;
+                break;
+        }
+    }
+
+    function getCaseSubtypeValue(subtypeLabel) {
+        switch (subtypeLabel) {
+            case 'GOV_REC':
+                return 1;
+                break;
+            case 'DNE':
+                return 2;
+                break;
+            case 'CRF':
+                return 3;
+                break;
+            case 'TREAS_REFERRAL':
+                return 4;
+                break;
+            case 'TREAS_REFUND':
+                return 5;
+                break;
+            default:
+                return subtypeValue;
+                break;
+        }
+    }
+
+    function getCaseSubtypeLabel(subtypeValue) {
+        switch (subtypeValue) {
+            case 1:
+                return 'GOV_REC';
+                break;
+            case 2:
+                return 'DNE';
+                break;
+            case 3:
+                return 'CRF';
+                break;
+            case 4:
+                return 'TREAS_REFERRAL';
+                break;
+            case 5:
+                return 'TREAS_REFUND';
+                break;
+            default:
+                return subtypeKey;
+                break;
+        }
+    }
+
+
 
     CaseFormController.$inject = ['$scope', '$http'];
 
