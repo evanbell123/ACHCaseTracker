@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "name": "achCaseTracking",
+  "name": "achcasetracking",
   "appPath": "src/main/webapp/",
   "testPath": "src/test/javascript/spec",
   "dependencies": {
@@ -28,7 +28,7 @@
     "angular-scenario": "1.5.2"
   },
   "overrides": {
-    "angular" : {
+    "angular": {
       "dependencies": {
         "jquery": "2.2.2"
       }
@@ -39,12 +39,12 @@
         "dist/css/bootstrap.css",
         "less/bootstrap.less"
       ]
-    }
-  },
-  "resolutions": {
-    "angular": "1.5.2",
-    "angular-cookies": "1.5.2",
-    "angular-bootstrap": "1.2.5",
-    "jquery": "2.2.2"
+	},
+	"resolutions": {
+    	"angular": "1.5.2",
+    	"angular-cookies": "1.5.2",
+    	"angular-bootstrap": "1.2.5",
+    	"jquery": "2.2.2"
+	  } 
   }
 }

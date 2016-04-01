@@ -42,7 +42,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("payment_count")
     private Long paymentCount;
 
-    //@NotNull
+    @NotNull
     @Field("subtype")
     private CaseSubtype subtype;
 
@@ -50,7 +50,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("verified_by")
     private User verifiedBy;
 
-    //@DBRef
+    @DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 
@@ -58,7 +58,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("notes")
     private List<CaseNote> notes;
 
-    //@DBRef
+    @DBRef
     @Field("payments")
     private List<Payment> payments;
 

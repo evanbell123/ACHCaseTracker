@@ -42,7 +42,7 @@
                 vm.authenticationError = false;
                 $uibModalInstance.close();
                 // If we're redirected to login, our
-                // previousState is already set in the authExpiredInterceptor. When login succesful go to stored state
+                // previousState is already set in the authExpiredInterceptor. When login successful go to stored state
                 if ($rootScope.redirected && $rootScope.previousStateName) {
                     $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
                     $rootScope.redirected = false;

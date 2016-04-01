@@ -13,8 +13,8 @@ import java.util.Map;
  * @see org.springframework.boot.actuate.audit.AuditEvent
  */
 @Document(collection = "jhi_persistent_audit_event")
-public class PersistentAuditEvent {
-
+public class PersistentAuditEvent
+{
     @Id
     @Field("event_id")
     private String id;

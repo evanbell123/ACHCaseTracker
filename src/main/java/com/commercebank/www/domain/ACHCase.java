@@ -21,7 +21,7 @@ import com.commercebank.www.domain.enumeration.CaseType;
  */
 
 @Document(collection = "ach_case")
-public class ACHCase implements Serializable {
+public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public class ACHCase implements Serializable {
     @Field("sla_deadline")
     private ZonedDateTime slaDeadline;
 
-    //@DBRef
+    @DBRef
     @Field("sla")
     private SLA sla;
 
@@ -54,15 +54,15 @@ public class ACHCase implements Serializable {
     @Field("type")
     private CaseType type;
 
-    //@DBRef
+    @DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
-    //@DBRef
+    @DBRef
     @Field("assigned_to")
     private User assignedTo;
 
-    //@DBRef
+    @DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
 
