@@ -21,11 +21,11 @@ import com.commercebank.www.domain.enumeration.CaseType;
  */
 
 @Document(collection = "ach_case")
-public class ACHCase implements Serializable {
+public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Transient
+    //@Transient
     @Field("total_amount")
     private BigDecimal totalAmount;
 
