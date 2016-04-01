@@ -1,5 +1,5 @@
-<div ng-cloak>
-    <div class="row">
+<div ng-cloak ng-switch="vm.isAuthenticated()">
+    <div class="row" ng-switch-when="false">
         <div class="col-md-4">
             <span class="hipster img-responsive img-rounded"></span>
         </div>
@@ -36,6 +36,57 @@
             <p>
              <span>If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank">Github</a>!
             </p>
+        </div>
+    </div>
+
+    <!-- HEADER AND NAVBAR -->
+    <header ng-switch-when="true">
+        <div class="header" style="max-width: 970px;">
+
+            <div class="menu-bar col-xs-2">
+                <!--<div class="container2">-->
+                    <!--<img src="../assets/images/commerce-bank.jpg" alt="Commerce-Bank" width="250px" height="auto">-->
+                <!--</div>-->
+                <!--<br>-->
+                <!--<br>-->
+                <ul class="ul-custom">
+                    <li class="li-custom">
+                        <a ui-sref="audit_log">
+                            <i class="fa fa-shield"></i><img src="../content/images/AuditLog.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Audit Log</a>
+                    </li>
+                    <li class="li-custom">
+                        <a ui-sref="cases">
+                            <i class="fa fa-comment"></i><img src="../content/images/Cases.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Cases</a>
+                    </li>
+                    <li class="li-custom">
+                        <a ui-sref="my_cases">
+                            <i class="fa fa-comment"></i><img src="../content/images/MyCases.png" alt="Commerce-Bank" width="80px" height="80px">
+                            My Cases</a>
+                    </li>
+                    <li class="li-custom">
+                        <a ui-sref="import">
+                            <i class="fa fa-comment"></i><img src="../content/images/Import.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Import</a>
+                    </li>
+                    <li class="li-custom">
+                        <a ui-sref="create_case">
+                            <i class="fa fa-comment"></i><img src="../content/images/CreateCase.png" alt="Commerce-Bank" width="80px" height="80px">
+                            Create Case</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </header>
+    <div class="body-custom">
+        <!-- MAIN CONTENT AND INJECTED VIEWS -->
+        <div id="main" class="col-xs-10 col-xs-offset-2 ">
+
+            <!-- angular templating -->
+            <!-- this is where content will be injected -->
+            <div ui-view></div>
         </div>
     </div>
 </div>
