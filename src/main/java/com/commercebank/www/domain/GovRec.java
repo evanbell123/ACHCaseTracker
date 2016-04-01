@@ -62,6 +62,8 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("payments")
     private List<Payment> payments;
 
+    public GovRec() {}
+
     public String getId() {
         return id;
     }

@@ -21,6 +21,8 @@ public class CaseNote implements Serializable {
 
     @Field("note")
     private String note;
+    
+    public CaseNote() {}
 
     public String getId() {
         return id;

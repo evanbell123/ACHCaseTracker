@@ -44,6 +44,8 @@ public class Beneficiary implements Serializable {
     @Field("other_gov_benefits")
     private Boolean otherGovBenefits;
 
+    public Beneficiary() {}
+
     public String getId() {
         return id;
     }
