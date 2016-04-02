@@ -558,7 +558,7 @@
                         type: 'input',
                         key: 'ssn',
                         templateOptions: {
-                            type: 'input',
+                            type: 'number',
                             label: 'Social Security Number'
                         }
 

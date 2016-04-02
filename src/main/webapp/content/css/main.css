@@ -13,9 +13,10 @@ Header
     width: 100%;
     float: left;
     position: fixed;
+    margin:100px 0 0 0;
 }
 .body-custom {
-    padding-top: 20px;
+    padding-top: 100px;
     padding-left: 20px;
     font-family: "Gill Sans", Gill Sans, sans-serif;
 }
@@ -148,19 +149,19 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 /* ==========================================================================
 Developement Ribbon
 ========================================================================== */
-.development {
-    position: absolute;
-    width: 149px;
-    height: 149px;
-    top: 0;
-    left: 0;
-    border: 0;
-    z-index: 1000;
-    background-image: url("../images/development_ribbon.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    pointer-events: none;
-}
+/*.development {*/
+    /*position: absolute;*/
+    /*width: 149px;*/
+    /*height: 149px;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*border: 0;*/
+    /*z-index: 1000;*/
+    /*background-image: url("../images/development_ribbon.png");*/
+    /*background-position: center center;*/
+    /*background-repeat: no-repeat;*/
+    /*pointer-events: none;*/
+/*}*/
 
 /* ==========================================================================
 Version number in navbar

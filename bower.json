@@ -47,12 +47,16 @@
         "dist/css/bootstrap.css",
         "less/bootstrap.less"
       ]
-	},
-	"resolutions": {
-    	"angular": "1.5.2",
-    	"angular-cookies": "1.5.2",
-    	"angular-bootstrap": "1.2.5",
-    	"jquery": "2.2.2"
-	  } 
+    },
+    "resolutions": {
+      "angular": "1.5.2",
+      "angular-cookies": "1.5.2",
+      "angular-bootstrap": "1.2.5",
+      "jquery": "2.2.2"
+    }
+  },
+  "resolutions": {
+    "angular-bootstrap": "1.2.5",
+    "angular": "1.5.2"
   }
 }
