@@ -141,10 +141,10 @@
                         label: 'OPEN'
                     }, {
                         value: '2',
-                        label: 'CLOSED'
+                        label: 'IN_PROGRESS'
                     },{
                         value: '3',
-                        label: 'IN_PROGRESS'
+                        label: 'CLOSED'
                     }]
                 },
                 cellFilter: 'mapCaseStatus',
@@ -154,10 +154,10 @@
                     status: 'OPEN'
                 }, {
                     id: 2,
-                    status: 'CLOSED'
+                    status: 'IN_PROGRESS'
                 }, {
                     id: 3,
-                    status: 'IN_PROGRESS'
+                    status: 'CLOSED'
                 }]
             },
 
@@ -289,10 +289,10 @@
             case 'OPEN':
                 return 1;
                 break;
-            case 'CLOSED':
+            case 'IN_PROGRESS':
                 return 2;
                 break;
-            case 'IN_PROGRESS':
+            case 'CLOSED':
                 return 3;
                 break;
             default:
@@ -308,10 +308,10 @@
                 return 'OPEN';
                 break;
             case 2:
-                return 'CLOSED';
+                return 'IN_PROGRESS';
                 break;
             case 3:
-                return 'IN_PROGRESS';
+                return 'CLOSED';
                 break;
             default:
                 return statusKey;
