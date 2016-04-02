@@ -138,20 +138,26 @@
                     type: uiGridConstants.filter.SELECT,
                     selectOptions: [{
                         value: '1',
-                        label: 'open'
+                        label: 'OPEN'
                     }, {
                         value: '2',
-                        label: 'closed'
+                        label: 'CLOSED'
+                    },{
+                        value: '3',
+                        label: 'IN_PROGRESS'
                     }]
                 },
                 cellFilter: 'mapCaseStatus',
                 editDropdownValueLabel: 'status',
                 editDropdownOptionsArray: [{
                     id: 1,
-                    status: 'open'
+                    status: 'OPEN'
                 }, {
                     id: 2,
-                    status: 'closed'
+                    status: 'CLOSED'
+                }, {
+                    id: 3,
+                    status: 'IN_PROGRESS'
                 }]
             },
 
@@ -229,7 +235,21 @@
             //set gridApi on scope
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
+
+              $http({
+                  method: 'PUT',
+                  url: 'http://localhost:9000/api/a-ch-cases',
+                  data: rowEntity
+              }).then(function successCallback(response) {
+                  // this callback will be called asynchronously
+                  // when the response is available
+                  $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
+              }, function errorCallback(response) {
+                  // called asynchronously if an error occurs
+                  // or server returns response with an error status.
+              });
+
+
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
@@ -246,14 +266,13 @@
         $http.get("api/a-ch-cases")
             .then(function(response) {
                 console.log(response.data);
-                console.log(response.data.length);
+                //console.log(response.data.length);
 
                 var data = response.data;
 
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i].status);
                     data[i].status = getCaseStatusValue(data[i].status);
-                    //console.log(data[i].status);
                     data[i].type = getCaseTypeValue(data[i].type);
                     //console.log(data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
@@ -273,7 +292,7 @@
             case 'CLOSED':
                 return 2;
                 break;
-            case 'IN_PROCESS':
+            case 'IN_PROGRESS':
                 return 3;
                 break;
             default:
@@ -292,7 +311,7 @@
                 return 'CLOSED';
                 break;
             case 3:
-                return 'IN_PROCESS';
+                return 'IN_PROGRESS';
                 break;
             default:
                 return statusKey;
@@ -403,7 +422,7 @@
 
         function onSubmit() {
             //vm.model.openedDate = vm.model.openedDate.getTime();
-            console.log(vm.model.openedDate);
+            //console.log(vm.model.openedDate);
             $http({
                 method: 'POST',
                 url: 'http://localhost:9000/api/a-ch-cases',
@@ -504,7 +523,7 @@
                                 $scope.$watch('model.type', function(newValue, oldValue, theScope) {
                                     if (newValue !== oldValue) {
                                         // logic to reload this select's options asynchronusly based on state's value (newValue)
-                                        console.log('new value is different from old value');
+                                        //console.log('new value is different from old value');
                                         if ($scope.model[$scope.options.key] && oldValue) {
                                             // reset this select
                                             $scope.model[$scope.options.key] = '';
@@ -587,7 +606,7 @@
                             $scope.$watch('model.subtype', function(newValue, oldValue, theScope) {
                                 if (newValue !== oldValue) {
                                     // logic to reload this select's options asynchronusly based on state's value (newValue)
-                                    console.log('new value is different from old value');
+                                    //console.log('new value is different from old value');
                                     if ($scope.model[$scope.options.key] && oldValue) {
                                         // reset this select
                                         $scope.model[$scope.options.key] = '';

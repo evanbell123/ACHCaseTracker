@@ -276,7 +276,8 @@
     function mapCaseStatusFilter() {
         var statusHash = {
             1: 'OPEN',
-            2: 'CLOSED'
+            2: 'CLOSED',
+            3: 'IN_PROGRESS'
         };
 
         return function(input) {
