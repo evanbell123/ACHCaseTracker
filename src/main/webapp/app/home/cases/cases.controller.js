@@ -48,16 +48,15 @@
             },
             exporterFieldCallback: function(grid, row, col, input) {
                 if (col.name == 'status') {
-                    return Enums.CaseStatus[input-1].displayName;
+                    return Enums.CaseStatus[input - 1].displayName;
                 }
                 if (col.name == 'type') {
                     return getCaseTypeLabel(input)
                 }
                 if (col.name == 'subtype') {
                     return getCaseSubtypeLabel(input)
-                }
-                else {
-                  return input;
+                } else {
+                    return input;
                 }
             },
 
@@ -109,53 +108,11 @@
                 filter: {
                     //term: '1',
                     type: uiGridConstants.filter.SELECT,
-                    selectOptions: function() {
-                      var caseStatus = Enums.CaseStatus;
-                      var selectOptions = [];
-                      for(var i=0; i < Enums.CaseStatus.length; i++) {
-                        var option = {value: caseStatus.id, label: caseStatus.displayName};
-                        selectOptions.push(option);
-                      }
-                      console.log(selectOptions);
-                      return selectOptions;
-                    }
-                    /*
-                    selectOptions: [{
-                        value: '1',
-                        label: 'OPEN'
-                    }, {
-                        value: '2',
-                        label: 'IN_PROGRESS'
-                    },{
-                        value: '3',
-                        label: 'CLOSED'
-                    }]
-                    */
+                    selectOptions: dropdownFilterOptions(Enums.CaseStatus)
                 },
                 cellFilter: 'mapCaseStatus',
                 editDropdownValueLabel: 'status',
-                editDropdownOptionsArray: function() {
-                  var caseStatus = Enums.CaseStatus;
-                  var selectOptions = [];
-                  for(var i=0; i < Enums.CaseStatus.length; i++) {
-                    var option = {id: caseStatus.id, status: caseStatus.displayName};
-                    selectOptions.push(option);
-                  }
-                  console.log(selectOptions);
-                  return selectOptions;
-                }
-                /*
-                editDropdownOptionsArray: [{
-                    id: 1,
-                    status: 'OPEN'
-                }, {
-                    id: 2,
-                    status: 'IN_PROGRESS'
-                }, {
-                    id: 3,
-                    status: 'CLOSED'
-                }]
-                */
+                editDropdownOptionsArray: dropdownEditorOptions(Enums.CaseStatus)
             },
 
             {
@@ -167,52 +124,10 @@
                 filter: {
                     //term: '1',
                     type: uiGridConstants.filter.SELECT,
-                    selectOptions: [{
-                        value: '1',
-                        label: 'GOV_REC'
-                    }, {
-                        value: '2',
-                        label: 'POA'
-                    }, {
-                        value: '3',
-                        label: 'REV_DEL'
-                    }, {
-                        value: '4',
-                        label: 'RETURN'
-                    }, {
-                        value: '5',
-                        label: 'UNRESOLVED'
-                    }, ]
+                    selectOptions: dropdownFilterOptions(Enums.CaseType)
                 },
                 cellFilter: 'mapCaseType',
-                editDropdownValueLabel: 'type',
-                /*
-                editDropdownOptionsArray: function() {
-                  var dropdownOptions = [];
-                  for (var i = 0; i < Enums.CaseType.length; i++) {
-                    var option = {id: Enums.CaseType[i].id, status: Enums.CaseType[i].name};
-                    dropdownOptions.push(option);
-                  }
-                }
-                */
-                /*
-                editDropdownOptionsArray: [{
-                    id: 1,
-                    status: 'GOV_REC'
-                }, {
-                    id: 2,
-                    status: 'POA'
-                }, {
-                    id: 3,
-                    status: 'REV_DEL'
-                }, {
-                    id: 4,
-                    status: 'RETURN'
-                }, {
-                    id: 5,
-                    status: 'UNRESOLVED'
-                }, ]
-                */
+                editDropdownValueLabel: 'type'
             },
 
             {
@@ -244,27 +159,29 @@
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
 
-              var data = rowEntity;
+                //var data = rowEntity;
 
-              var status = data.status;
-              var type = data.type;
+                //var status = data.status;
+                //var type = data.type;
 
-              data.status = getCaseStatusLabel(status);
-              data.type = getCaseTypeLabel(type);
+                //data.status = getCaseStatusLabel(status);
+                //data.type = getCaseTypeLabel(type);
 
-              $http({
-                  method: 'PUT',
-                  url: 'api/a-ch-cases',
-                  data: data
-              }).then(function successCallback(response) {
+                console.log(rowEntity);
+
+                $http({
+                    method: 'PUT',
+                    url: 'api/a-ch-cases',
+                    data: rowEntity
+                }).then(function successCallback(response) {
 
 
-                  $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
-              }, function errorCallback(response) {
-                  // called asynchronously if an error occurs
-                  // or server returns response with an error status.
+                    $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
 
-              });
+                });
 
 
                 $scope.$apply();
@@ -299,6 +216,34 @@
             });
 
 
+    }
+
+    function dropdownEditorOptions(CaseEnum) {
+        //console.log(caseStatus);
+        var selectOptions = [];
+        for (var i = 0; i < CaseEnum.length; i++) {
+            var option = {
+                id: CaseEnum[i].id,
+                status: CaseEnum[i].name
+            };
+            selectOptions.push(option);
+        }
+        console.log(selectOptions);
+        return selectOptions;
+    }
+
+    function dropdownFilterOptions(CaseEnum) {
+        //console.log(caseStatus);
+        var selectOptions = [];
+        for (var i = 0; i < CaseEnum.length; i++) {
+            var option = {
+                value: CaseEnum[i].id,
+                label: CaseEnum[i].name
+            };
+            selectOptions.push(option);
+        }
+        console.log(selectOptions);
+        return selectOptions;
     }
 
     function getCaseStatusValue(statusLabel) {
