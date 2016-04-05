@@ -25,7 +25,7 @@
             .state('audit_log', {
                 parent: 'home',
                 url: 'audit_log',
-                templateUrl: 'app/partials/auditlog.html',
+                templateUrl: 'app/home/auditlog/auditlog.html',
                 controller: 'AuditLogController',
                 controllerAs: 'vm',
                 data: {
@@ -35,7 +35,7 @@
             .state('cases', {
                 parent: 'home',
                 url: 'cases',
-                templateUrl: 'app/partials/cases.html',
+                templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',
                 data: {
@@ -45,7 +45,7 @@
             .state('my_cases', {
                 parent: 'home',
                 url: 'my_cases',
-                templateUrl: 'app/partials/cases.html',
+                templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',
                 data: {
@@ -55,7 +55,7 @@
             .state('import', {
                 parent: 'home',
                 url: 'import',
-                templateUrl: 'app/partials/import.html',
+                templateUrl: 'app/home/import/import.html',
                 controller: 'ImportController',
                 controllerAs: 'vm',
                 data: {
@@ -65,7 +65,7 @@
             .state('create_case', {
                 parent: 'home',
                 url: 'create_case',
-                templateUrl: 'app/partials/caseForm.html',
+                templateUrl: 'app/home/form/caseForm.html',
                 controller: 'CaseFormController',
                 controllerAs: 'vm',
                 data: {
