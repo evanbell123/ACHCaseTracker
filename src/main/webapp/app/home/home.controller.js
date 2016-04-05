@@ -236,13 +236,30 @@
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
 
+              var data = rowEntity;
+
+              var status = data.status;
+              var type = data.type;
+
+              data.status = getCaseStatusLabel(status);
+              data.type = getCaseTypeLabel(type);
+
               $http({
                   method: 'PUT',
-                  url: 'http://localhost:9000/api/a-ch-cases',
-                  data: rowEntity
+                  url: 'api/a-ch-cases',
+                  data: data
               }).then(function successCallback(response) {
                   // this callback will be called asynchronously
                   // when the response is available
+                  //console.log(data[i].status);
+                  //response.status = getCaseStatusValue(response.status);
+                  //response.type = getCaseTypeValue(response.type);
+                  //console.log(data[i].type);
+                  //response.lastPaymentOn = new Date(response.lastPaymentOn);
+                  //response.slaDeadline = new Date(response.slaDeadline);
+
+                  //rowEntity = response;
+
                   $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
               }, function errorCallback(response) {
                   // called asynchronously if an error occurs
@@ -296,7 +313,7 @@
                 return 3;
                 break;
             default:
-                return statusValue;
+                return statusLabel;
                 break;
 
         }
@@ -314,7 +331,7 @@
                 return 'CLOSED';
                 break;
             default:
-                return statusKey;
+                return statusValue;
                 break;
         }
     }
@@ -337,7 +354,7 @@
                 return 5;
                 break;
             default:
-                return typeValue;
+                return typeLabel;
                 break;
         }
     }
@@ -360,7 +377,7 @@
                 return 'UNRESOLVED';
                 break;
             default:
-                return typeKey;
+                return typeValue;
                 break;
         }
     }
@@ -383,7 +400,7 @@
                 return 5;
                 break;
             default:
-                return subtypeValue;
+                return subtypeLabel;
                 break;
         }
     }
@@ -406,7 +423,7 @@
                 return 'TREAS_REFUND';
                 break;
             default:
-                return subtypeKey;
+                return subtypeValue;
                 break;
         }
     }
