@@ -9,6 +9,7 @@
 
     function ACHCaseDetailController($scope, $rootScope, $stateParams, entity, ACHCase) {
         var vm = this;
+        console.log(entity);
         vm.aCHCase = entity;
         vm.load = function (id) {
             ACHCase.get({id: id}, function(result) {

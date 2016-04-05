@@ -39,7 +39,7 @@
         .filter('mapCaseSubtype', mapCaseSubtypeFilter)
         .directive('onReadFile', onReadFileDirective)
         .factory('DataService', FormDataService)
-        //.module('CaseFormConfig', CaseFormConfig)
+        //.factory('ACHCaseHTTPService', ACHCaseHTTPService)
         .run(run);
 
     run.$inject = ['stateHandler'];
@@ -48,6 +48,9 @@
         stateHandler.initialize();
     }
 
+    //function ACHCaseHTTPService()
+
+    //FormDataService.$inject = ['$http', '$q'];
 
     function FormDataService($http, $q) {
         return {
@@ -306,7 +309,7 @@
 
         return function(input) {
             if (!input) {
-                return '';
+                return 'No input';
             } else {
                 return statusHash[input];
             }
