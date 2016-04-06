@@ -6,7 +6,7 @@
         .filter('mapCaseStatus', mapCaseStatusFilter)
         .filter('mapCaseType', mapCaseTypeFilter)
         .filter('mapCaseSubtype', mapCaseSubtypeFilter);
-        
+
     mapCaseStatusFilter.$inject = ['Enums'];
 
     function mapCaseStatusFilter(Enums) {
@@ -18,7 +18,7 @@
         }
 
         return function(input) {
-            if (!input) {
+            if (input==null) {
                 return '--';
             } else {
                 return statusHash[input];

@@ -23,9 +23,9 @@
       ],
 
       CaseStatus: [
-        { id: 1, name: "OPEN", displayName: "Open"},
-        { id: 2, name: "IN_PROGRESS", displayName: "In Progress"},
-        { id: 3, name: "CLOSED", displayName: "Closed"}
+        { id: 0, name: "OPEN", displayName: "Open"},
+        { id: 1, name: "IN_PROGRESS", displayName: "In Progress"},
+        { id: 2, name: "CLOSED", displayName: "Closed"}
       ]
     })
 
