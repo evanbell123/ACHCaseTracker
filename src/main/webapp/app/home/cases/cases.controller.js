@@ -83,7 +83,6 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-
         $scope.gridOptions.columnDefs = [{
 
                 name: 'id',
@@ -180,11 +179,9 @@
                     $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                // or server returns response with an error status.
 
-                });
-
-
+            });
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({

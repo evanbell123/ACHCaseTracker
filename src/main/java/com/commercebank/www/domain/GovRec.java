@@ -46,19 +46,19 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("subtype")
     private CaseSubtype subtype;
 
-    @DBRef
+    //@DBRef
     @Field("verified_by")
     private User verifiedBy;
 
-    @DBRef
+    //@DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 
-    @DBRef
+    //@DBRef
     @Field("notes")
     private List<CaseNote> notes;
 
-    @DBRef
+    //@DBRef
     @Field("payments")
     private List<Payment> payments;
 
