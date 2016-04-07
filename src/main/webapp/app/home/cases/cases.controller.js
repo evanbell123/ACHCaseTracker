@@ -48,13 +48,13 @@
             },
             exporterFieldCallback: function(grid, row, col, input) {
                 if (col.name == 'status') {
-                    return Enums.CaseStatus[input - 1].displayName;
+                    return Enums.CaseStatus[input].displayName;
                 }
                 if (col.name == 'type') {
-                    return getCaseTypeLabel(input)
+                    return Enums.CaseType[input].displayName;
                 }
                 if (col.name == 'subtype') {
-                    return getCaseSubtypeLabel(input)
+                    return Enums.CaseSubtype[input].displayName;
                 } else {
                     return input;
                 }
@@ -166,7 +166,7 @@
                 //data.status = getCaseStatusLabel(status);
                 //data.type = getCaseTypeLabel(type);
 
-                console.log(rowEntity.status, newValue);
+                //console.log(rowEntity.status, newValue);
 
                 $http({
                     method: 'PUT',
@@ -174,7 +174,7 @@
                     data: rowEntity
                 }).then(function successCallback(response) {
 
-                    console.log(response.data.status);
+                    //console.log(response.data.status);
 
                     $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
                 }, function errorCallback(response) {
@@ -197,16 +197,16 @@
 
         $http.get("api/a-ch-cases")
             .then(function(response) {
-                console.log(response.data);
-                //console.log(response.data.length);
 
                 var data = response.data;
 
+
+
                 for (var i = 0; i < data.length; i++) {
-                    //console.log(data[i].status);
+                    //console.log(data[i].status, data[i].type);
                     data[i].status = getEnumIdFromName(Enums.CaseStatus, data[i].status);
                     data[i].type = getEnumIdFromName(Enums.CaseType, data[i].type);
-                    //console.log(data[i].type);
+                    //console.log(data[i].status, data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
                 }
@@ -218,6 +218,8 @@
         var enumId = CaseEnum.filter(function(value) {
             return value.name === name;
         })[0].id;
+
+        console.log(enumId, name);
 
         return enumId;
     }
@@ -232,12 +234,11 @@
             };
             selectOptions.push(option);
         }
-        console.log(selectOptions);
+        //console.log(selectOptions);
         return selectOptions;
     }
 
     function dropdownFilterOptions(CaseEnum) {
-        //console.log(caseStatus);
         var selectOptions = [];
         for (var i = 0; i < CaseEnum.length; i++) {
             var option = {
@@ -246,7 +247,7 @@
             };
             selectOptions.push(option);
         }
-        console.log(selectOptions);
+        //console.log(selectOptions);
         return selectOptions;
     }
 })();
