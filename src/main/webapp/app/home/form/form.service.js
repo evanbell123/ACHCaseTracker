@@ -95,63 +95,63 @@
                 fk: 1,
                 name: 'Mixed Method'
             }, {
+                id: 1,
+                fk: 2,
+                name: 'ACH Return'
+            }, {
+                id: 2,
+                fk: 2,
+                name: 'Cashiers Check Mailed'
+            }, {
+                id: 3,
+                fk: 2,
+                name: 'Mixed Method'
+            }, {
+                id: 1,
+                fk: 3,
+                name: 'ACH Return'
+            }, {
+                id: 2,
+                fk: 3,
+                name: 'Cashiers Check Mailed'
+            }, {
+                id: 3,
+                fk: 3,
+                name: 'Mixed Method'
+            }, {
+                id: 1,
+                fk: 4,
+                name: 'ACH Return'
+            }, {
+                id: 2,
+                fk: 4,
+                name: 'Cashiers Check Mailed'
+            }, {
+                id: 3,
+                fk: 4,
+                name: 'Mixed Method'
+            }, {
                 id: 4,
-                fk: 2,
-                name: 'ACH Return'
-            }, {
-                id: 5,
-                fk: 2,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 6,
-                fk: 2,
-                name: 'Mixed Method'
-            }, {
-                id: 7,
-                fk: 3,
-                name: 'ACH Return'
-            }, {
-                id: 8,
-                fk: 3,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 9,
-                fk: 3,
-                name: 'Mixed Method'
-            }, {
-                id: 10,
-                fk: 4,
-                name: 'ACH Return'
-            }, {
-                id: 11,
-                fk: 4,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 12,
-                fk: 4,
-                name: 'Mixed Method'
-            }, {
-                id: 13,
                 fk: 5,
                 name: 'Commerce Bank'
             }, {
-                id: 14,
+                id: 5,
                 fk: 5,
                 name: 'Customer DDA'
             }, {
-                id: 15,
+                id: 6,
                 fk: 5,
                 name: 'Other'
             }, {
-                id: 16,
+                id: 4,
                 fk: 6,
                 name: 'Commerce Bank'
             }, {
-                id: 17,
+                id: 5,
                 fk: 6,
                 name: 'Customer DDA'
             }, {
-                id: 18,
+                id: 6,
                 fk: 6,
                 name: 'Other'
             },{
@@ -159,23 +159,23 @@
                 fk: 1,
                 name: 'No Funds'
             },{
-                id: 20,
+                id: 7,
                 fk: 2,
                 name: 'No Funds'
             },{
-                id: 21,
+                id: 7,
                 fk: 3,
                 name: 'No Funds'
             },{
-                id: 22,
+                id: 7,
                 fk: 4,
                 name: 'No Funds'
             },{
-                id: 23,
+                id: 7,
                 fk: 5,
                 name: 'No Funds'
             },{
-                id: 24,
+                id: 7,
                 fk: 6,
                 name: 'No Funds'
             }];
