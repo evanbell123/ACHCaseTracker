@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http'];
+    CaseFormController.$inject = ['$scope', '$http', 'Enums'];
 
-    function CaseFormController($scope, $http, formlyVersion) {
+    function CaseFormController($scope, $http, Enums, formlyVersion) {
         var vm = this;
 
         vm.onSubmit = onSubmit;
@@ -55,6 +55,31 @@
         // The model object that we reference
         // on the <formly-form> element in index.html
         //vm.model = {};
+
+        function generateHideExpression(RecoveryDetailEnum) {
+
+          //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+          var hideExpression = "!model.recovery_method";
+
+          if (RecoveryDetailEnum.fk.length===0) {
+            return hideExpression;
+          }
+
+          hideExpression += "||";
+
+          for (var i = 0; i < RecoveryDetailEnum.fk.length; i++) {
+            hideExpression+="model.recovery_method != ";
+            hideExpression+=RecoveryDetailEnum.fk[i];
+            if ((i+1) != (RecoveryDetailEnum.fk.length)) {
+              hideExpression+="&&";
+            }
+          }
+
+          console.log(hideExpression);
+
+          return hideExpression;
+
+        }
 
         function init() {
             // An array of our form fields with configuration
@@ -232,7 +257,7 @@
                             type: 'number',
                             label: 'Check Number'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
                         key: 'mailed_to',
@@ -240,7 +265,7 @@
                         templateOptions: {
                             label: 'Mailed to'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }]
                 }, {
                     className: "row",
@@ -252,7 +277,7 @@
                             type: 'number',
                             label: 'GL and Call Center'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 13 && model.recovery_method != 16)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[1])
                     }]
                 }, {
                     className: "row",
@@ -264,7 +289,7 @@
                             type: 'number',
                             label: 'Customer DDA Account Number'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 14 && model.recovery_method != 17)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[2])
                     }]
                 }, {
                     className: "row",
@@ -275,7 +300,7 @@
                         templateOptions: {
                             label: 'Comment'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 15 && model.recovery_method != 18)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[3])
                     }]
                 }, {
                     className: 'section-break',

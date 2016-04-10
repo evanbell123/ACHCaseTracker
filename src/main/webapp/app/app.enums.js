@@ -43,6 +43,16 @@
         { id: 5, name: "NO_FUNDS", displayName: "No Funds", fk: [0,1,2,3,4,5]},
         { id: 6, name: "OTHER", displayName: "Other", fk: [4,5]}
       ],
+
+      /*
+      Recovery details depends on case recovery method
+      */
+      RecoveryDetail: [
+        { id: 0, name: "CHK_NUM", displayName: "Check Number", fk: [1]},
+        { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]},
+        { id: 2, name: "IN_ACCT", displayName: "Account Number", fk: [4]},
+        { id: 3, name: "DESC", displayName: "Description", fk: [6]},
+      ],
     })
 
 

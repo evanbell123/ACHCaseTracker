@@ -15,9 +15,6 @@
 
         function getFilteredFormData(data, fk, deferred) {
 
-          //console.log(data);
-          console.log(!!fk);
-
           if (fk !== null) {
               var tmp = [];
               angular.forEach(data, function(val) {
@@ -53,7 +50,6 @@
 
 
         function generateDependencyFormData(CaseEnum) {
-          var uniqueId = 0;
             var denpendencyFormData = [];
             for (var i = 0; i < CaseEnum.length; i++) {
               //console.log(CaseEnum[i].fk, "Size="+CaseEnum[i].fk.length);
@@ -66,7 +62,6 @@
                     name: CaseEnum[i].displayName
                 };
                 //console.log(data);
-                uniqueId++;
                 denpendencyFormData.push(data);
               }
 
@@ -77,7 +72,6 @@
 
         function subtype(type_id) {
             var deferred = $q.defer();
-            // dummy data
             var data = generateDependencyFormData(Enums.CaseSubtype);
             getFilteredFormData(data, type_id, deferred);
 
@@ -93,108 +87,6 @@
             var data = generateDependencyFormData(Enums.RecoveryMethod);
 
             //console.log("data Length = " + data.length);
-
-            var data2 = [{
-                id: 0,
-                fk: 0,
-                name: 'ACH Return'
-            }, {
-                id: 1,
-                fk: 0,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 2,
-                fk: 0,
-                name: 'Mixed Method'
-            }, {
-                id: 3,
-                fk: 1,
-                name: 'ACH Return'
-            }, {
-                id: 4,
-                fk: 1,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 5,
-                fk: 1,
-                name: 'Mixed Method'
-            }, {
-                id: 6,
-                fk: 2,
-                name: 'ACH Return'
-            }, {
-                id: 7,
-                fk: 2,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 8,
-                fk: 2,
-                name: 'Mixed Method'
-            }, {
-                id: 9,
-                fk: 3,
-                name: 'ACH Return'
-            }, {
-                id: 10,
-                fk: 3,
-                name: 'Cashiers Check Mailed'
-            }, {
-                id: 11,
-                fk: 3,
-                name: 'Mixed Method'
-            }, {
-                id: 12,
-                fk: 4,
-                name: 'Commerce Bank'
-            }, {
-                id: 13,
-                fk: 4,
-                name: 'Customer DDA'
-            }, {
-                id: 14,
-                fk: 4,
-                name: 'Other'
-            }, {
-                id: 15,
-                fk: 5,
-                name: 'Commerce Bank'
-            }, {
-                id: 16,
-                fk: 5,
-                name: 'Customer DDA'
-            }, {
-                id: 17,
-                fk: 5,
-                name: 'Other'
-            },{
-                id: 18,
-                fk: 0,
-                name: 'No Funds'
-            },{
-                id: 19,
-                fk: 1,
-                name: 'No Funds'
-            },{
-                id: 20,
-                fk: 2,
-                name: 'No Funds'
-            },{
-              id: 21,
-             fk: 3,
-              name: 'No Funds'
-          },{
-            id: 22,
-              fk: 4,
-              name: 'No Funds'
-         },{
-              id: 23,
-             fk: 5,
-               name: 'No Funds'
-         }];
-
-            //console.log("data2 Length = " + data2.length);
-
-            //console.log(data==data2);
 
             getFilteredFormData(data, subtype_id, deferred);
 
