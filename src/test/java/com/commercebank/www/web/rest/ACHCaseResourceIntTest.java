@@ -71,7 +71,7 @@ public class ACHCaseResourceIntTest {
     private static final CaseType UPDATED_TYPE = CaseType.GOV_REC;
 
     @Inject
-    private ACHCaseRepository ACHCaseRepository;
+    private ACHCaseRepository achCaseRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -87,7 +87,7 @@ public class ACHCaseResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ACHCaseResource ACHCaseResource = new ACHCaseResource();
-        ReflectionTestUtils.setField(ACHCaseResource, "ACHCaseRepository", ACHCaseRepository);
+        ReflectionTestUtils.setField(ACHCaseResource, "achCaseRepository", achCaseRepository);
         this.restACHCaseMockMvc = MockMvcBuilders.standaloneSetup(ACHCaseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -95,7 +95,7 @@ public class ACHCaseResourceIntTest {
 
     @Before
     public void initTest() {
-        ACHCaseRepository.deleteAll();
+        achCaseRepository.deleteAll();
         ACHCase = new ACHCase();
         ACHCase.setTotalAmount(DEFAULT_TOTAL_AMOUNT);
         ACHCase.setStatus(DEFAULT_STATUS);
@@ -107,7 +107,7 @@ public class ACHCaseResourceIntTest {
 
     @Test
     public void createACHCase() throws Exception {
-        int databaseSizeBeforeCreate = ACHCaseRepository.findAll().size();
+        int databaseSizeBeforeCreate = achCaseRepository.findAll().size();
 
         // Create the ACHCase
 
@@ -117,7 +117,7 @@ public class ACHCaseResourceIntTest {
                 .andExpect(status().isCreated());
 
         // Validate the ACHCase in the database
-        List<ACHCase> ACHCases = ACHCaseRepository.findAll();
+        List<ACHCase> ACHCases = achCaseRepository.findAll();
         assertThat(ACHCases).hasSize(databaseSizeBeforeCreate + 1);
         ACHCase testACHCase = ACHCases.get(ACHCases.size() - 1);
         assertThat(testACHCase.getTotalAmount()).isEqualTo(DEFAULT_TOTAL_AMOUNT);
@@ -130,7 +130,7 @@ public class ACHCaseResourceIntTest {
 
     @Test
     public void checkStatusIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ACHCaseRepository.findAll().size();
+        int databaseSizeBeforeTest = achCaseRepository.findAll().size();
         // set the field null
         ACHCase.setStatus(null);
 
@@ -141,13 +141,13 @@ public class ACHCaseResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(ACHCase)))
                 .andExpect(status().isBadRequest());
 
-        List<ACHCase> ACHCases = ACHCaseRepository.findAll();
+        List<ACHCase> ACHCases = achCaseRepository.findAll();
         assertThat(ACHCases).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     public void checkTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ACHCaseRepository.findAll().size();
+        int databaseSizeBeforeTest = achCaseRepository.findAll().size();
         // set the field null
         ACHCase.setType(null);
 
@@ -158,14 +158,14 @@ public class ACHCaseResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(ACHCase)))
                 .andExpect(status().isBadRequest());
 
-        List<ACHCase> ACHCases = ACHCaseRepository.findAll();
+        List<ACHCase> ACHCases = achCaseRepository.findAll();
         assertThat(ACHCases).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     public void getAllACHCases() throws Exception {
         // Initialize the database
-        ACHCaseRepository.save(ACHCase);
+        achCaseRepository.save(ACHCase);
 
         // Get all the ACHCases
         restACHCaseMockMvc.perform(get("/api/ach-case?sort=id,desc"))
@@ -183,7 +183,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void getACHCase() throws Exception {
         // Initialize the database
-        ACHCaseRepository.save(ACHCase);
+        achCaseRepository.save(ACHCase);
 
         // Get the ACHCase
         restACHCaseMockMvc.perform(get("/api/ach-case/{id}", ACHCase.getId()))
@@ -208,8 +208,8 @@ public class ACHCaseResourceIntTest {
     @Test
     public void updateACHCase() throws Exception {
         // Initialize the database
-        ACHCaseRepository.save(ACHCase);
-        int databaseSizeBeforeUpdate = ACHCaseRepository.findAll().size();
+        achCaseRepository.save(ACHCase);
+        int databaseSizeBeforeUpdate = achCaseRepository.findAll().size();
 
         // Update the ACHCase
         ACHCase updatedACHCase = new ACHCase();
@@ -227,7 +227,7 @@ public class ACHCaseResourceIntTest {
                 .andExpect(status().isOk());
 
         // Validate the ACHCase in the database
-        List<ACHCase> ACHCases = ACHCaseRepository.findAll();
+        List<ACHCase> ACHCases = achCaseRepository.findAll();
         assertThat(ACHCases).hasSize(databaseSizeBeforeUpdate);
         ACHCase testACHCase = ACHCases.get(ACHCases.size() - 1);
         assertThat(testACHCase.getTotalAmount()).isEqualTo(UPDATED_TOTAL_AMOUNT);
@@ -241,8 +241,8 @@ public class ACHCaseResourceIntTest {
     @Test
     public void deleteACHCase() throws Exception {
         // Initialize the database
-        ACHCaseRepository.save(ACHCase);
-        int databaseSizeBeforeDelete = ACHCaseRepository.findAll().size();
+        achCaseRepository.save(ACHCase);
+        int databaseSizeBeforeDelete = achCaseRepository.findAll().size();
 
         // Get the ACHCase
         restACHCaseMockMvc.perform(delete("/api/ach-case/{id}", ACHCase.getId())
@@ -250,7 +250,7 @@ public class ACHCaseResourceIntTest {
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<ACHCase> ACHCases = ACHCaseRepository.findAll();
+        List<ACHCase> ACHCases = achCaseRepository.findAll();
         assertThat(ACHCases).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

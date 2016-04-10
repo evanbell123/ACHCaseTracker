@@ -47,7 +47,7 @@ public class SLAResourceIntTest {
     private static final String UPDATED_TYPE_NAME = "BBBBB";
 
     @Inject
-    private SLARepository sLARepository;
+    private SLARepository slaRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -63,7 +63,7 @@ public class SLAResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         SLAResource sLAResource = new SLAResource();
-        ReflectionTestUtils.setField(sLAResource, "sLARepository", sLARepository);
+        ReflectionTestUtils.setField(sLAResource, "slaRepository", slaRepository);
         this.restSLAMockMvc = MockMvcBuilders.standaloneSetup(sLAResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -71,7 +71,7 @@ public class SLAResourceIntTest {
 
     @Before
     public void initTest() {
-        sLARepository.deleteAll();
+        slaRepository.deleteAll();
         SLA = new SLA();
         SLA.setBusinessDays(DEFAULT_BUSINESS_DAYS);
         SLA.setTypeName(DEFAULT_TYPE_NAME);
@@ -79,7 +79,7 @@ public class SLAResourceIntTest {
 
     @Test
     public void createSLA() throws Exception {
-        int databaseSizeBeforeCreate = sLARepository.findAll().size();
+        int databaseSizeBeforeCreate = slaRepository.findAll().size();
 
         // Create the SLA
 
@@ -89,7 +89,7 @@ public class SLAResourceIntTest {
                 .andExpect(status().isCreated());
 
         // Validate the SLA in the database
-        List<SLA> slas = sLARepository.findAll();
+        List<SLA> slas = slaRepository.findAll();
         assertThat(slas).hasSize(databaseSizeBeforeCreate + 1);
         SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(DEFAULT_BUSINESS_DAYS);
@@ -98,7 +98,7 @@ public class SLAResourceIntTest {
 
     @Test
     public void checkBusinessDaysIsRequired() throws Exception {
-        int databaseSizeBeforeTest = sLARepository.findAll().size();
+        int databaseSizeBeforeTest = slaRepository.findAll().size();
         // set the field null
         SLA.setBusinessDays(null);
 
@@ -109,14 +109,14 @@ public class SLAResourceIntTest {
                 .content(TestUtil.convertObjectToJsonBytes(SLA)))
                 .andExpect(status().isBadRequest());
 
-        List<SLA> slas = sLARepository.findAll();
+        List<SLA> slas = slaRepository.findAll();
         assertThat(slas).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     public void getAllSLAS() throws Exception {
         // Initialize the database
-        sLARepository.save(SLA);
+        slaRepository.save(SLA);
 
         // Get all the SLAs
         restSLAMockMvc.perform(get("/api/sla?sort=id,desc"))
@@ -130,7 +130,7 @@ public class SLAResourceIntTest {
     @Test
     public void getSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(SLA);
+        slaRepository.save(SLA);
 
         // Get the SLA
         restSLAMockMvc.perform(get("/api/sla/{id}", SLA.getId()))
@@ -151,8 +151,8 @@ public class SLAResourceIntTest {
     @Test
     public void updateSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(SLA);
-        int databaseSizeBeforeUpdate = sLARepository.findAll().size();
+        slaRepository.save(SLA);
+        int databaseSizeBeforeUpdate = slaRepository.findAll().size();
 
         // Update the SLA
         SLA updatedSLA = new SLA();
@@ -166,7 +166,7 @@ public class SLAResourceIntTest {
                 .andExpect(status().isOk());
 
         // Validate the SLA in the database
-        List<SLA> slas = sLARepository.findAll();
+        List<SLA> slas = slaRepository.findAll();
         assertThat(slas).hasSize(databaseSizeBeforeUpdate);
         SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(UPDATED_BUSINESS_DAYS);
@@ -176,8 +176,8 @@ public class SLAResourceIntTest {
     @Test
     public void deleteSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(SLA);
-        int databaseSizeBeforeDelete = sLARepository.findAll().size();
+        slaRepository.save(SLA);
+        int databaseSizeBeforeDelete = slaRepository.findAll().size();
 
         // Get the SLA
         restSLAMockMvc.perform(delete("/api/sla/{id}", SLA.getId())
@@ -185,7 +185,7 @@ public class SLAResourceIntTest {
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SLA> slas = sLARepository.findAll();
+        List<SLA> slas = slaRepository.findAll();
         assertThat(slas).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
