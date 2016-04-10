@@ -37,7 +37,7 @@
         }
 
         return function(input) {
-            if (!input) {
+            if (input==null) {
                 return '';
             } else {
                 return typeHash[input];
@@ -56,7 +56,7 @@
         }
 
         return function(input) {
-            if (!input) {
+            if (input==null) {
                 return '';
             } else {
                 return subtypeHash[input];

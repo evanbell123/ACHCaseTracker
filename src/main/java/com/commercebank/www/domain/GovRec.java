@@ -35,6 +35,9 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("verified_on")
     private ZonedDateTime verifiedOn;
 
+    @Field("full_recovery")
+    private Boolean fullRecovery;
+
     @Field("payment_total")
     private BigDecimal paymentTotal;
 
@@ -136,6 +139,13 @@ public class GovRec implements Serializable, CaseDetail {
 
     public void setPayments(List<Payment> payments) { this.payments = payments; }
 
+    public Boolean isFullRecovery() {
+        return fullRecovery;
+    }
+
+    public void setFullRecovery(Boolean fullRecovery) {
+        this.fullRecovery = fullRecovery;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -169,6 +179,7 @@ public class GovRec implements Serializable, CaseDetail {
             ", paymentCount='" + paymentCount + "'" +
             ", subtype='" + subtype + "'" +
           //  ", recoveryMethod='" + recoveryInfo.getMethod() + "'" +
+            ", fullRecovery='" + fullRecovery + "'" +
             '}';
     }
 }

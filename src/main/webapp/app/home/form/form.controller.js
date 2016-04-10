@@ -17,7 +17,7 @@
             //console.log(vm.model.openedDate);
             $http({
                 method: 'POST',
-                url: 'api/a-ch-cases',
+                url: 'api/ach-case',
                 data: vm.model
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously

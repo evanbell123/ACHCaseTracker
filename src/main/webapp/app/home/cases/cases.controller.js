@@ -48,13 +48,13 @@
             },
             exporterFieldCallback: function(grid, row, col, input) {
                 if (col.name == 'status') {
-                    return Enums.CaseStatus[input - 1].displayName;
+                    return Enums.CaseStatus[input].displayName;
                 }
                 if (col.name == 'type') {
-                    return getCaseTypeLabel(input)
+                    return Enums.CaseType[input].displayName;
                 }
                 if (col.name == 'subtype') {
-                    return getCaseSubtypeLabel(input)
+                    return Enums.CaseSubtype[input].displayName;
                 } else {
                     return input;
                 }
@@ -170,7 +170,7 @@
 
                 $http({
                     method: 'PUT',
-                    url: 'api/a-ch-cases',
+                    url: 'api/ach-case',
                     data: rowEntity
                 }).then(function successCallback(response) {
 
@@ -188,14 +188,14 @@
                 name: 'rowHeaderCol',
                 displayName: '',
                 width: 60,
-                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/a-ch-cases/{{id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/ach-case/{{id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
             });
         };
 
         //console.log($location.path());
         var request = $location.path();
 
-        $http.get("api/a-ch-cases")
+        $http.get("api/ach-case")
             .then(function(response) {
                 console.log(response.data);
                 //console.log(response.data.length);

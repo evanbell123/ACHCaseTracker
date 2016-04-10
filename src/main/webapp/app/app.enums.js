@@ -6,20 +6,20 @@
 
     .constant("Enums", {
       CaseType: [
-        { id: 1, name: "GOV_REC", displayName: "Government Reclamation"},
-        { id: 2, name: "POA", displayName: "POA"},
-        { id: 3, name: "REV_DEL", displayName: "Reversals/Deletions"},
-        { id: 4, name: "RETURN", displayName: "Return"},
-        { id: 5, name: "UNRESOLVED", displayName: "Unresolved"}
+        { id: 0, name: "GOV_REC", displayName: "Government Reclamation"},
+        { id: 1, name: "POA", displayName: "POA"},
+        { id: 2, name: "REV_DEL", displayName: "Reversals/Deletions"},
+        { id: 3, name: "RETURN", displayName: "Return"},
+        { id: 4, name: "UNRESOLVED", displayName: "Unresolved"}
       ],
 
       CaseSubtype: [
-        { id: 1, name: "DNE", displayName: "DNE"},
-        { id: 2, name: "CRF", displayName: "CRF"},
-        { id: 3, name: "DCN", displayName: "DCN"},
-        { id: 4, name: "GOV_REC", displayName: "GOV_REC"},
-        { id: 5, name: "TREAS_REFERRAL", displayName: "TREAS_REFERRAL"},
-        { id: 6, name: "TREAS_REFUND", displayName: "TREAS_REFUND"}
+        { id: 0, name: "DNE", displayName: "DNE"},
+        { id: 1, name: "CRF", displayName: "CRF"},
+        { id: 2, name: "DCN", displayName: "DCN"},
+        { id: 3, name: "GOV_REC", displayName: "GOV_REC"},
+        { id: 4, name: "TREAS_REFERRAL", displayName: "TREAS_REFERRAL"},
+        { id: 5, name: "TREAS_REFUND", displayName: "TREAS_REFUND"}
       ],
 
       CaseStatus: [

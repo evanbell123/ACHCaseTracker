@@ -132,9 +132,6 @@ dependencies {
     compile group: 'org.apache.geronimo.javamail', name: 'geronimo-javamail_1.4_mail', version: geronimo_javamail_1_4_mail_version
     compile group: 'org.hibernate', name: 'hibernate-core', version: hibernate_entitymanager_version
 
-	compile group: 'org.javers', name: 'javers-spring-boot-starter-mongo', version: '1.6.0'
-    compile group: 'org.mongodb', name: 'mongodb-driver', version: '3.2.2'
-
     compile group: 'org.hibernate', name: 'hibernate-envers'
     compile group: 'org.hibernate', name: 'hibernate-validator'
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator'
@@ -178,6 +175,8 @@ dependencies {
 
     testCompile group: 'com.h2database', name: 'h2'
     optional group: 'org.springframework.boot', name:'spring-boot-configuration-processor', version: spring_boot_version
+    compile group: 'org.javers', name: 'javers-spring-boot-starter-mongo', version: '1.4.7'
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.0.4'
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 

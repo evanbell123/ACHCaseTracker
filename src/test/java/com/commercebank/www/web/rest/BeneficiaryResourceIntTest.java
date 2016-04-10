@@ -94,9 +94,9 @@ public class BeneficiaryResourceIntTest {
     public void initTest() {
         beneficiaryRepository.deleteAll();
         beneficiary = new Beneficiary();
-        beneficiary.setCustomerid(DEFAULT_CUSTOMERID);
+        beneficiary.setCustomerID(DEFAULT_CUSTOMERID);
         beneficiary.setName(DEFAULT_NAME);
-        beneficiary.setSsn(DEFAULT_SSN);
+        beneficiary.setSSN(DEFAULT_SSN);
         beneficiary.setAccountNum(DEFAULT_ACCOUNT_NUM);
         beneficiary.setDateOfDeath(DEFAULT_DATE_OF_DEATH);
         beneficiary.setDateCBAware(DEFAULT_DATE_CB_AWARE);
@@ -118,9 +118,9 @@ public class BeneficiaryResourceIntTest {
         List<Beneficiary> beneficiaries = beneficiaryRepository.findAll();
         assertThat(beneficiaries).hasSize(databaseSizeBeforeCreate + 1);
         Beneficiary testBeneficiary = beneficiaries.get(beneficiaries.size() - 1);
-        assertThat(testBeneficiary.getCustomerid()).isEqualTo(DEFAULT_CUSTOMERID);
+        assertThat(testBeneficiary.getCustomerID()).isEqualTo(DEFAULT_CUSTOMERID);
         assertThat(testBeneficiary.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testBeneficiary.getSsn()).isEqualTo(DEFAULT_SSN);
+        assertThat(testBeneficiary.getSSN()).isEqualTo(DEFAULT_SSN);
         assertThat(testBeneficiary.getAccountNum()).isEqualTo(DEFAULT_ACCOUNT_NUM);
         assertThat(testBeneficiary.getDateOfDeath()).isEqualTo(DEFAULT_DATE_OF_DEATH);
         assertThat(testBeneficiary.getDateCBAware()).isEqualTo(DEFAULT_DATE_CB_AWARE);
@@ -181,9 +181,9 @@ public class BeneficiaryResourceIntTest {
         // Update the beneficiary
         Beneficiary updatedBeneficiary = new Beneficiary();
         updatedBeneficiary.setId(beneficiary.getId());
-        updatedBeneficiary.setCustomerid(UPDATED_CUSTOMERID);
+        updatedBeneficiary.setCustomerID(UPDATED_CUSTOMERID);
         updatedBeneficiary.setName(UPDATED_NAME);
-        updatedBeneficiary.setSsn(UPDATED_SSN);
+        updatedBeneficiary.setSSN(UPDATED_SSN);
         updatedBeneficiary.setAccountNum(UPDATED_ACCOUNT_NUM);
         updatedBeneficiary.setDateOfDeath(UPDATED_DATE_OF_DEATH);
         updatedBeneficiary.setDateCBAware(UPDATED_DATE_CB_AWARE);
@@ -198,9 +198,9 @@ public class BeneficiaryResourceIntTest {
         List<Beneficiary> beneficiaries = beneficiaryRepository.findAll();
         assertThat(beneficiaries).hasSize(databaseSizeBeforeUpdate);
         Beneficiary testBeneficiary = beneficiaries.get(beneficiaries.size() - 1);
-        assertThat(testBeneficiary.getCustomerid()).isEqualTo(UPDATED_CUSTOMERID);
+        assertThat(testBeneficiary.getCustomerID()).isEqualTo(UPDATED_CUSTOMERID);
         assertThat(testBeneficiary.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testBeneficiary.getSsn()).isEqualTo(UPDATED_SSN);
+        assertThat(testBeneficiary.getSSN()).isEqualTo(UPDATED_SSN);
         assertThat(testBeneficiary.getAccountNum()).isEqualTo(UPDATED_ACCOUNT_NUM);
         assertThat(testBeneficiary.getDateOfDeath()).isEqualTo(UPDATED_DATE_OF_DEATH);
         assertThat(testBeneficiary.getDateCBAware()).isEqualTo(UPDATED_DATE_CB_AWARE);
