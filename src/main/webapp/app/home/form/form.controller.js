@@ -246,7 +246,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Payment Information:</font></strong></div>'
+                    template: '<hr /><div><strong><font size ="6px">Disposition</font></strong></div>'
                 },
 
 
@@ -291,12 +291,23 @@
                         }
 
 
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'checkbox',
+                            key: 'beneficiary.full_recovery',
+                            templateOptions: {
+                                label: 'Full Recovery',
+                            }
+
+                        }]
                     }]
                 }, {
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail.check_number',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
@@ -305,7 +316,7 @@
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
-                        key: 'recovery.detail.mailed_to',
+                        key: 'recovery.detail_string',
                         type: 'input',
                         templateOptions: {
                             label: 'Mailed to'
@@ -316,7 +327,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail.gl_call',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
@@ -328,7 +339,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail.dda_account_number',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
@@ -340,16 +351,18 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail.comment',
+                        key: 'recovery.detail_string',
                         type: 'input',
                         templateOptions: {
                             label: 'Comment'
                         },
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[3])
                     }]
-                }, {
-                    className: 'section-break',
-                    template: '<hr />'
+                },
+
+                {
+                    className: 'section-label',
+                    template: '<hr /><div><strong><font size ="6px">Payments</font></strong></div>'
                 },
 
                 {
@@ -395,7 +408,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Notes:</font></strong></div>'
+                    template: '<hr /><div><strong><font size ="6px">Notes</font></strong></div>'
                 },
 
                 {
