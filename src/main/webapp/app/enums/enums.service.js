@@ -13,9 +13,7 @@
               var enumId = CaseEnum.filter(function(value) {
                   return value.name === name;
               })[0].id;
-
-              console.log(enumId, name);
-
+              //console.log(enumId, name);
               return enumId;
           }
         }

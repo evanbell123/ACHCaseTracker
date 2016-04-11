@@ -211,6 +211,9 @@
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
                 }
                 $scope.gridOptions.data = data;
+
+
+                console.log(data);
             });
     }
 /*

@@ -8,23 +8,41 @@
 
     function FormDataService($http, $q, Enums) {
         return {
+            status: status,
             type: type,
             subtype: subtype,
             recovery: recovery
         };
 
+        function status() {
+
+            var data = [];
+
+            for (var i = 0; i < Enums.CaseStatus.length; i++) {
+              var status = {
+                name: Enums.CaseStatus[i].displayName,
+                value: Enums.CaseStatus[i].id
+              }
+              data.push(status);
+            }
+
+            //console.log(data);
+
+            return data;
+        }
+
         function getFilteredFormData(data, fk, deferred) {
 
-          if (fk !== null) {
-              var tmp = [];
-              angular.forEach(data, function(val) {
-                  if (val.fk === fk)
-                      tmp.push(val);
-              });
-              deferred.resolve(tmp);
-          } else {
-              deferred.resolve(data);
-          }
+            if (fk !== null) {
+                var tmp = [];
+                angular.forEach(data, function(val) {
+                    if (val.fk === fk)
+                        tmp.push(val);
+                });
+                deferred.resolve(tmp);
+            } else {
+                deferred.resolve(data);
+            }
         }
 
         function generateSimpleFormData(CaseEnum) {
@@ -52,18 +70,18 @@
         function generateDependencyFormData(CaseEnum) {
             var denpendencyFormData = [];
             for (var i = 0; i < CaseEnum.length; i++) {
-              //console.log(CaseEnum[i].fk, "Size="+CaseEnum[i].fk.length);
-              for (var j = 0; j < CaseEnum[i].fk.length; j++) {
-                //console.log(CaseEnum[i].fk[j]);
-                var data = {
-                    id: CaseEnum[i].id,
-                    //id: uniqueId,
-                    fk: CaseEnum[i].fk[j],
-                    name: CaseEnum[i].displayName
-                };
-                //console.log(data);
-                denpendencyFormData.push(data);
-              }
+                //console.log(CaseEnum[i].fk, "Size="+CaseEnum[i].fk.length);
+                for (var j = 0; j < CaseEnum[i].fk.length; j++) {
+                    //console.log(CaseEnum[i].fk[j]);
+                    var data = {
+                        id: CaseEnum[i].id,
+                        //id: uniqueId,
+                        fk: CaseEnum[i].fk[j],
+                        name: CaseEnum[i].displayName
+                    };
+                    //console.log(data);
+                    denpendencyFormData.push(data);
+                }
 
             }
             //console.log(denpendencyFormData.length);
@@ -80,7 +98,7 @@
 
         function recovery(subtype_id) {
 
-          //console.log(subtype_id);
+            //console.log(subtype_id);
 
             var deferred = $q.defer();
 
