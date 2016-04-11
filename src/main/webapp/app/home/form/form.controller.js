@@ -194,8 +194,53 @@
                         templateOptions: {
                             type: 'number',
                             label: 'Social Security Number'
-                        }
+                        },
+                        validators: {
+                            ssn: {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
+                                    var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " is not a valid ssn"'
+                            }
+                        },
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.date_of_death',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Date of Death',
+                                placeholder: 'Enter date of death',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
 
+                        }, {
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.date_cb_aware',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Awareness Date',
+                                placeholder: 'Enter date CB became aware',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
+
+                        }]
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'checkbox',
+                            key: 'beneficiary.other_gov_benefits',
+                            templateOptions: {
+                                label: 'Other Government Benfits',
+                            }
+
+                        }]
                     }]
                 },
 
