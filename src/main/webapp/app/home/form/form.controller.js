@@ -106,7 +106,7 @@
                     fieldGroup: [
 
                         {
-                            className: 'col-xs-4',
+                            className: 'col-xs-6',
                             key: 'type',
                             type: 'select',
                             templateOptions: {
@@ -123,7 +123,7 @@
 
                             }
                         }, {
-                            className: 'col-xs-4',
+                            className: 'col-xs-6',
                             key: 'subtype',
                             type: 'select',
                             templateOptions: {
