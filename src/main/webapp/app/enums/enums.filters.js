@@ -17,6 +17,8 @@
           statusHash[Enums.CaseStatus[i].id] = Enums.CaseStatus[i].name;
         }
 
+        //console.log(statusHash);
+
         return function(input) {
             if (input==null) {
                 return '--';
@@ -36,9 +38,11 @@
           typeHash[Enums.CaseType[i].id] = Enums.CaseType[i].name;
         }
 
+        //console.log(typeHash);
+
         return function(input) {
             if (input==null) {
-                return '';
+                return '--';
             } else {
                 return typeHash[input];
             }

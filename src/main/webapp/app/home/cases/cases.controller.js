@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums'];
+    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService'];
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums) {
+    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService) {
         $scope.highlightFilteredHeader = function(row, rowRenderIndex, col, colRenderIndex) {
             if (col.filters[0].term) {
                 return 'header-filtered';
@@ -166,7 +166,7 @@
                 //data.status = getCaseStatusLabel(status);
                 //data.type = getCaseTypeLabel(type);
 
-                console.log(rowEntity.status, newValue);
+                //console.log(rowEntity.status, newValue);
 
                 $http({
                     method: 'PUT',
@@ -174,7 +174,7 @@
                     data: rowEntity
                 }).then(function successCallback(response) {
 
-                    console.log(response.data.status);
+                    //console.log(response.data.status);
 
                     $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
                 }, function errorCallback(response) {
@@ -197,30 +197,36 @@
 
         $http.get("api/ach-case")
             .then(function(response) {
-                console.log(response.data);
-                //console.log(response.data.length);
 
                 var data = response.data;
 
+
+
                 for (var i = 0; i < data.length; i++) {
-                    //console.log(data[i].status);
-                    data[i].status = getEnumIdFromName(Enums.CaseStatus, data[i].status);
-                    data[i].type = getEnumIdFromName(Enums.CaseType, data[i].type);
-                    //console.log(data[i].type);
+                    //console.log(data[i].status, data[i].type);
+                    data[i].status = EnumsService.getEnumIdFromName(Enums.CaseStatus, data[i].status);
+                    data[i].type = EnumsService.getEnumIdFromName(Enums.CaseType, data[i].type);
+                    //console.log(data[i].status, data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
                 }
                 $scope.gridOptions.data = data;
+
+
+                console.log(data);
             });
     }
-
+/*
     function getEnumIdFromName(CaseEnum, name) {
         var enumId = CaseEnum.filter(function(value) {
             return value.name === name;
         })[0].id;
 
+        console.log(enumId, name);
+
         return enumId;
     }
+    */
 
     function dropdownEditorOptions(CaseEnum) {
         //console.log(caseStatus);
@@ -232,12 +238,11 @@
             };
             selectOptions.push(option);
         }
-        console.log(selectOptions);
+        //console.log(selectOptions);
         return selectOptions;
     }
 
     function dropdownFilterOptions(CaseEnum) {
-        //console.log(caseStatus);
         var selectOptions = [];
         for (var i = 0; i < CaseEnum.length; i++) {
             var option = {
@@ -246,7 +251,7 @@
             };
             selectOptions.push(option);
         }
-        console.log(selectOptions);
+        //console.log(selectOptions);
         return selectOptions;
     }
 })();
