@@ -35,10 +35,7 @@ public class Recovery implements Serializable {
     private Long detailValue;
 
     @Field("comment")
-    private String comment;
-
-    @Field("full_recovery")
-    private Boolean fullRecovery;
+    private String detailString;
 
     public Recovery() {}
 
@@ -75,19 +72,11 @@ public class Recovery implements Serializable {
     }
 
     public String getComment() {
-        return comment;
+        return detailString;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Boolean isFullRecovery() {
-        return fullRecovery;
-    }
-
-    public void setFullRecovery(Boolean fullRecovery) {
-        this.fullRecovery = fullRecovery;
+        this.detailString = comment;
     }
 
     @Override
@@ -117,8 +106,7 @@ public class Recovery implements Serializable {
             ", method='" + method + "'" +
             ", detailType='" + detailType + "'" +
             ", detailValue='" + detailValue + "'" +
-            ", comment='" + comment + "'" +
-            ", fullRecovery='" + fullRecovery + "'" +
+            ", comment='" + detailString + "'" +
             '}';
     }
 }

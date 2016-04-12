@@ -36,6 +36,7 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/pdfmake/build/vfs_fonts.js',
             'src/main/webapp/bower_components/angular-touch/angular-touch.js',
             'src/main/webapp/bower_components/angular-animate/angular-animate.js',
+            'src/main/webapp/bower_components/angular-object-diff/dist/angular-object-diff.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Vector;
 
-
 public class ACHFile {
 
 	private ACHRecordFileHeader fileHeader = null;

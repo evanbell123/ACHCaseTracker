@@ -60,26 +60,26 @@ class ACHCaseGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all aCHCases")
-            .get("/api/a-ch-cases")
+            exec(http("Get all ACHCases")
+            .get("/api/ach-case")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new aCHCase")
-            .post("/api/a-ch-cases")
+            .exec(http("Create new ACHCase")
+            .post("/api/ach-case")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "totalAmount":null, "status":null, "lastPaymentOn":"2020-01-01T00:00:00.000Z", "slaDeadline":"2020-01-01T00:00:00.000Z", "daysOpen":null, "type":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_aCHCase_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_ACHCase_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created aCHCase")
-                .get("${new_aCHCase_url}")
+                exec(http("Get created ACHCase")
+                .get("${new_ACHCase_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created aCHCase")
-            .delete("${new_aCHCase_url}")
+            .exec(http("Delete created ACHCase")
+            .delete("${new_ACHCase_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
