@@ -32,7 +32,7 @@
                 for (var i = 0; i < data.length; i++) {
                     vm.aCHCases.push(data[i]);
                 }
-                console.log(vm.aCHCases);
+                //console.log(vm.aCHCases);
             }
             function onError(error) {
                 AlertService.error(error.data.message);

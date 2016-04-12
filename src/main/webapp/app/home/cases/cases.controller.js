@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums'];
+    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService'];
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums) {
+    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService) {
         $scope.highlightFilteredHeader = function(row, rowRenderIndex, col, colRenderIndex) {
             if (col.filters[0].term) {
                 return 'header-filtered';
@@ -204,16 +204,19 @@
 
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i].status, data[i].type);
-                    data[i].status = getEnumIdFromName(Enums.CaseStatus, data[i].status);
-                    data[i].type = getEnumIdFromName(Enums.CaseType, data[i].type);
+                    data[i].status = EnumsService.getEnumIdFromName(Enums.CaseStatus, data[i].status);
+                    data[i].type = EnumsService.getEnumIdFromName(Enums.CaseType, data[i].type);
                     //console.log(data[i].status, data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
                 }
                 $scope.gridOptions.data = data;
+
+
+                console.log(data);
             });
     }
-
+/*
     function getEnumIdFromName(CaseEnum, name) {
         var enumId = CaseEnum.filter(function(value) {
             return value.name === name;
@@ -223,6 +226,7 @@
 
         return enumId;
     }
+    */
 
     function dropdownEditorOptions(CaseEnum) {
         //console.log(caseStatus);

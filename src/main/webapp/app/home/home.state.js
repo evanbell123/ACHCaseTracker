@@ -32,6 +32,16 @@
                     authorities: []
                 },
             })
+            .state('dashboard', {
+                parent: 'home',
+                url: 'dashboard',
+                templateUrl: 'app/home/dashboard/dashboard.html',
+                controller: 'DashboardController',
+                controllerAs: 'vm',
+                data: {
+                    authorities: []
+                },
+            })
             .state('cases', {
                 parent: 'home',
                 url: 'cases',

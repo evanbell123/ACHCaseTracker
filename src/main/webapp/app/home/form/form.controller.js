@@ -5,20 +5,26 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http'];
+    CaseFormController.$inject = ['$scope', '$http', 'Enums', 'DataService'];
 
-    function CaseFormController($scope, $http, formlyVersion) {
+    function CaseFormController($scope, $http, Enums, DataService, formlyVersion) {
         var vm = this;
 
         vm.onSubmit = onSubmit;
 
         function onSubmit() {
+
             //vm.model.openedDate = vm.model.openedDate.getTime();
             //console.log(vm.model.openedDate);
+
+            var data = vm.model
+
+            //data.name = vm.model.name.first + " " + vm.model.name.last;
+
             $http({
                 method: 'POST',
                 url: 'api/a-ch-cases',
-                data: vm.model
+                data: data
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
@@ -56,6 +62,31 @@
         // on the <formly-form> element in index.html
         //vm.model = {};
 
+        function generateHideExpression(RecoveryDetailEnum) {
+
+            //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+            var hideExpression = "!model.recovery.method";
+
+            if (RecoveryDetailEnum.fk.length === 0) {
+                return hideExpression;
+            }
+
+            hideExpression += "||";
+
+            for (var i = 0; i < RecoveryDetailEnum.fk.length; i++) {
+                hideExpression += "model.recovery.method != ";
+                hideExpression += RecoveryDetailEnum.fk[i];
+                if ((i + 1) != (RecoveryDetailEnum.fk.length)) {
+                    hideExpression += "&&";
+                }
+            }
+
+            //console.log(hideExpression);
+
+            return hideExpression;
+
+        }
+
         function init() {
             // An array of our form fields with configuration
             // and options set. We make reference to this in
@@ -65,16 +96,7 @@
                     key: "status",
                     defaultValue: 'open',
                     templateOptions: {
-                        options: [{
-                            "name": "Open",
-                            "value": "open"
-                        }, {
-                            "name": "In Process",
-                            "value": "process"
-                        }, {
-                            "name": "Closed",
-                            "value": "closed"
-                        }],
+                        options: DataService.status(),
                         "label": "Field Type",
                         "required": true
                     }
@@ -84,7 +106,7 @@
                     fieldGroup: [
 
                         {
-                            className: 'col-xs-4',
+                            className: 'col-xs-6',
                             key: 'type',
                             type: 'select',
                             templateOptions: {
@@ -101,7 +123,7 @@
 
                             }
                         }, {
-                            className: 'col-xs-4',
+                            className: 'col-xs-6',
                             key: 'subtype',
                             type: 'select',
                             templateOptions: {
@@ -141,25 +163,26 @@
                     fieldGroup: [{
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'first_name',
+                        key: 'beneficiary.name',
                         templateOptions: {
-                            label: 'First Name'
+                            label: 'Name'
                         }
 
                     }, {
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'last_name',
+                        key: 'beneficiary.customerID',
                         templateOptions: {
-                            label: 'Last Name'
+                            label: 'ID'
                         }
+
                     }]
                 }, {
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'account_num',
+                        key: 'beneficiary.account_num',
                         templateOptions: {
                             label: 'Account Number'
                         }
@@ -167,18 +190,63 @@
                     }, {
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'ssn',
+                        key: 'beneficiary.ssn',
                         templateOptions: {
                             type: 'number',
                             label: 'Social Security Number'
-                        }
+                        },
+                        validators: {
+                            ssn: {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
+                                    var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " is not a valid ssn"'
+                            }
+                        },
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.date_of_death',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Date of Death',
+                                placeholder: 'Enter date of death',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
 
+                        }, {
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.date_cb_aware',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Awareness Date',
+                                placeholder: 'Enter date CB became aware',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
+
+                        }]
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'checkbox',
+                            key: 'beneficiary.other_gov_benefits',
+                            templateOptions: {
+                                label: 'Other Government Benfits',
+                            }
+
+                        }]
                     }]
                 },
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Payment Information:</font></strong></div>'
+                    template: '<hr /><div><strong><font size ="6px">Disposition</font></strong></div>'
                 },
 
 
@@ -186,7 +254,7 @@
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery_method',
+                        key: 'recovery.method',
                         type: 'select',
                         templateOptions: {
                             label: 'Recovery Method',
@@ -212,79 +280,94 @@
                         }
                     }, {
                         className: 'col-xs-6',
-                        key: 'completed_date',
-                        type: 'input',
+                        key: 'recovery.completed_date',
+                        type: 'datepicker',
                         templateOptions: {
-                            type: 'date',
+                            type: 'text',
                             label: 'Completed Date',
-                            placeholder: 'Enter completed date'
+                            placeholder: 'Enter completed date',
+                            datepickerPopup: 'dd-MMMM-yyyy'
+
                         }
 
 
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'checkbox',
+                            key: 'beneficiary.full_recovery',
+                            templateOptions: {
+                                label: 'Full Recovery',
+                            }
+
+                        }]
                     }]
                 }, {
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'check_number',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
                             label: 'Check Number'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
-                        key: 'mailed_to',
+                        key: 'recovery.detail_string',
                         type: 'input',
                         templateOptions: {
                             label: 'Mailed to'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }]
                 }, {
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'gl_call',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
                             label: 'GL and Call Center'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 13 && model.recovery_method != 16)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[1])
                     }]
                 }, {
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'dda_account_number',
+                        key: 'recovery.detail_long',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
                             label: 'Customer DDA Account Number'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 14 && model.recovery_method != 17)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[2])
                     }]
                 }, {
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'other_comment',
+                        key: 'recovery.detail_string',
                         type: 'input',
                         templateOptions: {
                             label: 'Comment'
                         },
-                        hideExpression: '!model.recovery_method || (model.recovery_method != 15 && model.recovery_method != 18)'
+                        hideExpression: generateHideExpression(Enums.RecoveryDetail[3])
                     }]
-                }, {
-                    className: 'section-break',
-                    template: '<hr />'
+                },
+
+                {
+                    className: 'section-label',
+                    template: '<hr /><div><strong><font size ="6px">Payments</font></strong></div>'
                 },
 
                 {
                     className: 'row',
-                    type: 'repeatSection',
+                    type: 'repeatingSection',
                     key: 'payments',
                     templateOptions: {
                         fields: [{
@@ -306,11 +389,12 @@
                                 fieldGroup: [{
                                     className: 'col-xs-4',
                                     key: 'effective_on',
-                                    type: 'input',
+                                    type: 'datepicker',
                                     templateOptions: {
-                                        type: 'date',
+                                        type: 'text',
                                         label: 'Effective Date',
-                                        placeholder: 'Enter effective date'
+                                        placeholder: 'Enter effective date',
+                                        datepickerPopup: 'dd-MMMM-yyyy'
                                     }
                                 }]
                             }
@@ -318,70 +402,34 @@
                         ],
                         btnText: 'Add another payment'
                     },
-                    controller: function($scope) {
-                        var unique = 1;
-                        $scope.formOptions = {
-                            formState: $scope.formState
-                        };
-                        $scope.addNew = addNew;
-
-                        $scope.copyFields = copyFields;
-
-                        function copyFields(fields) {
-                            fields = angular.copy(fields);
-                            addRandomIds(fields);
-                            return fields;
-                        }
-
-                        function addNew() {
-                            $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
-                            var repeatsection = $scope.model[$scope.options.key];
-                            var lastSection = repeatsection[repeatsection.length - 1];
-                            var newsection = {};
-                            if (lastSection) {
-                                newsection = angular.copy(lastSection);
-                            }
-                            repeatsection.push(newsection);
-                        }
-
-                        function addRandomIds(fields) {
-                            unique++;
-                            angular.forEach(fields, function(field, index) {
-                                if (field.fieldGroup) {
-                                    addRandomIds(field.fieldGroup);
-                                    return; // fieldGroups don't need an ID
-                                }
-
-                                if (field.templateOptions && field.templateOptions.fields) {
-                                    addRandomIds(field.templateOptions.fields);
-                                }
-
-                                field.id = field.id || (field.key + '_' + index + '_' + unique + getRandomInt(0, 9999));
-                            });
-                        }
-
-                        function getRandomInt(min, max) {
-                            return Math.floor(Math.random() * (max - min)) + min;
-                        }
-                    }
+                    //controller: RepeatingSectionController
                 },
 
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Notes:</font></strong></div>'
+                    template: '<hr /><div><strong><font size ="6px">Notes</font></strong></div>'
                 },
 
                 {
+                    className: 'row',
+                    type: 'repeatingSection',
                     key: 'notes',
-                    type: 'textarea',
                     templateOptions: {
-                        type: 'text',
-                        placeholder: 'This has 5 rows',
-                        rows: 5
-
-                    }
-                }
+                        fields: [{
+                            //className: 'col-xs-4',
+                            key: 'note',
+                            type: 'textarea',
+                            templateOptions: {
+                                type: 'text',
+                                placeholder: 'This has 5 rows',
+                                rows: 5
+                            }
+                        }],
+                        btnText: 'Add another note'
+                    },
+                    //controller: RepeatingSectionController
+                },
             ];
         }
     }
