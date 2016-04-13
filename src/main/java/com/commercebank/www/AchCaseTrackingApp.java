@@ -42,7 +42,7 @@ public class AchCaseTrackingApp {
         return (evt) ->
         {
             Nacha.setRepos(beneficiaryRepository, paymentRepository, achCaseRepository, govRepository, slaRepository);
-            WatchDirectory.setDirectory("nacha");
+            WatchDirectory.setDirectory("nacha_files");
             try
             {
                 (new Thread(new WatchDirectory())).start();

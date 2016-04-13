@@ -30,89 +30,89 @@ import java.util.Optional;
 public class SLAResource {
 
     private final Logger log = LoggerFactory.getLogger(SLAResource.class);
-        
+
     @Inject
     private SLARepository sLARepository;
-    
+
     /**
-     * POST  /s-las : Create a new sLA.
+     * POST  /sla : Create a new SLA.
      *
-     * @param sLA the sLA to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new sLA, or with status 400 (Bad Request) if the sLA has already an ID
+     * @param SLA the SLA to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new SLA, or with status 400 (Bad Request) if the SLA has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/s-las",
+    @RequestMapping(value = "/sla",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<SLA> createSLA(@Valid @RequestBody SLA sLA) throws URISyntaxException {
-        log.debug("REST request to save SLA : {}", sLA);
-        if (sLA.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("sLA", "idexists", "A new sLA cannot already have an ID")).body(null);
+    public ResponseEntity<SLA> createSLA(@Valid @RequestBody SLA SLA) throws URISyntaxException {
+        log.debug("REST request to save SLA : {}", SLA);
+        if (SLA.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SLA", "idexists", "A new SLA cannot already have an ID")).body(null);
         }
-        SLA result = sLARepository.save(sLA);
-        return ResponseEntity.created(new URI("/api/s-las/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("sLA", result.getId().toString()))
+        SLA result = sLARepository.save(SLA);
+        return ResponseEntity.created(new URI("/api/sla/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("SLA", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /s-las : Updates an existing sLA.
+     * PUT  /sla : Updates an existing SLA.
      *
-     * @param sLA the sLA to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated sLA,
-     * or with status 400 (Bad Request) if the sLA is not valid,
-     * or with status 500 (Internal Server Error) if the sLA couldnt be updated
+     * @param SLA the SLA to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated SLA,
+     * or with status 400 (Bad Request) if the SLA is not valid,
+     * or with status 500 (Internal Server Error) if the SLA couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/s-las",
+    @RequestMapping(value = "/sla",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<SLA> updateSLA(@Valid @RequestBody SLA sLA) throws URISyntaxException {
-        log.debug("REST request to update SLA : {}", sLA);
-        if (sLA.getId() == null) {
-            return createSLA(sLA);
+    public ResponseEntity<SLA> updateSLA(@Valid @RequestBody SLA SLA) throws URISyntaxException {
+        log.debug("REST request to update SLA : {}", SLA);
+        if (SLA.getId() == null) {
+            return createSLA(SLA);
         }
-        SLA result = sLARepository.save(sLA);
+        SLA result = sLARepository.save(SLA);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("sLA", sLA.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("SLA", SLA.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /s-las : get all the sLAS.
+     * GET  /sla : get all the SLAs.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of sLAS in body
+     * @return the ResponseEntity with status 200 (OK) and the list of SLAs in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/s-las",
+    @RequestMapping(value = "/sla",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<SLA>> getAllSLAS(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of SLAS");
-        Page<SLA> page = sLARepository.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/s-las");
+        Page<SLA> page = sLARepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sla");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /s-las/:id : get the "id" sLA.
+     * GET  /sla/:id : get the "id" SLA.
      *
-     * @param id the id of the sLA to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the sLA, or with status 404 (Not Found)
+     * @param id the id of the SLA to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the SLA, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/s-las/{id}",
+    @RequestMapping(value = "/sla/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<SLA> getSLA(@PathVariable String id) {
         log.debug("REST request to get SLA : {}", id);
-        SLA sLA = sLARepository.findOne(id);
-        return Optional.ofNullable(sLA)
+        SLA SLA = sLARepository.findOne(id);
+        return Optional.ofNullable(SLA)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -120,19 +120,19 @@ public class SLAResource {
     }
 
     /**
-     * DELETE  /s-las/:id : delete the "id" sLA.
+     * DELETE  /sla/:id : delete the "id" SLA.
      *
-     * @param id the id of the sLA to delete
+     * @param id the id of the SLA to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/s-las/{id}",
+    @RequestMapping(value = "/sla/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deleteSLA(@PathVariable String id) {
         log.debug("REST request to delete SLA : {}", id);
         sLARepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("sLA", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("SLA", id.toString())).build();
     }
 
 }

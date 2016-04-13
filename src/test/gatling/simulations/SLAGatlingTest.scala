@@ -60,25 +60,25 @@ class SLAGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all sLAS")
-            .get("/api/s-las")
+            exec(http("Get all SLAs")
+            .get("/api/sla")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new sLA")
-            .post("/api/s-las")
+            .exec(http("Create new SLA")
+            .post("/api/sla")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "businessDays":null, "typeName":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_sLA_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created sLA")
+                exec(http("Get created SLA")
                 .get("${new_sLA_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created sLA")
+            .exec(http("Delete created SLA")
             .delete("${new_sLA_url}")
             .headers(headers_http_authenticated))
             .pause(10)

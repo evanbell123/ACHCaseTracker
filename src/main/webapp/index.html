@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
+        <link rel="stylesheet" href="bower_components/angular-object-diff/dist/angular-object-diff.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css content/css/main.css -->
@@ -62,18 +63,13 @@
         <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
         <script src="bower_components/angular-touch/angular-touch.js"></script>
         <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
     <!-- build:js app/app.js  -->
     <!-- inject:js -->
     <script src="app/app.module.js"></script>
-    <script src="app/entities/s-la/recovery/recovery.state.js"></script>
-    <script src="app/entities/s-la/recovery/recovery.service.js"></script>
-    <script src="app/entities/s-la/recovery/recovery.controller.js"></script>
-    <script src="app/entities/s-la/recovery/recovery-dialog.controller.js"></script>
-    <script src="app/entities/s-la/recovery/recovery-detail.controller.js"></script>
-    <script src="app/entities/s-la/recovery/recovery-delete-dialog.controller.js"></script>
     <script src="app/account/reset/request/reset.request.state.js"></script>
     <script src="app/account/reset/request/reset.request.controller.js"></script>
     <script src="app/account/reset/finish/reset.finish.state.js"></script>
@@ -100,12 +96,18 @@
     <script src="app/home/dashboard/dashboard.controller.js"></script>
     <script src="app/home/cases/cases.controller.js"></script>
     <script src="app/home/auditlog/auditlog.controller.js"></script>
-    <script src="app/entities/s-la/s-la.state.js"></script>
-    <script src="app/entities/s-la/s-la.service.js"></script>
-    <script src="app/entities/s-la/s-la.controller.js"></script>
-    <script src="app/entities/s-la/s-la-dialog.controller.js"></script>
-    <script src="app/entities/s-la/s-la-detail.controller.js"></script>
-    <script src="app/entities/s-la/s-la-delete-dialog.controller.js"></script>
+    <script src="app/entities/sla/sla.state.js"></script>
+    <script src="app/entities/sla/sla.service.js"></script>
+    <script src="app/entities/sla/sla.controller.js"></script>
+    <script src="app/entities/sla/sla-dialog.controller.js"></script>
+    <script src="app/entities/sla/sla-detail.controller.js"></script>
+    <script src="app/entities/sla/sla-delete-dialog.controller.js"></script>
+    <script src="app/entities/recovery/recovery.state.js"></script>
+    <script src="app/entities/recovery/recovery.service.js"></script>
+    <script src="app/entities/recovery/recovery.controller.js"></script>
+    <script src="app/entities/recovery/recovery-dialog.controller.js"></script>
+    <script src="app/entities/recovery/recovery-detail.controller.js"></script>
+    <script src="app/entities/recovery/recovery-delete-dialog.controller.js"></script>
     <script src="app/entities/payment/payment.state.js"></script>
     <script src="app/entities/payment/payment.service.js"></script>
     <script src="app/entities/payment/payment.controller.js"></script>
@@ -130,12 +132,12 @@
     <script src="app/entities/beneficiary/beneficiary-dialog.controller.js"></script>
     <script src="app/entities/beneficiary/beneficiary-detail.controller.js"></script>
     <script src="app/entities/beneficiary/beneficiary-delete-dialog.controller.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case.state.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case.service.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case.controller.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case-dialog.controller.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case-detail.controller.js"></script>
-    <script src="app/entities/a-ch-case/a-ch-case-delete-dialog.controller.js"></script>
+    <script src="app/entities/ach-case/ach-case.state.js"></script>
+    <script src="app/entities/ach-case/ach-case.service.js"></script>
+    <script src="app/entities/ach-case/ach-case.controller.js"></script>
+    <script src="app/entities/ach-case/ach-case-dialog.controller.js"></script>
+    <script src="app/entities/ach-case/ach-case-detail.controller.js"></script>
+    <script src="app/entities/ach-case/ach-case-delete-dialog.controller.js"></script>
     <script src="app/components/util/truncate-words.filter.js"></script>
     <script src="app/components/util/truncate-characters.filter.js"></script>
     <script src="app/components/util/sort.directive.js"></script>
@@ -183,6 +185,10 @@
     <script src="app/admin/health/health.service.js"></script>
     <script src="app/admin/health/health.modal.controller.js"></script>
     <script src="app/admin/health/health.controller.js"></script>
+    <script src="app/admin/entity-audit/entity-audit.state.js"></script>
+    <script src="app/admin/entity-audit/entity-audit.service.js"></script>
+    <script src="app/admin/entity-audit/entity-audit.detail.controller.js"></script>
+    <script src="app/admin/entity-audit/entity-audit.controller.js"></script>
     <script src="app/admin/docs/docs.state.js"></script>
     <script src="app/admin/configuration/configuration.state.js"></script>
     <script src="app/admin/configuration/configuration.service.js"></script>
@@ -216,12 +222,6 @@
         <!-- build:js app/app.js  -->
         <!-- inject:js -->
         <script src="app/app.module.js"></script>
-        <script src="app/entities/s-la/recovery/recovery.state.js"></script>
-        <script src="app/entities/s-la/recovery/recovery.service.js"></script>
-        <script src="app/entities/s-la/recovery/recovery.controller.js"></script>
-        <script src="app/entities/s-la/recovery/recovery-dialog.controller.js"></script>
-        <script src="app/entities/s-la/recovery/recovery-detail.controller.js"></script>
-        <script src="app/entities/s-la/recovery/recovery-delete-dialog.controller.js"></script>
         <script src="app/account/reset/request/reset.request.state.js"></script>
         <script src="app/account/reset/request/reset.request.controller.js"></script>
         <script src="app/account/reset/finish/reset.finish.state.js"></script>
@@ -248,12 +248,18 @@
         <script src="app/home/dashboard/dashboard.controller.js"></script>
         <script src="app/home/cases/cases.controller.js"></script>
         <script src="app/home/auditlog/auditlog.controller.js"></script>
-        <script src="app/entities/s-la/s-la.state.js"></script>
-        <script src="app/entities/s-la/s-la.service.js"></script>
-        <script src="app/entities/s-la/s-la.controller.js"></script>
-        <script src="app/entities/s-la/s-la-dialog.controller.js"></script>
-        <script src="app/entities/s-la/s-la-detail.controller.js"></script>
-        <script src="app/entities/s-la/s-la-delete-dialog.controller.js"></script>
+        <script src="app/entities/sla/sla.state.js"></script>
+        <script src="app/entities/sla/sla.service.js"></script>
+        <script src="app/entities/sla/sla.controller.js"></script>
+        <script src="app/entities/sla/sla-dialog.controller.js"></script>
+        <script src="app/entities/sla/sla-detail.controller.js"></script>
+        <script src="app/entities/sla/sla-delete-dialog.controller.js"></script>
+        <script src="app/entities/recovery/recovery.state.js"></script>
+        <script src="app/entities/recovery/recovery.service.js"></script>
+        <script src="app/entities/recovery/recovery.controller.js"></script>
+        <script src="app/entities/recovery/recovery-dialog.controller.js"></script>
+        <script src="app/entities/recovery/recovery-detail.controller.js"></script>
+        <script src="app/entities/recovery/recovery-delete-dialog.controller.js"></script>
         <script src="app/entities/payment/payment.state.js"></script>
         <script src="app/entities/payment/payment.service.js"></script>
         <script src="app/entities/payment/payment.controller.js"></script>
@@ -278,12 +284,12 @@
         <script src="app/entities/beneficiary/beneficiary-dialog.controller.js"></script>
         <script src="app/entities/beneficiary/beneficiary-detail.controller.js"></script>
         <script src="app/entities/beneficiary/beneficiary-delete-dialog.controller.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case.state.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case.service.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case.controller.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case-dialog.controller.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case-detail.controller.js"></script>
-        <script src="app/entities/a-ch-case/a-ch-case-delete-dialog.controller.js"></script>
+        <script src="app/entities/ach-case/ach-case.state.js"></script>
+        <script src="app/entities/ach-case/ach-case.service.js"></script>
+        <script src="app/entities/ach-case/ach-case.controller.js"></script>
+        <script src="app/entities/ach-case/ach-case-dialog.controller.js"></script>
+        <script src="app/entities/ach-case/ach-case-detail.controller.js"></script>
+        <script src="app/entities/ach-case/ach-case-delete-dialog.controller.js"></script>
         <script src="app/components/util/truncate-words.filter.js"></script>
         <script src="app/components/util/truncate-characters.filter.js"></script>
         <script src="app/components/util/sort.directive.js"></script>
@@ -331,6 +337,10 @@
         <script src="app/admin/health/health.service.js"></script>
         <script src="app/admin/health/health.modal.controller.js"></script>
         <script src="app/admin/health/health.controller.js"></script>
+        <script src="app/admin/entity-audit/entity-audit.state.js"></script>
+        <script src="app/admin/entity-audit/entity-audit.service.js"></script>
+        <script src="app/admin/entity-audit/entity-audit.detail.controller.js"></script>
+        <script src="app/admin/entity-audit/entity-audit.controller.js"></script>
         <script src="app/admin/docs/docs.state.js"></script>
         <script src="app/admin/configuration/configuration.state.js"></script>
         <script src="app/admin/configuration/configuration.service.js"></script>
