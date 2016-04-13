@@ -11,28 +11,46 @@
 
     function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService, Principal) {
 
+      function updateRequest(data, successResponse, errorResonse) {
+        $http({
+            method: 'PUT',
+            url: 'api/ach-case',
+            data: data
+        }).then(function successCallback(response) {
+
+            //console.log(response.data.status);
+
+            $scope.msg.lastCellEdited = successResponse;
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            alert(errorResonse);
+        });
+      }
+
         $scope.watch = function(data) {
+
             if (data.isWatched == true) {
-                var copyAccount;
+              var copyAccount;
                 Principal.identity().then(function(account) {
                     //console.log(account);
                     copyAccount = account;
                     //console.log(copyAccount);
+
+                    data.assignedTo = Object.assign({}, copyAccount);
+                    data.assignedTo.fullName = data.assignedTo.firstName + " " + data.assignedTo.lastName;
+                    //console.log(data.assignedTo);
                 });
-                /*
-                assign the case to user
-                */
-                data.assignedTo = {};
-                for (var i = 0; i < Object.keys(copyAccount).length; i++) {
-                  //data.assignedTo.push({copyAccount.})
-                }
-                console.log(data.assignedTo);
-                //data.assignedTo.push(copyAccount);
-                console.log(data.assignedTo);
+
+
+
+                //console.log(data.assignedTo);
             } else {
                 data.assignedTo = null;
             }
-            //console.log(data.assignedTo);
+            console.log(data);
+
+            updateRequest(data, "Item watched", "Watch item failed");
         }
 
         $scope.highlightFilteredHeader = function(row, rowRenderIndex, col, colRenderIndex) {
@@ -124,12 +142,13 @@
             {
                 name: 'isWatched',
                 displayName: 'Watch Item',
+                enableCellEdit: false,
                 type: 'boolean',
                 enableFiltering: false,
                 cellTemplate: '<input type="checkbox" ng-model="row.entity.isWatched" ng-change="grid.appScope.watch(row.entity)">',
                 width: '5%'
             }, {
-                name: 'assignedTo',
+                name: 'assignedTo.fullName',
                 enableCellEdit: false,
                 displayName: 'Assigned To',
                 headerCellClass: $scope.highlightFilteredHeader,
@@ -197,16 +216,13 @@
 
 
                 //console.log(colDef.isWatched);
-
+                updateRequest(rowEntity, 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update");
+/*
                 $http({
                     method: 'PUT',
                     url: 'api/ach-case',
                     data: rowEntity
                 }).then(function successCallback(response) {
-
-
-
-
 
                     //console.log(response.data.status);
 
@@ -216,6 +232,7 @@
                     // or server returns response with an error status.
 
                 });
+                */
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
@@ -248,6 +265,7 @@
 
                     if (data[i].assignedTo !== null) {
                         data[i].isWatched = true;
+                        data[i].assignedTo.fullName = data[i].assignedTo.firstName + " " + data[i].assignedTo.lastName;
                     }
                     //console.log(data[i].isWatched);
                 }
