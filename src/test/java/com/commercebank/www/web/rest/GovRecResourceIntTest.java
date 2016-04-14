@@ -66,7 +66,7 @@ public class GovRecResourceIntTest {
     private static final Long UPDATED_PAYMENT_COUNT = 1L;
 
     private static final CaseSubtype DEFAULT_SUBTYPE = CaseSubtype.GOV_REC;
-    private static final CaseSubtype UPDATED_SUBTYPE = CaseSubtype.POA;
+    private static final CaseSubtype UPDATED_SUBTYPE = CaseSubtype.DNE;
 
     @Inject
     private GovRecRepository govRecRepository;

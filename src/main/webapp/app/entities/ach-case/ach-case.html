@@ -1,0 +1,66 @@
+<div>
+    <h2>ACHCases</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="ach-case.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new ACHCase
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="totalAmount"><span>TotalAmount</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastPaymentOn"><span>LastPaymentOn</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="slaDeadline"><span>SlaDeadline</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="daysOpen"><span>DaysOpen</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="type"><span>Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="ACHCase in vm.ACHCases track by ACHCase.id">
+                    <td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>
+                    <td>{{ACHCase.totalAmount}}</td>
+                    <td translate="{{'achCaseTrackingApp.Status.' + ACHCase.status}}">{{ACHCase.status}}</td>
+                    <td>{{ACHCase.lastPaymentOn | date:'medium'}}</td>
+                    <td>{{ACHCase.slaDeadline | date:'medium'}}</td>
+                    <td>{{ACHCase.daysOpen}}</td>
+                    <td translate="{{'achCaseTrackingApp.CaseType.' + ACHCase.type}}">{{ACHCase.type}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="ach-case-detail({id:ACHCase.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="ach-case.edit({id:ACHCase.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="ach-case.delete({id:ACHCase.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

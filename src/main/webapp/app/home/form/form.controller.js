@@ -23,8 +23,8 @@
 
             $http({
                 method: 'POST',
-                url: 'api/a-ch-cases',
-                data: data
+                url: 'api/ach-case',
+                data: vm.model
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available

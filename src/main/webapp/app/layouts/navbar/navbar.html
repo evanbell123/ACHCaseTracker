@@ -65,17 +65,19 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
-                        <li ui-sref-active="active" ><a ui-sref="a-ch-case" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+
+                        <li ui-sref-active="active" ><a ui-sref="ach-case" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >ACH Case</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="case-note" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Case Note</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="beneficiary" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Beneficiary</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="gov-rec" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Gov Rec</span></a></li>
+                        &#xA0;<span >Government Reclamation</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="payment" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Payment</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="s-la" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+
+                        <li ui-sref-active="active" ><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >SLA</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="recovery" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Recovery</span></a></li>
@@ -115,7 +117,7 @@
                     </a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
                         <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
-                            &#xA0;<span>User management</span></a></li>
+                            &#xA0;<span>User Management</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="jhi-metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>
                             &#xA0;<span>Metrics</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="jhi-health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>
@@ -128,6 +130,8 @@
                             &#xA0;<span>Logs</span></a></li>
                         <li ng-hide="vm.inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>
                             &#xA0;<span>API</span></a></li>
+                        <li ui-sref-active="active" ><a ui-sref="entity-audit" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>
+                        &#xA0;<span >Entity Audit</span></a></li>
                         <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                     </ul>
                 </li>

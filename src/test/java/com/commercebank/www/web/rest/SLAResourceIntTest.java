@@ -47,7 +47,7 @@ public class SLAResourceIntTest {
     private static final String UPDATED_TYPE_NAME = "BBBBB";
 
     @Inject
-    private SLARepository sLARepository;
+    private SLARepository slaRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -57,13 +57,13 @@ public class SLAResourceIntTest {
 
     private MockMvc restSLAMockMvc;
 
-    private SLA sLA;
+    private SLA SLA;
 
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         SLAResource sLAResource = new SLAResource();
-        ReflectionTestUtils.setField(sLAResource, "sLARepository", sLARepository);
+        ReflectionTestUtils.setField(sLAResource, "slaRepository", slaRepository);
         this.restSLAMockMvc = MockMvcBuilders.standaloneSetup(sLAResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -71,58 +71,58 @@ public class SLAResourceIntTest {
 
     @Before
     public void initTest() {
-        sLARepository.deleteAll();
-        sLA = new SLA();
-        sLA.setBusinessDays(DEFAULT_BUSINESS_DAYS);
-        sLA.setTypeName(DEFAULT_TYPE_NAME);
+        slaRepository.deleteAll();
+        SLA = new SLA();
+        SLA.setBusinessDays(DEFAULT_BUSINESS_DAYS);
+        SLA.setTypeName(DEFAULT_TYPE_NAME);
     }
 
     @Test
     public void createSLA() throws Exception {
-        int databaseSizeBeforeCreate = sLARepository.findAll().size();
+        int databaseSizeBeforeCreate = slaRepository.findAll().size();
 
         // Create the SLA
 
-        restSLAMockMvc.perform(post("/api/s-las")
+        restSLAMockMvc.perform(post("/api/sla")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(sLA)))
+                .content(TestUtil.convertObjectToJsonBytes(SLA)))
                 .andExpect(status().isCreated());
 
         // Validate the SLA in the database
-        List<SLA> sLAS = sLARepository.findAll();
-        assertThat(sLAS).hasSize(databaseSizeBeforeCreate + 1);
-        SLA testSLA = sLAS.get(sLAS.size() - 1);
+        List<SLA> slas = slaRepository.findAll();
+        assertThat(slas).hasSize(databaseSizeBeforeCreate + 1);
+        SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(DEFAULT_BUSINESS_DAYS);
         assertThat(testSLA.getTypeName()).isEqualTo(DEFAULT_TYPE_NAME);
     }
 
     @Test
     public void checkBusinessDaysIsRequired() throws Exception {
-        int databaseSizeBeforeTest = sLARepository.findAll().size();
+        int databaseSizeBeforeTest = slaRepository.findAll().size();
         // set the field null
-        sLA.setBusinessDays(null);
+        SLA.setBusinessDays(null);
 
         // Create the SLA, which fails.
 
-        restSLAMockMvc.perform(post("/api/s-las")
+        restSLAMockMvc.perform(post("/api/sla")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(sLA)))
+                .content(TestUtil.convertObjectToJsonBytes(SLA)))
                 .andExpect(status().isBadRequest());
 
-        List<SLA> sLAS = sLARepository.findAll();
-        assertThat(sLAS).hasSize(databaseSizeBeforeTest);
+        List<SLA> slas = slaRepository.findAll();
+        assertThat(slas).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     public void getAllSLAS() throws Exception {
         // Initialize the database
-        sLARepository.save(sLA);
+        slaRepository.save(SLA);
 
-        // Get all the sLAS
-        restSLAMockMvc.perform(get("/api/s-las?sort=id,desc"))
+        // Get all the SLAs
+        restSLAMockMvc.perform(get("/api/sla?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(sLA.getId())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(SLA.getId())))
                 .andExpect(jsonPath("$.[*].businessDays").value(hasItem(DEFAULT_BUSINESS_DAYS.intValue())))
                 .andExpect(jsonPath("$.[*].typeName").value(hasItem(DEFAULT_TYPE_NAME.toString())));
     }
@@ -130,45 +130,45 @@ public class SLAResourceIntTest {
     @Test
     public void getSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(sLA);
+        slaRepository.save(SLA);
 
-        // Get the sLA
-        restSLAMockMvc.perform(get("/api/s-las/{id}", sLA.getId()))
+        // Get the SLA
+        restSLAMockMvc.perform(get("/api/sla/{id}", SLA.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(sLA.getId()))
+            .andExpect(jsonPath("$.id").value(SLA.getId()))
             .andExpect(jsonPath("$.businessDays").value(DEFAULT_BUSINESS_DAYS.intValue()))
             .andExpect(jsonPath("$.typeName").value(DEFAULT_TYPE_NAME.toString()));
     }
 
     @Test
     public void getNonExistingSLA() throws Exception {
-        // Get the sLA
-        restSLAMockMvc.perform(get("/api/s-las/{id}", Long.MAX_VALUE))
+        // Get the SLA
+        restSLAMockMvc.perform(get("/api/sla/{id}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void updateSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(sLA);
-        int databaseSizeBeforeUpdate = sLARepository.findAll().size();
+        slaRepository.save(SLA);
+        int databaseSizeBeforeUpdate = slaRepository.findAll().size();
 
-        // Update the sLA
+        // Update the SLA
         SLA updatedSLA = new SLA();
-        updatedSLA.setId(sLA.getId());
+        updatedSLA.setId(SLA.getId());
         updatedSLA.setBusinessDays(UPDATED_BUSINESS_DAYS);
         updatedSLA.setTypeName(UPDATED_TYPE_NAME);
 
-        restSLAMockMvc.perform(put("/api/s-las")
+        restSLAMockMvc.perform(put("/api/sla")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(updatedSLA)))
                 .andExpect(status().isOk());
 
         // Validate the SLA in the database
-        List<SLA> sLAS = sLARepository.findAll();
-        assertThat(sLAS).hasSize(databaseSizeBeforeUpdate);
-        SLA testSLA = sLAS.get(sLAS.size() - 1);
+        List<SLA> slas = slaRepository.findAll();
+        assertThat(slas).hasSize(databaseSizeBeforeUpdate);
+        SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(UPDATED_BUSINESS_DAYS);
         assertThat(testSLA.getTypeName()).isEqualTo(UPDATED_TYPE_NAME);
     }
@@ -176,16 +176,16 @@ public class SLAResourceIntTest {
     @Test
     public void deleteSLA() throws Exception {
         // Initialize the database
-        sLARepository.save(sLA);
-        int databaseSizeBeforeDelete = sLARepository.findAll().size();
+        slaRepository.save(SLA);
+        int databaseSizeBeforeDelete = slaRepository.findAll().size();
 
-        // Get the sLA
-        restSLAMockMvc.perform(delete("/api/s-las/{id}", sLA.getId())
+        // Get the SLA
+        restSLAMockMvc.perform(delete("/api/sla/{id}", SLA.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SLA> sLAS = sLARepository.findAll();
-        assertThat(sLAS).hasSize(databaseSizeBeforeDelete - 1);
+        List<SLA> slas = slaRepository.findAll();
+        assertThat(slas).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

@@ -30,89 +30,89 @@ import java.util.Optional;
 public class ACHCaseResource {
 
     private final Logger log = LoggerFactory.getLogger(ACHCaseResource.class);
-        
+
     @Inject
-    private ACHCaseRepository aCHCaseRepository;
-    
+    private ACHCaseRepository ACHCaseRepository;
+
     /**
-     * POST  /a-ch-cases : Create a new aCHCase.
+     * POST  /ach-case : Create a new ACHCase.
      *
-     * @param aCHCase the aCHCase to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new aCHCase, or with status 400 (Bad Request) if the aCHCase has already an ID
+     * @param ACHCase the ACHCase to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new ACHCase, or with status 400 (Bad Request) if the ACHCase has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/a-ch-cases",
+    @RequestMapping(value = "/ach-case",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ACHCase> createACHCase(@Valid @RequestBody ACHCase aCHCase) throws URISyntaxException {
-        log.debug("REST request to save ACHCase : {}", aCHCase);
-        if (aCHCase.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("aCHCase", "idexists", "A new aCHCase cannot already have an ID")).body(null);
+    public ResponseEntity<ACHCase> createACHCase(@Valid @RequestBody ACHCase ACHCase) throws URISyntaxException {
+        log.debug("REST request to save ACHCase : {}", ACHCase);
+        if (ACHCase.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACHCase", "idexists", "A new ACHCase cannot already have an ID")).body(null);
         }
-        ACHCase result = aCHCaseRepository.save(aCHCase);
-        return ResponseEntity.created(new URI("/api/a-ch-cases/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("aCHCase", result.getId().toString()))
+        ACHCase result = ACHCaseRepository.save(ACHCase);
+        return ResponseEntity.created(new URI("/api/ach-case/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("ACHCase", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /a-ch-cases : Updates an existing aCHCase.
+     * PUT  /ach-case : Updates an existing ACHCase.
      *
-     * @param aCHCase the aCHCase to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated aCHCase,
-     * or with status 400 (Bad Request) if the aCHCase is not valid,
-     * or with status 500 (Internal Server Error) if the aCHCase couldnt be updated
+     * @param ACHCase the ACHCase to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated ACHCase,
+     * or with status 400 (Bad Request) if the ACHCase is not valid,
+     * or with status 500 (Internal Server Error) if the ACHCase couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/a-ch-cases",
+    @RequestMapping(value = "/ach-case",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase aCHCase) throws URISyntaxException {
-        log.debug("REST request to update ACHCase : {}", aCHCase);
-        if (aCHCase.getId() == null) {
-            return createACHCase(aCHCase);
+    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase ACHCase) throws URISyntaxException {
+        log.debug("REST request to update ACHCase : {}", ACHCase);
+        if (ACHCase.getId() == null) {
+            return createACHCase(ACHCase);
         }
-        ACHCase result = aCHCaseRepository.save(aCHCase);
+        ACHCase result = ACHCaseRepository.save(ACHCase);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("aCHCase", aCHCase.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("ACHCase", ACHCase.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /a-ch-cases : get all the aCHCases.
+     * GET  /ach-case : get all the ACHCases.
      *
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of aCHCases in body
+     * @return the ResponseEntity with status 200 (OK) and the list of ACHCases in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/a-ch-cases",
+    @RequestMapping(value = "/ach-case",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = aCHCaseRepository.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/a-ch-cases");
+        Page<ACHCase> page = ACHCaseRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /a-ch-cases/:id : get the "id" aCHCase.
+     * GET  /ach-case/:id : get the "id" ACHCase.
      *
-     * @param id the id of the aCHCase to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the aCHCase, or with status 404 (Not Found)
+     * @param id the id of the ACHCase to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the ACHCase, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/a-ch-cases/{id}",
+    @RequestMapping(value = "/ach-case/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ACHCase> getACHCase(@PathVariable String id) {
         log.debug("REST request to get ACHCase : {}", id);
-        ACHCase aCHCase = aCHCaseRepository.findOne(id);
-        return Optional.ofNullable(aCHCase)
+        ACHCase ACHCase = ACHCaseRepository.findOne(id);
+        return Optional.ofNullable(ACHCase)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -120,19 +120,19 @@ public class ACHCaseResource {
     }
 
     /**
-     * DELETE  /a-ch-cases/:id : delete the "id" aCHCase.
+     * DELETE  /ach-case/:id : delete the "id" ACHCase.
      *
-     * @param id the id of the aCHCase to delete
+     * @param id the id of the ACHCase to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/a-ch-cases/{id}",
+    @RequestMapping(value = "/ach-case/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> deleteACHCase(@PathVariable String id) {
         log.debug("REST request to delete ACHCase : {}", id);
-        aCHCaseRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("aCHCase", id.toString())).build();
+        ACHCaseRepository.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("ACHCase", id.toString())).build();
     }
 
 }
