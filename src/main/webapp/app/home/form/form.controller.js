@@ -173,7 +173,7 @@
                         type: 'input',
                         key: 'beneficiary.customerID',
                         templateOptions: {
-                            label: 'ID'
+                            label: 'Customer ID'
                         }
 
                     }]
