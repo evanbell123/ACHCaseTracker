@@ -9,6 +9,6 @@
 
     function DashboardController($scope) {
         var vm = this;
-        $scope.message = 'Look! I am an audit log.';
+        $scope.message = 'Look! I am a Dashboard.';
     }
 })();

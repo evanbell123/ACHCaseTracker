@@ -5,9 +5,54 @@
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService'];
+    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService', 'Principal'];
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService) {
+
+
+    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService, Principal) {
+
+      function updateRequest(data, successResponse, errorResonse) {
+        $http({
+            method: 'PUT',
+            url: 'api/ach-case',
+            data: data
+        }).then(function successCallback(response) {
+
+            //console.log(response.data.status);
+
+            $scope.msg.lastCellEdited = successResponse;
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            alert(errorResonse);
+        });
+      }
+
+        $scope.watch = function(data) {
+
+            if (data.isWatched == true) {
+              var copyAccount;
+                Principal.identity().then(function(account) {
+                    //console.log(account);
+                    copyAccount = account;
+                    //console.log(copyAccount);
+
+                    data.assignedTo = Object.assign({}, copyAccount);
+                    data.assignedTo.fullName = data.assignedTo.firstName + " " + data.assignedTo.lastName;
+                    //console.log(data.assignedTo);
+                });
+
+
+
+                //console.log(data.assignedTo);
+            } else {
+                data.assignedTo = null;
+            }
+            console.log(data);
+
+            updateRequest(data, "Item watched", "Watch item failed");
+        }
+
         $scope.highlightFilteredHeader = function(row, rowRenderIndex, col, colRenderIndex) {
             if (col.filters[0].term) {
                 return 'header-filtered';
@@ -83,17 +128,27 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        $scope.gridOptions.columnDefs = [{
-
-                name: 'id',
-                headerCellClass: $scope.highlightFilteredHeader,
+        $scope.gridOptions.columnDefs = [
+            /*
+                            name: 'id',
+                            headerCellClass: $scope.highlightFilteredHeader,
+                            enableCellEdit: false,
+                            displayName: 'Case ID',
+                            type: 'number',
+                            width: '9%',
+                            cellTemplate: '<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'
+                        },
+                        */
+            {
+                name: 'isWatched',
+                displayName: 'Watch Item',
                 enableCellEdit: false,
-                displayName: 'Case ID',
-                type: 'number',
-                width: '9%',
-                cellTemplate: '<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'
+                type: 'boolean',
+                enableFiltering: false,
+                cellTemplate: '<input type="checkbox" ng-model="row.entity.isWatched" ng-change="grid.appScope.watch(row.entity)">',
+                width: '5%'
             }, {
-                name: 'assignedTo',
+                name: 'assignedTo.fullName',
                 enableCellEdit: false,
                 displayName: 'Assigned To',
                 headerCellClass: $scope.highlightFilteredHeader,
@@ -158,16 +213,11 @@
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
 
-                //var data = rowEntity;
 
-                //var status = data.status;
-                //var type = data.type;
 
-                //data.status = getCaseStatusLabel(status);
-                //data.type = getCaseTypeLabel(type);
-
-                //console.log(rowEntity.status, newValue);
-
+                //console.log(colDef.isWatched);
+                updateRequest(rowEntity, 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update");
+/*
                 $http({
                     method: 'PUT',
                     url: 'api/ach-case',
@@ -179,9 +229,10 @@
                     $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
-                // or server returns response with an error status.
+                    // or server returns response with an error status.
 
-            });
+                });
+                */
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
@@ -209,24 +260,32 @@
                     //console.log(data[i].status, data[i].type);
                     data[i].lastPaymentOn = new Date(data[i].lastPaymentOn);
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
+
+                    data[i].isWatched = false;
+
+                    if (data[i].assignedTo !== null) {
+                        data[i].isWatched = true;
+                        data[i].assignedTo.fullName = data[i].assignedTo.firstName + " " + data[i].assignedTo.lastName;
+                    }
+                    //console.log(data[i].isWatched);
                 }
                 $scope.gridOptions.data = data;
 
 
-                console.log(data);
+                //console.log(data);
             });
     }
-/*
-    function getEnumIdFromName(CaseEnum, name) {
-        var enumId = CaseEnum.filter(function(value) {
-            return value.name === name;
-        })[0].id;
+    /*
+        function getEnumIdFromName(CaseEnum, name) {
+            var enumId = CaseEnum.filter(function(value) {
+                return value.name === name;
+            })[0].id;
 
-        console.log(enumId, name);
+            console.log(enumId, name);
 
-        return enumId;
-    }
-    */
+            return enumId;
+        }
+        */
 
     function dropdownEditorOptions(CaseEnum) {
         //console.log(caseStatus);

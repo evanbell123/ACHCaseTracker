@@ -60,20 +60,20 @@
             var ngModelAttrs = {};
 
             angular.forEach(attributes, function(attr) {
-              console.log(attr, camelize(attr));
+              //console.log(attr, camelize(attr));
                 ngModelAttrs[camelize(attr)] = {
                     attribute: attr
                 };
             });
 
             angular.forEach(bindings, function(binding) {
-              console.log(binding, camelize(binding));
+              //console.log(binding, camelize(binding));
                 ngModelAttrs[camelize(binding)] = {
                     bound: binding
                 };
             });
 
-            console.log(ngModelAttrs);
+            //console.log(ngModelAttrs);
 
             formlyConfigProvider.setType({
                 name: 'datepicker',
