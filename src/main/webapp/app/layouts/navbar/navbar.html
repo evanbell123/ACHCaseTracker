@@ -11,10 +11,46 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" uib-collapse="vm.navCollapsed" ng-switch="vm.isAuthenticated()"  style="background-color:#fff">
             <ul class="nav navbar-nav navbar-right">
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref="home" ng-click="vm.navCollapsed = true">-->
+                        <!--<span class="glyphicon glyphicon-home"></span>-->
+                        <!--<span class="hidden-sm">Home</span>-->
+                    <!--</a>-->
+                <!--</li>-->
                 <li ui-sref-active="active">
-                    <a ui-sref="home" ng-click="vm.navCollapsed = true">
-                        <span class="glyphicon glyphicon-home"></span>
-                        <span class="hidden-sm">Home</span>
+                    <a ui-sref="dashboard" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-dashboard"></span>
+                        <span class="hidden-sm">Dashboard</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="cases" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                        <span class="hidden-sm">Cases</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="my_cases" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-inbox"></span>
+                        <span class="hidden-sm">My Cases</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="create_case" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span class="hidden-sm">Create Case</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="import" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span class="hidden-sm">Import</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="audit_log" ng-click="vm.navCollapsed = true">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        <span class="hidden-sm">Audit Log</span>
                     </a>
                 </li>
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
@@ -30,7 +66,7 @@
                     </a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
                         <li ui-sref-active="active" ><a ui-sref="a-ch-case" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >A Ch Case</span></a></li>
+                        &#xA0;<span >ACH Case</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="case-note" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Case Note</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="beneficiary" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
@@ -40,7 +76,7 @@
                         <li ui-sref-active="active" ><a ui-sref="payment" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Payment</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="s-la" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >S La</span></a></li>
+                        &#xA0;<span >SLA</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="recovery" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span >Recovery</span></a></li>
                         <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
