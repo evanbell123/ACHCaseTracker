@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/gov-rec',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'GovRecs'
             },
             views: {
@@ -30,7 +30,7 @@
             parent: 'entity',
             url: '/gov-rec/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'GovRec'
             },
             views: {
@@ -50,7 +50,7 @@
             parent: 'gov-rec',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -83,7 +83,7 @@
             parent: 'gov-rec',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -108,7 +108,7 @@
             parent: 'gov-rec',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

@@ -20,12 +20,17 @@ public class Nacha
 {
     private static ACHCaseRepository achCaseRepository;
     private static BeneficiaryRepository beneficiaryRepository;
+    private static PaymentRepository paymentRepository;
+    private static GovRecRepository govRecRepository;
 
-    public static void setRepos(ACHCaseRepository achCaseRepo, BeneficiaryRepository beneficiaryRepo)
+    public static void setRepos(ACHCaseRepository achCaseRepo, BeneficiaryRepository beneficiaryRepo,
+                                PaymentRepository paymentRepo, GovRecRepository govRecRepo)
 
     {
         achCaseRepository = achCaseRepo;
         beneficiaryRepository = beneficiaryRepo;
+        paymentRepository = paymentRepo;
+        govRecRepository = govRecRepo;
     }
 
     //TODO: Break this into multiple methods, add exception handling and further initialize objects
@@ -64,10 +69,11 @@ public class Nacha
                 beneficiary.setDateOfDeath(LocalDate.parse(date));
                 beneficiary.setSSN(pmtInfo.substring(34, 43));
                 //beneficiary.setDateCBAware(ZonedDateTime.now());
+                beneficiaryRepository.save(beneficiary);
 
                 Payment payment = new Payment();
                 payment.setAmount(BigDecimal.valueOf(Double.parseDouble(pmtInfo.substring(52, pmtInfo.indexOf('\\')))));
-
+                paymentRepository.save(payment);
                 List<Payment> payments = new ArrayList<>();
                 payments.add(payment);
 
@@ -75,7 +81,7 @@ public class Nacha
                 govRec.setPayments(payments);
                 govRec.setSubtype(CaseSubtype.DNE);
                 govRec.setPaymentCount(new Long(1));
-
+                govRecRepository.save(govRec);
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
                 //TODO: Add method in SLA Service to get SLA by ID

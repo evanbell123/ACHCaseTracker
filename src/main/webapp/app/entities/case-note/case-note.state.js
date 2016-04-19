@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/case-note',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'CaseNotes'
             },
             views: {
@@ -30,7 +30,7 @@
             parent: 'entity',
             url: '/case-note/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'CaseNote'
             },
             views: {
@@ -50,7 +50,7 @@
             parent: 'case-note',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -78,7 +78,7 @@
             parent: 'case-note',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -103,7 +103,7 @@
             parent: 'case-note',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

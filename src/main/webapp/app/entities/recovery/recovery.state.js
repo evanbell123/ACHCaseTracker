@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/recovery',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'Recoveries'
             },
             views: {
@@ -30,7 +30,7 @@
             parent: 'entity',
             url: '/recovery/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ACHOPS'],
                 pageTitle: 'Recovery'
             },
             views: {
@@ -50,7 +50,7 @@
             parent: 'recovery',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -82,7 +82,7 @@
             parent: 'recovery',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -107,7 +107,7 @@
             parent: 'recovery',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ACHOPS']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
