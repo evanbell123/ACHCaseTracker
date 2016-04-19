@@ -3,7 +3,6 @@ package com.commercebank.www.web.rest;
 import com.commercebank.www.domain.EntityAuditEvent;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.javers.core.Javers;
-import com.mongodb.MongoClient;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
 import com.commercebank.www.security.AuthoritiesConstants;

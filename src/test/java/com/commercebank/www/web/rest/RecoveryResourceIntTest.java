@@ -54,9 +54,6 @@ public class RecoveryResourceIntTest {
     private static final String DEFAULT_COMMENT = "AAAAA";
     private static final String UPDATED_COMMENT = "BBBBB";
 
-    private static final Boolean DEFAULT_FULL_RECOVERY = false;
-    private static final Boolean UPDATED_FULL_RECOVERY = true;
-
     @Inject
     private RecoveryRepository recoveryRepository;
 
@@ -88,7 +85,6 @@ public class RecoveryResourceIntTest {
         recovery.setDetailType(DEFAULT_DETAIL_TYPE);
         recovery.setDetailValue(DEFAULT_DETAIL_VALUE);
         recovery.setComment(DEFAULT_COMMENT);
-        recovery.setFullRecovery(DEFAULT_FULL_RECOVERY);
     }
 
     @Test
@@ -110,7 +106,6 @@ public class RecoveryResourceIntTest {
         assertThat(testRecovery.getDetailType()).isEqualTo(DEFAULT_DETAIL_TYPE);
         assertThat(testRecovery.getDetailValue()).isEqualTo(DEFAULT_DETAIL_VALUE);
         assertThat(testRecovery.getComment()).isEqualTo(DEFAULT_COMMENT);
-        assertThat(testRecovery.isFullRecovery()).isEqualTo(DEFAULT_FULL_RECOVERY);
     }
 
     @Test
@@ -143,8 +138,7 @@ public class RecoveryResourceIntTest {
                 .andExpect(jsonPath("$.[*].method").value(hasItem(DEFAULT_METHOD.toString())))
                 .andExpect(jsonPath("$.[*].detailType").value(hasItem(DEFAULT_DETAIL_TYPE.toString())))
                 .andExpect(jsonPath("$.[*].detailValue").value(hasItem(DEFAULT_DETAIL_VALUE.intValue())))
-                .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())))
-                .andExpect(jsonPath("$.[*].fullRecovery").value(hasItem(DEFAULT_FULL_RECOVERY.booleanValue())));
+                .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())));
     }
 
     @Test
@@ -160,8 +154,7 @@ public class RecoveryResourceIntTest {
             .andExpect(jsonPath("$.method").value(DEFAULT_METHOD.toString()))
             .andExpect(jsonPath("$.detailType").value(DEFAULT_DETAIL_TYPE.toString()))
             .andExpect(jsonPath("$.detailValue").value(DEFAULT_DETAIL_VALUE.intValue()))
-            .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()))
-            .andExpect(jsonPath("$.fullRecovery").value(DEFAULT_FULL_RECOVERY.booleanValue()));
+            .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()));
     }
 
     @Test
@@ -184,7 +177,6 @@ public class RecoveryResourceIntTest {
         updatedRecovery.setDetailType(UPDATED_DETAIL_TYPE);
         updatedRecovery.setDetailValue(UPDATED_DETAIL_VALUE);
         updatedRecovery.setComment(UPDATED_COMMENT);
-        updatedRecovery.setFullRecovery(UPDATED_FULL_RECOVERY);
 
         restRecoveryMockMvc.perform(put("/api/recoveries")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -199,7 +191,6 @@ public class RecoveryResourceIntTest {
         assertThat(testRecovery.getDetailType()).isEqualTo(UPDATED_DETAIL_TYPE);
         assertThat(testRecovery.getDetailValue()).isEqualTo(UPDATED_DETAIL_VALUE);
         assertThat(testRecovery.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testRecovery.isFullRecovery()).isEqualTo(UPDATED_FULL_RECOVERY);
     }
 
     @Test

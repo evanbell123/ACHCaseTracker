@@ -2,7 +2,6 @@ package com.commercebank.www.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,7 +16,7 @@ import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.domain.enumeration.CaseType;
 
 /**
- * An ACHCase.
+ * An ACH Case.
  */
 
 @Document(collection = "ach_case")
@@ -25,7 +24,6 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //@Transient
     @Field("total_amount")
     private BigDecimal totalAmount;
 
@@ -42,10 +40,10 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("sla_deadline")
     private ZonedDateTime slaDeadline;
 
-    //@DBRef
     @Field("sla")
     private SLA sla;
 
+    @Transient
     @Min(value = 0)
     @Field("days_open")
     private Long daysOpen;
@@ -54,15 +52,12 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("type")
     private CaseType type;
 
-   // @DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
-    //@DBRef
     @Field("assigned_to")
-    private User assignedTo;
+    private String assignedTo;
 
-    //@DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
 
@@ -127,9 +122,9 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     public void setBeneficiary(Beneficiary beneficiary) { this.beneficiary = beneficiary; }
 
-    public User getAssignedTo() { return assignedTo; }
+    public String getAssignedTo() { return assignedTo; }
 
-    public void setAssignedTo(User assignedTo) { this.assignedTo = assignedTo; }
+    public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
 
     public CaseDetail getCaseDetail() { return caseDetail; }
 

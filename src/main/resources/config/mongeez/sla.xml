@@ -1,0 +1,21 @@
+<mongoChangeLog>
+    <changeSet changeId="ChangeSet-4" author="DD">
+        <script>
+            db.sla.insert(
+            {
+                "_id" : "non-treasury-initial",
+                "businessDays" : 3
+            });
+            db.sla.insert(
+            {
+                "_id" : "non-treasury-standard",
+                "businessDays" : 7
+            });
+            db.sla.insert(
+            {
+                "_id" : "treasury-standard",
+                "businessDays" : 7
+            });
+        </script>
+    </changeSet>
+</mongoChangeLog>

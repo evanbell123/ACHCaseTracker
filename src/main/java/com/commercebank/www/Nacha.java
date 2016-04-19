@@ -18,20 +18,14 @@ import java.util.List;
 
 public class Nacha
 {
-    private static BeneficiaryRepository beneficiaryRepository;
-    private static PaymentRepository paymentRepository;
     private static ACHCaseRepository achCaseRepository;
-    private static GovRecRepository govRecRepository;
-    private static SLARepository slaRepository;
+    private static BeneficiaryRepository beneficiaryRepository;
 
-    public static void setRepos(BeneficiaryRepository bRepo, PaymentRepository pRepo,
-                                ACHCaseRepository aRepo, GovRecRepository gRepo, SLARepository sRepo)
+    public static void setRepos(ACHCaseRepository achCaseRepo, BeneficiaryRepository beneficiaryRepo)
+
     {
-        beneficiaryRepository = bRepo;
-        paymentRepository = pRepo;
-        achCaseRepository = aRepo;
-        govRecRepository = gRepo;
-        slaRepository = sRepo;
+        achCaseRepository = achCaseRepo;
+        beneficiaryRepository = beneficiaryRepo;
     }
 
     //TODO: Break this into multiple methods, add exception handling and further initialize objects
@@ -69,7 +63,7 @@ public class Nacha
 
                 beneficiary.setDateOfDeath(LocalDate.parse(date));
                 beneficiary.setSSN(pmtInfo.substring(34, 43));
-                beneficiary.setDateCBAware(ZonedDateTime.now());
+                //beneficiary.setDateCBAware(ZonedDateTime.now());
 
                 Payment payment = new Payment();
                 payment.setAmount(BigDecimal.valueOf(Double.parseDouble(pmtInfo.substring(52, pmtInfo.indexOf('\\')))));
@@ -80,22 +74,18 @@ public class Nacha
                 GovRec govRec = new GovRec();
                 govRec.setPayments(payments);
                 govRec.setSubtype(CaseSubtype.DNE);
-                govRec.setPaymentCount(new Long(0));
+                govRec.setPaymentCount(new Long(1));
 
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
-                SLA sla = new SLA(new Long(7), "New DNE");
-                achCase.setSla(sla);
-                achCase.setSlaDeadline(ZonedDateTime.now().plusDays(achCase.getSla().getBusinessDays()));
+                //TODO: Add method in SLA Service to get SLA by ID
+                achCase.setSlaDeadline(ZonedDateTime.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
                 achCase.setStatus(Status.OPEN);
 
-                beneficiaryRepository.save(beneficiary);
-                paymentRepository.save(payment);
-                govRecRepository.save(govRec);
-                slaRepository.save(sla);
+                //beneficiaryRepository.save(beneficiary);
                 achCaseRepository.save(achCase);
             }
         }

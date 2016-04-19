@@ -74,7 +74,6 @@ public class SLAResourceIntTest {
         slaRepository.deleteAll();
         SLA = new SLA();
         SLA.setBusinessDays(DEFAULT_BUSINESS_DAYS);
-        SLA.setTypeName(DEFAULT_TYPE_NAME);
     }
 
     @Test
@@ -93,7 +92,6 @@ public class SLAResourceIntTest {
         assertThat(slas).hasSize(databaseSizeBeforeCreate + 1);
         SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(DEFAULT_BUSINESS_DAYS);
-        assertThat(testSLA.getTypeName()).isEqualTo(DEFAULT_TYPE_NAME);
     }
 
     @Test
@@ -158,7 +156,6 @@ public class SLAResourceIntTest {
         SLA updatedSLA = new SLA();
         updatedSLA.setId(SLA.getId());
         updatedSLA.setBusinessDays(UPDATED_BUSINESS_DAYS);
-        updatedSLA.setTypeName(UPDATED_TYPE_NAME);
 
         restSLAMockMvc.perform(put("/api/sla")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -170,7 +167,6 @@ public class SLAResourceIntTest {
         assertThat(slas).hasSize(databaseSizeBeforeUpdate);
         SLA testSLA = slas.get(slas.size() - 1);
         assertThat(testSLA.getBusinessDays()).isEqualTo(UPDATED_BUSINESS_DAYS);
-        assertThat(testSLA.getTypeName()).isEqualTo(UPDATED_TYPE_NAME);
     }
 
     @Test

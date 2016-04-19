@@ -68,6 +68,9 @@ public class GovRecResourceIntTest {
     private static final CaseSubtype DEFAULT_SUBTYPE = CaseSubtype.GOV_REC;
     private static final CaseSubtype UPDATED_SUBTYPE = CaseSubtype.DNE;
 
+    private static final Boolean DEFAULT_FULL_RECOVERY = false;
+    private static final Boolean UPDATED_FULL_RECOVERY = true;
+
     @Inject
     private GovRecRepository govRecRepository;
 
@@ -101,6 +104,7 @@ public class GovRecResourceIntTest {
         govRec.setPaymentTotal(DEFAULT_PAYMENT_TOTAL);
         govRec.setPaymentCount(DEFAULT_PAYMENT_COUNT);
         govRec.setSubtype(DEFAULT_SUBTYPE);
+        govRec.setFullRecovery(DEFAULT_FULL_RECOVERY);
     }
 
     @Test
@@ -124,6 +128,7 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getPaymentTotal()).isEqualTo(DEFAULT_PAYMENT_TOTAL);
         assertThat(testGovRec.getPaymentCount()).isEqualTo(DEFAULT_PAYMENT_COUNT);
         assertThat(testGovRec.getSubtype()).isEqualTo(DEFAULT_SUBTYPE);
+        assertThat(testGovRec.isFullRecovery()).isEqualTo(DEFAULT_FULL_RECOVERY);
     }
 
     @Test
@@ -158,7 +163,8 @@ public class GovRecResourceIntTest {
                 .andExpect(jsonPath("$.[*].verifiedOn").value(hasItem(DEFAULT_VERIFIED_ON_STR)))
                 .andExpect(jsonPath("$.[*].paymentTotal").value(hasItem(DEFAULT_PAYMENT_TOTAL.intValue())))
                 .andExpect(jsonPath("$.[*].paymentCount").value(hasItem(DEFAULT_PAYMENT_COUNT.intValue())))
-                .andExpect(jsonPath("$.[*].subtype").value(hasItem(DEFAULT_SUBTYPE.toString())));
+                .andExpect(jsonPath("$.[*].subtype").value(hasItem(DEFAULT_SUBTYPE.toString())))
+                .andExpect(jsonPath("$.[*].fullRecovery").value(hasItem(DEFAULT_FULL_RECOVERY.booleanValue())));
     }
 
     @Test
@@ -176,7 +182,8 @@ public class GovRecResourceIntTest {
             .andExpect(jsonPath("$.verifiedOn").value(DEFAULT_VERIFIED_ON_STR))
             .andExpect(jsonPath("$.paymentTotal").value(DEFAULT_PAYMENT_TOTAL.intValue()))
             .andExpect(jsonPath("$.paymentCount").value(DEFAULT_PAYMENT_COUNT.intValue()))
-            .andExpect(jsonPath("$.subtype").value(DEFAULT_SUBTYPE.toString()));
+            .andExpect(jsonPath("$.subtype").value(DEFAULT_SUBTYPE.toString()))
+            .andExpect(jsonPath("$.fullRecovery").value(DEFAULT_FULL_RECOVERY.booleanValue()));
     }
 
     @Test
@@ -201,6 +208,7 @@ public class GovRecResourceIntTest {
         updatedGovRec.setPaymentTotal(UPDATED_PAYMENT_TOTAL);
         updatedGovRec.setPaymentCount(UPDATED_PAYMENT_COUNT);
         updatedGovRec.setSubtype(UPDATED_SUBTYPE);
+        updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
 
         restGovRecMockMvc.perform(put("/api/gov-recs")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -217,6 +225,7 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getPaymentTotal()).isEqualTo(UPDATED_PAYMENT_TOTAL);
         assertThat(testGovRec.getPaymentCount()).isEqualTo(UPDATED_PAYMENT_COUNT);
         assertThat(testGovRec.getSubtype()).isEqualTo(UPDATED_SUBTYPE);
+        assertThat(testGovRec.isFullRecovery()).isEqualTo(UPDATED_FULL_RECOVERY);
     }
 
     @Test

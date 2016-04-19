@@ -71,9 +71,8 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase ACHCase) throws URISyntaxException {
         log.debug("REST request to update ACHCase : {}", ACHCase);
-        if (ACHCase.getId() == null) {
-            return createACHCase(ACHCase);
-        }
+        if (ACHCase.getId() == null) { return createACHCase(ACHCase); }
+        //TODO: Call ACHCase Service to update and validate info before saving to repo
         ACHCase result = ACHCaseRepository.save(ACHCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("ACHCase", ACHCase.getId().toString()))

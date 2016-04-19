@@ -36,12 +36,11 @@ public class AchCaseTrackingApp {
 
 
     @Bean
-    CommandLineRunner init(BeneficiaryRepository beneficiaryRepository, PaymentRepository paymentRepository,
-                           ACHCaseRepository achCaseRepository, GovRecRepository govRepository, SLARepository slaRepository)
+    CommandLineRunner init(ACHCaseRepository achCaseRepository, BeneficiaryRepository beneficiaryRepository)
     {
         return (evt) ->
         {
-            Nacha.setRepos(beneficiaryRepository, paymentRepository, achCaseRepository, govRepository, slaRepository);
+            Nacha.setRepos(achCaseRepository, beneficiaryRepository);
             WatchDirectory.setDirectory("nacha_files");
             try
             {

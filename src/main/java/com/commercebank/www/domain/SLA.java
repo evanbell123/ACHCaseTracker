@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 
 @Document(collection = "sla")
-public class SLA implements Serializable {
+public class SLA extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,16 +23,6 @@ public class SLA implements Serializable {
     @NotNull
     @Field("business_days")
     private Long businessDays;
-
-    @Field("type_name")
-    private String typeName;
-
-    public SLA() {}
-
-    public SLA(Long businessDays, String typeName) {
-        this.businessDays = businessDays;
-        this.typeName = typeName;
-    }
 
     public String getId() {
         return id;
@@ -48,14 +38,6 @@ public class SLA implements Serializable {
 
     public void setBusinessDays(Long businessDays) {
         this.businessDays = businessDays;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     @Override
@@ -80,10 +62,9 @@ public class SLA implements Serializable {
 
     @Override
     public String toString() {
-        return "Sla{" +
-            "id=" + id +
+        return "SLA{" +
+            "id = " + id +
             ", businessDays='" + businessDays + "'" +
-            ", typeName='" + typeName + "'" +
             '}';
     }
 }
