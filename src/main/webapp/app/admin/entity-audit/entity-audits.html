@@ -62,12 +62,12 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="audit in vm.audits | filter:filter">
-                    <td>{{audit.entityId}}</td>
+                   <!-- <td>{{audit.entityId}}</td>-->
                     <td>{{audit.action}}</td>
                     <td>{{audit.commitVersion}}</td>
-                    <td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>
+                    <!--<td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>-->
                     <!-- comment above line and uncomment below to have Table view of value -->
-                    <!--td class="no-pad">
+                    <td class="no-pad">
                         <div class="audit-obj">
                             <table class="table table-bordered table-hover no-margin">
                                 <tr>
@@ -83,7 +83,7 @@
                                 </tr>
                             </table>
                         </div>
-                    </td-->
+                    </td>
                     <td>{{audit.modifiedDate | date:'medium'}}</td>
                     <td>{{audit.modifiedBy}}</td>
                     <td>
