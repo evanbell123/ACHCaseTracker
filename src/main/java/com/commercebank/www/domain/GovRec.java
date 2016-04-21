@@ -49,19 +49,16 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("subtype")
     private CaseSubtype subtype;
 
-    //@DBRef
     @Field("verified_by")
-    private User verifiedBy;
+    private String verifiedBy;
 
-    //@DBRef
+    @DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 
-    //@DBRef
     @Field("notes")
     private List<CaseNote> notes;
 
-    //@DBRef
     @Field("payments")
     private List<Payment> payments;
 
@@ -123,9 +120,9 @@ public class GovRec implements Serializable, CaseDetail {
         this.subtype = subtype;
     }
 
-    public User getVerifiedBy() { return verifiedBy; }
+    public String getVerifiedBy() { return verifiedBy; }
 
-    public void setVerifiedBy(User verifiedBy) { this.verifiedBy = verifiedBy; }
+    public void setVerifiedBy(String verifiedBy) { this.verifiedBy = verifiedBy; }
 
     public Recovery getRecoveryInfo() { return recoveryInfo; }
 

@@ -62,7 +62,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="audit in vm.audits | filter:filter">
-                   <!-- <td>{{audit.entityId}}</td>-->
+                    <td>{{audit.entityId}}</td>
                     <td>{{audit.action}}</td>
                     <td>{{audit.commitVersion}}</td>
                     <!--<td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>-->

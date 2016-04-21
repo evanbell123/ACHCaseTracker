@@ -22,16 +22,12 @@
         vm.totalItems = null;
         vm.users = [];
 
-
         vm.loadAll();
-
-        
 
         Principal.identity().then(function(account) {
             vm.currentAccount = account;
         });
-
-
+        
         function loadAll () {
             User.query({page: vm.page - 1, size: paginationConstants.itemsPerPage}, function (result, headers) {
                 vm.links = ParseLinks.parse(headers('link'));

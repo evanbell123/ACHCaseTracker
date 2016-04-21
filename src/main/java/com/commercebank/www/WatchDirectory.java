@@ -30,8 +30,6 @@
  */
 package com.commercebank.www;
 
-import com.commercebank.www.repository.BeneficiaryRepository;
-
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 import java.io.*;
@@ -39,8 +37,6 @@ import java.util.*;
 
 public class WatchDirectory implements Runnable
 {
-    private BeneficiaryRepository beneficiaryRepository;
-
     private final WatchService watcher;
     private final Map<WatchKey, Path> keys;
     private static Path directory;

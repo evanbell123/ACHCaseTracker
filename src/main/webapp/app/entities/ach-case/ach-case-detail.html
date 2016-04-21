@@ -1,42 +1,36 @@
 
 <div>
-    <h2><span>ACHCase</span> {{vm.ACHCase.id}}</h2>
+    <h2><span>ACH Case</span> {{vm.ACHCase.id}}</h2>
     <hr>
     <dl class="dl-horizontal">
-        <dt><span>TotalAmount</dt></dt>
+        <dt><span>Total Amount</span></dt>
         <dd>
-            <span>{{vm.ACHCase.totalAmount}}<span>
+            <span>{{vm.ACHCase.totalAmount}}</span>
         </dd>
         <hr>
-        <dt><span>Status</dt></dt>
+        <dt><span>Status</span></dt>
         <dd>
             <span translate="{{'achCaseTrackingApp.Status.' + vm.ACHCase.status}}">{{vm.ACHCase.status}}</span>
         </dd>
         <hr>
-        <dt><span>LastPaymentOn</dt></dt>
+        <dt><span>Last Payment On</span></dt>
         <dd>
             <span>{{vm.ACHCase.lastPaymentOn | date:'medium'}}</span>
         </dd>
         <hr>
-        <dt><span>SlaDeadline</dt></dt>
+        <dt><span>SLA Deadline</span></dt>
         <dd>
             <span>{{vm.ACHCase.slaDeadline | date:'medium'}}</span>
         </dd>
         <hr>
-        <dt><span>DaysOpen</dt></dt>
+        <dt><span>Days Open</span></dt>
         <dd>
-            <span>{{vm.ACHCase.daysOpen}}<span>
+            <span>{{vm.ACHCase.daysOpen}}</span>
         </dd>
         <hr>
-        <dt><span>Type</dt></dt>
+        <dt><span>Type</span></dt>
         <dd>
             <span translate="{{'achCaseTrackingApp.CaseType.' + vm.ACHCase.type}}">{{vm.ACHCase.type}}</span>
-        </dd>
-        <!-- Replace this with necessary data -->
-        <hr>
-        <dt><span>SLA Name</dt></dt>
-        <dd>
-            <span>{{vm.ACHCase.sla.typeName}}</span>
         </dd>
         <hr>
     </dl>

@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myACHCaseLabel">Create or edit a ACHCase</h4>
+        <h4 class="modal-title" id="myACHCaseLabel">Create or edit an ACH Case</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -14,7 +14,7 @@
                     ng-model="vm.ACHCase.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_totalAmount">TotalAmount</label>
+            <label class="control-label" for="field_totalAmount">Total Amount</label>
             <input type="number" class="form-control" name="totalAmount" id="field_totalAmount"
                     ng-model="vm.ACHCase.totalAmount"
                      />
@@ -22,9 +22,9 @@
         <div class="form-group">
             <label class="control-label" for="field_status">Status</label>
             <select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" required>
-                <option value="OPEN">OPEN</option>
-                <option value="IN_PROGRESS" translate="achCaseTrackingApp.Status.IN_PROGRESS">IN_PROGRESS</option>
-                <option value="CLOSED">CLOSED</option>
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS" translate="achCaseTrackingApp.Status.IN_PROGRESS">In Progress</option>
+                <option value="CLOSED">Closed</option>
             </select>
             <div ng-show="editForm.status.$invalid">
                 <p class="help-block"
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_lastPaymentOn">LastPaymentOn</label>
+            <label class="control-label" for="field_lastPaymentOn">Last Payment On</label>
                 <div class="input-group">
                     <input id="field_lastPaymentOn" type="text" class="form-control" name="lastPaymentOn" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.lastPaymentOn" is-open="vm.datePickerOpenStatus.lastPaymentOn"
                       />
@@ -44,7 +44,7 @@
                 </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_slaDeadline">SlaDeadline</label>
+            <label class="control-label" for="field_slaDeadline">SLA Deadline</label>
                 <div class="input-group">
                     <input id="field_slaDeadline" type="text" class="form-control" name="slaDeadline" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.slaDeadline" is-open="vm.datePickerOpenStatus.slaDeadline"
                       />
@@ -54,7 +54,7 @@
                 </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_daysOpen">DaysOpen</label>
+            <label class="control-label" for="field_daysOpen">Days Open</label>
             <input type="number" class="form-control" name="daysOpen" id="field_daysOpen"
                     ng-model="vm.ACHCase.daysOpen"
                     min="0" />
@@ -72,11 +72,11 @@
         <div class="form-group">
             <label class="control-label" for="field_type">Type</label>
             <select class="form-control" name="type" ng-model="vm.ACHCase.type" id="field_type" required>
-                <option value="GOV_REC" translate="achCaseTrackingApp.CaseType.GOV_REC">GOV_REC</option>
+                <option value="GOV_REC" translate="achCaseTrackingApp.CaseType.GOV_REC">Government Reclamation</option>
                 <option value="POA">POA</option>
-                <option value="REV_DEL" translate="achCaseTrackingApp.CaseType.REV_DEL">REV_DEL</option>
-                <option value="RETURN">RETURN</option>
-                <option value="UNRESOLVED">UNRESOLVED</option>
+                <option value="REV_DEL" translate="achCaseTrackingApp.CaseType.REV_DEL">Reversal/Deletion</option>
+                <option value="RETURN">Return</option>
+                <option value="UNRESOLVED">Unresolved/Dishonored Return</option>
             </select>
             <div ng-show="editForm.type.$invalid">
                 <p class="help-block"

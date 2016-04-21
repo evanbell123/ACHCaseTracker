@@ -2,6 +2,7 @@ package com.commercebank.www.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -12,7 +13,6 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.commercebank.www.domain.enumeration.Status;
-
 import com.commercebank.www.domain.enumeration.CaseType;
 
 /**
@@ -40,6 +40,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("sla_deadline")
     private ZonedDateTime slaDeadline;
 
+    @DBRef
     @Field("sla")
     private SLA sla;
 
@@ -52,15 +53,16 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("type")
     private CaseType type;
 
+    @DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
     @Field("assigned_to")
     private String assignedTo;
 
+    @DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
-
 
     public String getId() {
         return id;
@@ -130,9 +132,9 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     public void setCaseDetail(CaseDetail caseDetail) { this.caseDetail = caseDetail; }
 
-    public SLA getSla() { return sla; }
+   // public SLA getSla() { return sla; }
 
-    public void setSla(SLA sla) { this.sla = sla; }
+   // public void setSla(SLA sla) { this.sla = sla; }
 
     @Override
     public boolean equals(Object o) {
