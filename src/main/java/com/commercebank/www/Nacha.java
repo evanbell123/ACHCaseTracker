@@ -10,7 +10,6 @@ import com.commercebank.www.domain.enumeration.CaseType;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.*;
 
-import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;

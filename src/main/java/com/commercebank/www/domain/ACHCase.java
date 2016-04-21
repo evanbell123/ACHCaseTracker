@@ -132,9 +132,9 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     public void setCaseDetail(CaseDetail caseDetail) { this.caseDetail = caseDetail; }
 
-   // public SLA getSla() { return sla; }
+    public SLA getSla() { return sla; }
 
-   // public void setSla(SLA sla) { this.sla = sla; }
+    public void setSla(SLA sla) { this.sla = sla; }
 
     @Override
     public boolean equals(Object o) {
