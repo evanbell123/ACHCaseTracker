@@ -72,7 +72,7 @@
 
         $scope.gridOptions = {
             enableFiltering: true,
-            //enableGridMenu: true,
+            enableGridMenu: true,
             enableSelectAll: true,
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: {

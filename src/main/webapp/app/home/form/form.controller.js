@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', 'Enums', 'DataService'];
+    CaseFormController.$inject = ['$scope', '$http', 'Enums', 'FormDataService'];
 
-    function CaseFormController($scope, $http, Enums, DataService, formlyVersion) {
+    function CaseFormController($scope, $http, Enums, FormDataService, formlyVersion) {
         var vm = this;
 
         vm.onSubmit = onSubmit;
@@ -18,6 +18,31 @@
             //console.log(vm.model.openedDate);
 
             var data = vm.model
+
+            var payments = data.payments;
+            var notes = data.notes;
+/*
+            for (var i = 0; i < payments.length; i++) {
+              payments[i]["@class"] = "com.commercebank.www.domain.Payment";
+            }
+
+            for (var i = 0; i < notes.length; i++) {
+              notes[i]["@class"] = "com.commercebank.www.domain.Note";
+            }
+            */
+
+            data.caseDetail.payments = payments;
+            data.caseDetail.notes = notes;
+
+
+            delete data.payments;
+            delete data.notes;
+
+            console.log(data);
+
+            data = angular.toJson(data);
+
+            console.log(data);
 
             //data.name = vm.model.name.first + " " + vm.model.name.last;
 
@@ -40,11 +65,47 @@
         };
 
         vm.formData = {};
-        /*
+
         vm.model = {
-            awesome: true
-        };
-        */
+          "totalAmount":null,
+          "id":null,
+          "status":"OPEN",
+          "lastPaymentOn": null,
+          "slaDeadline":null,
+          "sla": null,
+          "daysOpen":0,
+          "type":null,
+          "beneficiary": {
+            "customerID": null,
+            "name": null,
+            "ssn": null,
+            "accountNum": null,
+            "dateOfDeath": null,
+            "dateCBAware": null,
+            "otherGovBenefits": false,
+            "govBenefitsComment": null
+          },
+          "assignedTo":null,
+          "caseDetail": {
+            "assignedTo": null,
+            "claimNumber": null,
+            "completedOn": null,
+            "verifiedOn": null,
+            "fullRecovery": false,
+            "paymentTotal": 0.0,
+            "paymentCount": 0,
+            "verifiedBy": null,
+            "recoveryInfo": {
+              "method": null,
+              "detailType": null,
+              "detailValue": null,
+              "detailString": null,
+            },
+            "notes": null,
+            "payments": null
+          }
+        }
+
         //vm.exampleTitle = 'Repeating Section';
 
 
@@ -65,7 +126,7 @@
         function generateHideExpression(RecoveryDetailEnum) {
 
             //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
-            var hideExpression = "!model.recovery.method";
+            var hideExpression = "!model.caseDetail.recoveryInfo.method";
 
             if (RecoveryDetailEnum.fk.length === 0) {
                 return hideExpression;
@@ -74,7 +135,7 @@
             hideExpression += "||";
 
             for (var i = 0; i < RecoveryDetailEnum.fk.length; i++) {
-                hideExpression += "model.recovery.method != ";
+                hideExpression += "model.caseDetail.recoveryInfo.method != ";
                 hideExpression += RecoveryDetailEnum.fk[i];
                 if ((i + 1) != (RecoveryDetailEnum.fk.length)) {
                     hideExpression += "&&";
@@ -95,8 +156,13 @@
                     type: "radio",
                     key: "status",
                     defaultValue: 'open',
+                    /*
+                    data: {
+                        allOptions: people
+                    }
+                    */
                     templateOptions: {
-                        options: DataService.status(),
+                        options: FormDataService.status(),
                         "label": "Field Type",
                         "required": true
                     }
@@ -115,8 +181,8 @@
                                 valueProp: 'id',
                                 labelProp: 'name'
                             },
-                            controller: /* @ngInject */ function($scope, DataService) {
-                                $scope.to.loading = DataService.type().then(function(response) {
+                            controller: /* @ngInject */ function($scope, FormDataService) {
+                                $scope.to.loading = FormDataService.type().then(function(response) {
                                     $scope.to.options = response;
                                     return response;
                                 });
@@ -124,7 +190,7 @@
                             }
                         }, {
                             className: 'col-xs-6',
-                            key: 'subtype',
+                            key: 'caseDetail.subtype',
                             type: 'select',
                             templateOptions: {
                                 label: 'Case Subtype',
@@ -133,7 +199,7 @@
                                 labelProp: 'name'
 
                             },
-                            controller: /* @ngInject */ function($scope, DataService) {
+                            controller: /* @ngInject */ function($scope, FormDataService) {
                                 $scope.$watch('model.type', function(newValue, oldValue, theScope) {
                                     if (newValue !== oldValue) {
                                         // logic to reload this select's options asynchronusly based on state's value (newValue)
@@ -143,7 +209,7 @@
                                             $scope.model[$scope.options.key] = '';
                                         }
                                         // Reload options
-                                        $scope.to.loading = DataService.subtype(newValue).then(function(res) {
+                                        $scope.to.loading = FormDataService.subtype(newValue).then(function(res) {
                                             $scope.to.options = res;
                                         });
                                     }
@@ -155,9 +221,6 @@
                 }, {
                     className: 'section-label',
                     template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
-                    ngModelElAttrs: {
-                        'ng-model': 'model["whatever-i-want"]["cool!"].i.know["right?"]'
-                    },
                 }, {
                     className: 'row',
                     fieldGroup: [{
@@ -182,7 +245,7 @@
                     fieldGroup: [{
                         className: 'col-xs-6',
                         type: 'input',
-                        key: 'beneficiary.account_num',
+                        key: 'beneficiary.accountNum',
                         templateOptions: {
                             label: 'Account Number'
                         }
@@ -192,7 +255,6 @@
                         type: 'input',
                         key: 'beneficiary.ssn',
                         templateOptions: {
-                            type: 'number',
                             label: 'Social Security Number'
                         },
                         validators: {
@@ -210,7 +272,7 @@
                         fieldGroup: [{
                             className: 'col-xs-6',
                             type: 'datepicker',
-                            key: 'beneficiary.date_of_death',
+                            key: 'beneficiary.dateOfDeath',
                             templateOptions: {
                                 type: 'text',
                                 label: 'Date of Death',
@@ -221,21 +283,20 @@
                         }, {
                             className: 'col-xs-6',
                             type: 'datepicker',
-                            key: 'beneficiary.date_cb_aware',
+                            key: 'beneficiary.dateCBAware',
                             templateOptions: {
                                 type: 'text',
                                 label: 'Awareness Date',
                                 placeholder: 'Enter date CB became aware',
                                 datepickerPopup: 'dd-MMMM-yyyy'
                             }
-
                         }]
                     }, {
                         className: 'row',
                         fieldGroup: [{
                             className: 'col-xs-6',
                             type: 'checkbox',
-                            key: 'beneficiary.other_gov_benefits',
+                            key: 'beneficiary.otherGovBenefits',
                             templateOptions: {
                                 label: 'Other Government Benfits',
                             }
@@ -254,7 +315,7 @@
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.method',
+                        key: 'caseDetail.recoveryInfo.method',
                         type: 'select',
                         templateOptions: {
                             label: 'Recovery Method',
@@ -262,8 +323,8 @@
                             valueProp: 'id',
                             labelProp: 'name'
                         },
-                        controller: /* @ngInject */ function($scope, DataService) {
-                            $scope.$watch('model.subtype', function(newValue, oldValue, theScope) {
+                        controller: /* @ngInject */ function($scope, FormDataService) {
+                            $scope.$watch('model.caseDetail.subtype', function(newValue, oldValue, theScope) {
                                 if (newValue !== oldValue) {
                                     // logic to reload this select's options asynchronusly based on state's value (newValue)
                                     //console.log('new value is different from old value');
@@ -272,7 +333,7 @@
                                         $scope.model[$scope.options.key] = '';
                                     }
                                     // Reload options
-                                    $scope.to.loading = DataService.recovery(newValue).then(function(res) {
+                                    $scope.to.loading = FormDataService.recovery(newValue).then(function(res) {
                                         $scope.to.options = res;
                                     });
                                 }
@@ -280,7 +341,7 @@
                         }
                     }, {
                         className: 'col-xs-6',
-                        key: 'recovery.completed_date',
+                        key: 'caseDetail.completedOn',
                         type: 'datepicker',
                         templateOptions: {
                             type: 'text',
@@ -289,14 +350,12 @@
                             datepickerPopup: 'dd-MMMM-yyyy'
 
                         }
-
-
                     }, {
                         className: 'row',
                         fieldGroup: [{
                             className: 'col-xs-6',
                             type: 'checkbox',
-                            key: 'beneficiary.full_recovery',
+                            key: 'caseDetail.fullRecovery',
                             templateOptions: {
                                 label: 'Full Recovery',
                             }
@@ -307,16 +366,16 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail_long',
+                        key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
                         templateOptions: {
-                            type: 'number',
+
                             label: 'Check Number'
                         },
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
-                        key: 'recovery.detail_string',
+                        key: 'caseDetail.recoveryInfo.comment',
                         type: 'input',
                         templateOptions: {
                             label: 'Mailed to'
@@ -327,7 +386,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail_long',
+                        key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
@@ -339,7 +398,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail_long',
+                        key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
                         templateOptions: {
                             type: 'number',
@@ -351,7 +410,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'recovery.detail_string',
+                        key: 'caseDetail.recoveryInfo.comment',
                         type: 'input',
                         templateOptions: {
                             label: 'Comment'
@@ -388,7 +447,7 @@
                                 className: 'row',
                                 fieldGroup: [{
                                     className: 'col-xs-4',
-                                    key: 'effective_on',
+                                    key: 'effectiveOn',
                                     type: 'datepicker',
                                     templateOptions: {
                                         type: 'text',
