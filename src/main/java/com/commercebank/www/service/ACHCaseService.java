@@ -19,19 +19,19 @@ public class ACHCaseService
     private final Logger log = LoggerFactory.getLogger(ACHCaseService.class);
 
     @Inject
-    private ACHCaseResource achCaseResource;
+    private ACHCaseRepository achCaseRepository;
     @Inject
-    private GovRecResource govRecResource;
+    private GovRecRepository govRecRepository;
     @Inject
-    private BeneficiaryResource beneficiaryResource;
+    private BeneficiaryRepository beneficiaryRepository;
     @Inject
-    private PaymentResource paymentResource;
+    private PaymentRepository paymentRepository;
     @Inject
-    private CaseNoteResource caseNoteResource;
+    private CaseNoteRepository caseNoteRepository;
     @Inject
-    private RecoveryResource recoveryResource;
+    private RecoveryRepository recoveryRepository;
 
-   /* public ACHCase cascadeSave(ACHCase achCase)
+    public ACHCase cascadeSave(ACHCase achCase)
     {
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec != null)
@@ -50,5 +50,4 @@ public class ACHCaseService
         log.debug("Saved Information for ACH Case: {}", achCase);
         return achCase;
     }
-    */
 }

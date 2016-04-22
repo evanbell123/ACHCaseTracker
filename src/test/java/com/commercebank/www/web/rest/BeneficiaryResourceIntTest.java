@@ -54,8 +54,8 @@ public class BeneficiaryResourceIntTest {
     private static final String DEFAULT_SSN = "AAAAA";
     private static final String UPDATED_SSN = "BBBBB";
 
-    private static final Long DEFAULT_ACCOUNT_NUM = 1L;
-    private static final Long UPDATED_ACCOUNT_NUM = 2L;
+    private static final String DEFAULT_ACCOUNT_NUM = "1";
+    private static final String UPDATED_ACCOUNT_NUM = "2";
 
     private static final LocalDate DEFAULT_DATE_OF_DEATH = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE_OF_DEATH = LocalDate.now(ZoneId.systemDefault());
@@ -140,7 +140,7 @@ public class BeneficiaryResourceIntTest {
                 .andExpect(jsonPath("$.[*].customerid").value(hasItem(DEFAULT_CUSTOMERID.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].ssn").value(hasItem(DEFAULT_SSN.toString())))
-                .andExpect(jsonPath("$.[*].accountNum").value(hasItem(DEFAULT_ACCOUNT_NUM.intValue())))
+                .andExpect(jsonPath("$.[*].accountNum").value(hasItem(DEFAULT_ACCOUNT_NUM.toString())))
                 .andExpect(jsonPath("$.[*].dateOfDeath").value(hasItem(DEFAULT_DATE_OF_DEATH.toString())))
                 .andExpect(jsonPath("$.[*].dateCBAware").value(hasItem(DEFAULT_DATE_CB_AWARE_STR)))
                 .andExpect(jsonPath("$.[*].otherGovBenefits").value(hasItem(DEFAULT_OTHER_GOV_BENEFITS.booleanValue())));
@@ -159,7 +159,7 @@ public class BeneficiaryResourceIntTest {
             .andExpect(jsonPath("$.customerid").value(DEFAULT_CUSTOMERID.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.ssn").value(DEFAULT_SSN.toString()))
-            .andExpect(jsonPath("$.accountNum").value(DEFAULT_ACCOUNT_NUM.intValue()))
+            .andExpect(jsonPath("$.accountNum").value(DEFAULT_ACCOUNT_NUM.toString()))
             .andExpect(jsonPath("$.dateOfDeath").value(DEFAULT_DATE_OF_DEATH.toString()))
             .andExpect(jsonPath("$.dateCBAware").value(DEFAULT_DATE_CB_AWARE_STR))
             .andExpect(jsonPath("$.otherGovBenefits").value(DEFAULT_OTHER_GOV_BENEFITS.booleanValue()));

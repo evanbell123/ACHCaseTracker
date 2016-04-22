@@ -77,7 +77,8 @@ public class ACHCaseResource {
         log.debug("REST request to update ACHCase : {}", ACHCase);
         if (ACHCase.getId() == null) { return createACHCase(ACHCase); }
         //TODO: Call ACHCase Service to update and validate info before saving to repo
-        ACHCase result = achCaseRepository.save(ACHCase);
+        ACHCase result = achCaseService.cascadeSave(ACHCase);
+       // ACHCase result = achCaseRepository.save(ACHCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("ACHCase", ACHCase.getId().toString()))
             .body(result);
