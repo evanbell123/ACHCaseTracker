@@ -62,6 +62,16 @@
                     authorities: []
                 },
             })
+            .state('sla_passed_cases', {
+                parent: 'home',
+                url: 'sla_passed_cases',
+                templateUrl: 'app/home/cases/cases.html',
+                controller: 'CasesController',
+                controllerAs: 'vm',
+                data: {
+                    authorities: []
+                },
+            })
             .state('import', {
                 parent: 'home',
                 url: 'import',
