@@ -33,7 +33,7 @@ public class Beneficiary implements Serializable {
     private String ssn;
 
     @Field("account_num")
-    private Long accountNum;
+    private String accountNum;
 
     @Field("date_of_death")
     private LocalDate dateOfDeath;
@@ -44,7 +44,22 @@ public class Beneficiary implements Serializable {
     @Field("other_gov_benefits")
     private Boolean otherGovBenefits;
 
+    @Field("gov_benefits_comment")
+    private String govBenefitsComment;
+
     public Beneficiary() {}
+
+    public Beneficiary(String customerID, String name, String ssn, String accountNum, LocalDate dateOfDeath,
+                       ZonedDateTime dateCBAware, Boolean otherGovBenefits, String govBenefitsComment) {
+        this.customerID = customerID;
+        this.name = name;
+        this.ssn = ssn;
+        this.accountNum = accountNum;
+        this.dateOfDeath = dateOfDeath;
+        this.dateCBAware = dateCBAware;
+        this.otherGovBenefits = otherGovBenefits;
+        this.govBenefitsComment = govBenefitsComment;
+    }
 
     public String getId() {
         return id;
@@ -78,11 +93,9 @@ public class Beneficiary implements Serializable {
         this.ssn = ssn;
     }
 
-    public Long getAccountNum() {
-        return accountNum;
-    }
+    public String getAccountNum() { return accountNum; }
 
-    public void setAccountNum(Long accountNum) {
+    public void setAccountNum(String accountNum) {
         this.accountNum = accountNum;
     }
 
@@ -109,6 +122,10 @@ public class Beneficiary implements Serializable {
     public void setOtherGovBenefits(Boolean otherGovBenefits) {
         this.otherGovBenefits = otherGovBenefits;
     }
+
+    public String getGovBenefitsComment() { return govBenefitsComment; }
+
+    public void setGovBenefitsComment(String govBenefitsComment) { this.govBenefitsComment = govBenefitsComment; }
 
     @Override
     public boolean equals(Object o) {
@@ -141,6 +158,7 @@ public class Beneficiary implements Serializable {
             ", dateOfDeath='" + dateOfDeath + "'" +
             ", dateCBAware='" + dateCBAware + "'" +
             ", otherGovBenefits='" + otherGovBenefits + "'" +
+            ", govBenefitsComment='" + govBenefitsComment + "'" +
             '}';
     }
 }

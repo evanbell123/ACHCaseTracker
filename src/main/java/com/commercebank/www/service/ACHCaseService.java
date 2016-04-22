@@ -19,36 +19,35 @@ public class ACHCaseService
     private final Logger log = LoggerFactory.getLogger(ACHCaseService.class);
 
     @Inject
-    private ACHCaseResource achCaseResource;
+    private ACHCaseRepository achCaseRepository;
     @Inject
     private GovRecResource govRecResource;
     @Inject
-    private BeneficiaryResource beneficiaryResource;
+    private BeneficiaryRepository beneficiaryRepository;
     @Inject
-    private PaymentResource paymentResource;
+    private PaymentRepository paymentResource;
     @Inject
     private CaseNoteResource caseNoteResource;
     @Inject
     private RecoveryResource recoveryResource;
 
-   /* public ACHCase cascadeSave(ACHCase achCase)
+    public ACHCase cascadeSave(ACHCase achCase)
     {
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec != null)
         {
-            List<Payment> payments = govRec.getPayments();
-            for (Payment p : payments)
-                paymentRepository.save(p);
-            List<CaseNote> notes = govRec.getNotes();
-            for (CaseNote n : notes)
-                caseNoteRepository.save(n);
-            recoveryRepository.save(govRec.getRecoveryInfo());
-            govRecRepository.save(govRec);
+            //List<Payment> payments = govRec.getPayments();
+            //for (Payment p : payments)
+            //    paymentRepository.save(p);
+           // List<CaseNote> notes = govRec.getNotes();
+           // for (CaseNote n : notes)
+            //    caseNoteRepository.save(n);
+            //recoveryRepository.save(govRec.getRecoveryInfo());
+           // govRecRepository.save(govRec);
         }
         beneficiaryRepository.save(achCase.getBeneficiary());
         achCaseRepository.save(achCase);
         log.debug("Saved Information for ACH Case: {}", achCase);
         return achCase;
     }
-    */
 }
