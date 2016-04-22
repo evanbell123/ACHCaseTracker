@@ -9,6 +9,13 @@
 
     function DashboardController($scope) {
         var vm = this;
-        $scope.message = 'Look! I am a Dashboard.';
+        $scope.SLApassed = SLApassed($scope);
+
+        function SLApassed($scope)
+        {
+            return 3;
+        }
     }
+
+
 })();

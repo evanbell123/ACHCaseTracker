@@ -1,15 +1,22 @@
 
+<style>
+    a:link    {color:green; background-color:transparent; text-decoration:underline}
+    a:visited {color:white; background-color:transparent; text-decoration:underline}
+    a:hover   {color:red; background-color:transparent; text-decoration:underline}
+    a:active  {color:white; background-color:transparent; text-decoration:underline}
+</style>
     <div class="container" style="max-width: 1000px">
         <div class="row">
             <div class = "col-xs-3" style="background-color: #078C63; height: 200px; ">
-                <p><font color = "white" size="5">Cases that reach SLA deadline soon</font></p>
+                <p><font color = "white" size="5">Cases that passed SLA deadline</font></p>
+                <p><font color = "white" size="7"><center><a href="/#/sla_passed_cases">{{SLApassed}}</a></center></font></p>
             </div>
 
             <div class = "col-xs-3 col-xs-offset-1" style="background-color: #6AB244; height: 200px; ">
-                <p><font color = "white" size="5">Current watch items</font></p>
+                <p><font color = "white" size="5">Cases that reach SLA deadline soon</font></p>
             </div>
             <div class = "col-xs-3 col-xs-offset-1" style="background-color: #B3D78B; height: 200px; ">
-                <p><font color = "white" size="5">Assigned cases</font></p>
+                <p><font color = "white" size="5">Current watch items</font></p>
             </div>
         </div>
     </div>
