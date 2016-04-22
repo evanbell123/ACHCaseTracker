@@ -31,10 +31,11 @@ public class Recovery implements Serializable {
     @Field("detail_type")
     private RecoveryDetail detailType;
 
+    @Pattern(regexp = "^[0-9]$")
     @Field("detail_value")
-    private Long detailValue;
+    private String detailValue;
 
-    @Field("comment")
+    @Field("detail_string")
     private String detailString;
 
     public Recovery() {}
@@ -63,11 +64,11 @@ public class Recovery implements Serializable {
         this.detailType = detailType;
     }
 
-    public Long getDetailValue() {
+    public String getDetailValue() {
         return detailValue;
     }
 
-    public void setDetailValue(Long detailValue) {
+    public void setDetailValue(String detailValue) {
         this.detailValue = detailValue;
     }
 

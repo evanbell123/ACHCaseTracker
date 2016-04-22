@@ -56,7 +56,7 @@ public class Nacha
                 Beneficiary beneficiary = new Beneficiary();
                 beneficiary.setName(entryRec.getEntryDetail().getIndividualName().trim());
                 beneficiary.setCustomerID(entryRec.getEntryDetail().getIndividualIdNbr().trim());
-                beneficiary.setAccountNum(Long.parseLong(entryRec.getEntryDetail().getDfiAcctNbr().trim()));
+                beneficiary.setAccountNum(entryRec.getEntryDetail().getDfiAcctNbr().trim());
 
                 //There should be 1 addenda per entry detail record
                 if (entryRec.getAddendaRecs().size() == 0)

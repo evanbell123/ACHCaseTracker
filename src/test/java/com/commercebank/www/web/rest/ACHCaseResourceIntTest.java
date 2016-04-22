@@ -2,6 +2,7 @@ package com.commercebank.www.web.rest;
 
 import com.commercebank.www.AchCaseTrackingApp;
 import com.commercebank.www.domain.ACHCase;
+import com.commercebank.www.domain.Beneficiary;
 import com.commercebank.www.repository.ACHCaseRepository;
 
 import org.junit.Before;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
@@ -69,6 +71,11 @@ public class ACHCaseResourceIntTest {
 
     private static final CaseType DEFAULT_TYPE = CaseType.POA;
     private static final CaseType UPDATED_TYPE = CaseType.GOV_REC;
+
+    private static final Beneficiary DEFAULT_BENEFICIARY = new Beneficiary();
+    private static final Beneficiary UPDATED_BENEFICIARY = new Beneficiary("cust-38476", "Bob Smith", "485475847", "478574392837462312",
+                                                                             LocalDate.now(), ZonedDateTime.now(), true, "Skdein.");
+
 
     @Inject
     private ACHCaseRepository achCaseRepository;
