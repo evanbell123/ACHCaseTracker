@@ -21,29 +21,29 @@ public class ACHCaseService
     @Inject
     private ACHCaseRepository achCaseRepository;
     @Inject
-    private GovRecResource govRecResource;
+    private GovRecRepository govRecRepository;
     @Inject
     private BeneficiaryRepository beneficiaryRepository;
     @Inject
-    private PaymentRepository paymentResource;
+    private PaymentRepository paymentRepository;
     @Inject
-    private CaseNoteResource caseNoteResource;
+    private CaseNoteRepository caseNoteRepository;
     @Inject
-    private RecoveryResource recoveryResource;
+    private RecoveryRepository recoveryRepository;
 
     public ACHCase cascadeSave(ACHCase achCase)
     {
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec != null)
         {
-            //List<Payment> payments = govRec.getPayments();
-            //for (Payment p : payments)
-            //    paymentRepository.save(p);
-           // List<CaseNote> notes = govRec.getNotes();
-           // for (CaseNote n : notes)
-            //    caseNoteRepository.save(n);
-            //recoveryRepository.save(govRec.getRecoveryInfo());
-           // govRecRepository.save(govRec);
+            List<Payment> payments = govRec.getPayments();
+            for (Payment p : payments)
+                paymentRepository.save(p);
+            List<CaseNote> notes = govRec.getNotes();
+            for (CaseNote n : notes)
+                caseNoteRepository.save(n);
+            recoveryRepository.save(govRec.getRecoveryInfo());
+            govRecRepository.save(govRec);
         }
         beneficiaryRepository.save(achCase.getBeneficiary());
         achCaseRepository.save(achCase);

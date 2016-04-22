@@ -32,6 +32,7 @@ public class Beneficiary implements Serializable {
     @Field("ssn")
     private String ssn;
 
+    @Pattern(regexp = "^[0-9]$")
     @Field("account_num")
     private String accountNum;
 

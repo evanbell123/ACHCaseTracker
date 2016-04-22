@@ -49,8 +49,8 @@ public class RecoveryResourceIntTest {
     private static final RecoveryDetail DEFAULT_DETAIL_TYPE = RecoveryDetail.CHK_NUM;
     private static final RecoveryDetail UPDATED_DETAIL_TYPE = RecoveryDetail.GL_COST;
 
-    private static final Long DEFAULT_DETAIL_VALUE = 1L;
-    private static final Long UPDATED_DETAIL_VALUE = 2L;
+    private static final String DEFAULT_DETAIL_VALUE = 1L;
+    private static final String UPDATED_DETAIL_VALUE = 2L;
     private static final String DEFAULT_COMMENT = "AAAAA";
     private static final String UPDATED_COMMENT = "BBBBB";
 
