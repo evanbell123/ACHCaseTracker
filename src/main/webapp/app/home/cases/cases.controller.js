@@ -37,8 +37,7 @@
                     copyAccount = account;
                     //console.log(copyAccount);
 
-                    data.assignedTo = Object.assign({}, copyAccount);
-                    data.assignedTo.fullName = data.assignedTo.firstName + " " + data.assignedTo.lastName;
+                    data.assignedTo = copyAccount.login;
                     //console.log(data.assignedTo);
                 });
 

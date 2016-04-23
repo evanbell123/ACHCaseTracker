@@ -72,10 +72,16 @@
           "status":"OPEN",
           "lastPaymentOn": null,
           "slaDeadline":null,
-          "sla": null,
+          "sla": {
+            //"@class": "com.commercebank.www.domain.SLA",
+            "id": null,
+            "businessDays": 0
+          },
           "daysOpen":0,
           "type":null,
           "beneficiary": {
+            //"@class": "com.commercebank.www.domain.Beneficiary",
+            "id": null,
             "customerID": null,
             "name": null,
             "ssn": null,
@@ -87,15 +93,19 @@
           },
           "assignedTo":null,
           "caseDetail": {
-            "assignedTo": null,
+            "@class": "com.commercebank.www.domain.GovRec",
+            "id": null,
             "claimNumber": null,
             "completedOn": null,
             "verifiedOn": null,
             "fullRecovery": false,
             "paymentTotal": 0.0,
             "paymentCount": 0,
+            "subtype": null,
             "verifiedBy": null,
             "recoveryInfo": {
+              //"@class": "com.commercebank.www.domain.Recovery",
+              "id": null,
               "method": null,
               "detailType": null,
               "detailValue": null,
@@ -261,8 +271,13 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-                                    var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
-                                    return pattern.test(value);
+                                    if (value === null) { //if the field is not filled out, don;
+                                      return true;
+                                    } else { //validate the input
+                                      var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                      return pattern.test(value);
+                                    }
+
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
                             }
