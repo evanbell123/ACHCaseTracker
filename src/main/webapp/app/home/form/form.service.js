@@ -3,7 +3,7 @@
 
     angular
         .module('achCaseTrackingApp')
-        .factory('DataService', FormDataService);
+        .factory('FormDataService', FormDataService);
     FormDataService.$inject = ['$http', '$q', 'Enums'];
 
     function FormDataService($http, $q, Enums) {

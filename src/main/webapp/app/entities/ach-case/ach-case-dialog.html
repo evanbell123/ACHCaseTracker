@@ -14,6 +14,12 @@
                     ng-model="vm.ACHCase.id" readonly />
         </div>
         <div class="form-group">
+            <label class="control-label" for="field_Beneficiary _name">Beneficiary Name</label>
+            <input type="text" class="form-control" name="beneficiaryName" id="field_Beneficiary _name"
+                    ng-model="vm.ACHCase.beneficiary.name"
+                     />
+        </div>
+        <div class="form-group">
             <label class="control-label" for="field_totalAmount">Total Amount</label>
             <input type="number" class="form-control" name="totalAmount" id="field_totalAmount"
                     ng-model="vm.ACHCase.totalAmount"
