@@ -24,6 +24,13 @@ public class SLA extends AbstractAuditingEntity implements Serializable {
     @Field("business_days")
     private Long businessDays;
 
+    public SLA() {}
+
+    public SLA(String id, Long businessDays) {
+        this.businessDays = businessDays;
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
@@ -41,6 +48,7 @@ public class SLA extends AbstractAuditingEntity implements Serializable {
     }
 
     @Override
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -1,14 +1,21 @@
 package com.commercebank.www.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import com.commercebank.www.domain.SLA;
+import com.commercebank.www.repository.SLARepository;
 
-@Service
+import javax.inject.Inject;
+
+/**
+ * Created by Steven on 4/22/2016.
+ */
 public class SLAService
 {
-    private final Logger log = LoggerFactory.getLogger(SLAService.class);
+    @Inject
+    private static SLARepository slaRepository;
 
-    //TODO: Update an SLA deadline, with considerations for holidays and weekends
-
+    public static SLA getSLA(String id)
+    {
+        return slaRepository.findOne(id);
+    }
 }
+

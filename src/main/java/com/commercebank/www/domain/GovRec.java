@@ -64,6 +64,14 @@ public class GovRec implements Serializable, CaseDetail {
 
     public GovRec() {}
 
+    public GovRec(String claimNumber, ZonedDateTime completedOn, BigDecimal paymentTotal, CaseSubtype subtype)
+    {
+        this.claimNumber = claimNumber;
+        this.completedOn = completedOn;
+        this.paymentTotal = paymentTotal;
+        this.subtype = subtype;
+    }
+
     public String getId() {
         return id;
     }

@@ -3,7 +3,9 @@ package com.commercebank.www.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
 import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
+import com.commercebank.www.service.UserService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class ACHCaseResource {
     @Inject
     private ACHCaseService achCaseService;
 
+    @Inject
+    private UserService userService;
+
     /**
      * POST  /ach-case : Create a new ACHCase.
      *
@@ -54,7 +59,8 @@ public class ACHCaseResource {
         if (ACHCase.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACHCase", "idexists", "A new ACHCase cannot already have an ID")).body(null);
         }
-        ACHCase result = achCaseRepository.save(ACHCase);
+        //ACHCase result = achCaseRepository.save(ACHCase);
+        ACHCase result = achCaseService.cascadeSave(ACHCase);
         return ResponseEntity.created(new URI("/api/ach-case/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("ACHCase", result.getId().toString()))
             .body(result);
@@ -78,7 +84,7 @@ public class ACHCaseResource {
         if (ACHCase.getId() == null) { return createACHCase(ACHCase); }
         //TODO: Call ACHCase Service to update and validate info before saving to repo
         ACHCase result = achCaseService.cascadeSave(ACHCase);
-       // ACHCase result = achCaseRepository.save(ACHCase);
+        //ACHCase result = achCaseRepository.save(ACHCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("ACHCase", ACHCase.getId().toString()))
             .body(result);
@@ -137,6 +143,25 @@ public class ACHCaseResource {
         log.debug("REST request to delete ACHCase : {}", id);
         achCaseRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("ACHCase", id.toString())).build();
+    }
+
+    /**
+     * GET  /my-cases/ : get all the ACH Cases that belong to the current user.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of ACHCases in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/my-cases",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<ACHCase>> getMyACHCases(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of ACHCases");
+        Page<ACHCase> page = achCaseRepository.findByAssignedTo(SecurityUtils.getCurrentUserLogin(), pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

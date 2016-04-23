@@ -68,8 +68,7 @@
                                 slaDeadline: null,
                                 daysOpen: null,
                                 type: null,
-                                id: null,
-                               // beneficiary: null
+                                id: null
                             };
                         }
                     }

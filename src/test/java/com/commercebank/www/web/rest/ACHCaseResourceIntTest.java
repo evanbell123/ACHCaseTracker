@@ -1,13 +1,16 @@
 package com.commercebank.www.web.rest;
 
 import com.commercebank.www.AchCaseTrackingApp;
-import com.commercebank.www.domain.ACHCase;
-import com.commercebank.www.domain.Beneficiary;
+import com.commercebank.www.domain.*;
+import com.commercebank.www.domain.enumeration.CaseSubtype;
 import com.commercebank.www.repository.ACHCaseRepository;
 
+import com.commercebank.www.repository.SLARepository;
+import com.commercebank.www.service.ACHCaseService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
@@ -51,7 +54,6 @@ public class ACHCaseResourceIntTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
-
     private static final BigDecimal DEFAULT_TOTAL_AMOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_TOTAL_AMOUNT = new BigDecimal(2);
 
@@ -72,13 +74,23 @@ public class ACHCaseResourceIntTest {
     private static final CaseType DEFAULT_TYPE = CaseType.POA;
     private static final CaseType UPDATED_TYPE = CaseType.GOV_REC;
 
-    private static final Beneficiary DEFAULT_BENEFICIARY = new Beneficiary();
-    private static final Beneficiary UPDATED_BENEFICIARY = new Beneficiary("cust-38476", "Bob Smith", "485475847", "478574392837462312",
-                                                                             LocalDate.now(), ZonedDateTime.now(), true, "Skdein.");
+    private static final String DEFAULT_ASSIGNED_TO = "ADMIN";
+    private static final String UPDATED_ASSIGNED_TO = "USER";
 
+    private static final Beneficiary DEFAULT_BENEFICIARY = BeneficiaryResourceIntTest.getDefaultBeneficiary();
+    private static final Beneficiary UPDATED_BENEFICIARY = BeneficiaryResourceIntTest.getUpdatedBeneficiary(DEFAULT_BENEFICIARY);
+
+    private static final SLA DEFAULT_SLA = SLAResourceIntTest.getDefaultSLA();
+    private static final SLA UPDATED_SLA = SLAResourceIntTest.getUpdatedSLA(DEFAULT_SLA);
+
+    private static final CaseDetail DEFAULT_CASE_DETAIL = GovRecResourceIntTest.getDefaultGovRec();
+    private static final CaseDetail UPDATED_CASE_DETAIL = GovRecResourceIntTest.getUpdatedGovRec((GovRec)DEFAULT_CASE_DETAIL);
 
     @Inject
     private ACHCaseRepository achCaseRepository;
+
+    @Inject
+    private ACHCaseService achCaseService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -110,6 +122,10 @@ public class ACHCaseResourceIntTest {
         ACHCase.setSlaDeadline(DEFAULT_SLA_DEADLINE);
         ACHCase.setDaysOpen(DEFAULT_DAYS_OPEN);
         ACHCase.setType(DEFAULT_TYPE);
+        ACHCase.setSla(DEFAULT_SLA);
+        ACHCase.setCaseDetail(DEFAULT_CASE_DETAIL);
+        ACHCase.setBeneficiary(DEFAULT_BENEFICIARY);
+        ACHCase.setAssignedTo(DEFAULT_ASSIGNED_TO);
     }
 
     @Test
@@ -133,6 +149,10 @@ public class ACHCaseResourceIntTest {
         assertThat(testACHCase.getSlaDeadline()).isEqualTo(DEFAULT_SLA_DEADLINE);
         assertThat(testACHCase.getDaysOpen()).isEqualTo(DEFAULT_DAYS_OPEN);
         assertThat(testACHCase.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testACHCase.getSla()).isEqualTo(DEFAULT_SLA);
+        assertThat(testACHCase.getCaseDetail()).isEqualTo(DEFAULT_CASE_DETAIL);
+        assertThat(testACHCase.getBeneficiary()).isEqualTo(DEFAULT_BENEFICIARY);
+        assertThat(testACHCase.getAssignedTo()).isEqualTo(DEFAULT_ASSIGNED_TO);
     }
 
     @Test
@@ -172,7 +192,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void getAllACHCases() throws Exception {
         // Initialize the database
-        achCaseRepository.save(ACHCase);
+        achCaseService.cascadeSave(ACHCase);
 
         // Get all the ACHCases
         restACHCaseMockMvc.perform(get("/api/ach-case?sort=id,desc"))
@@ -184,13 +204,17 @@ public class ACHCaseResourceIntTest {
                 .andExpect(jsonPath("$.[*].lastPaymentOn").value(hasItem(DEFAULT_LAST_PAYMENT_ON_STR)))
                 .andExpect(jsonPath("$.[*].slaDeadline").value(hasItem(DEFAULT_SLA_DEADLINE_STR)))
                 .andExpect(jsonPath("$.[*].daysOpen").value(hasItem(DEFAULT_DAYS_OPEN.intValue())))
-                .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+                .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+                .andExpect(jsonPath("$.[*].sla").value(hasItem(DEFAULT_SLA.toString())))
+                .andExpect(jsonPath("$.[*].caseDetail").value(hasItem(DEFAULT_CASE_DETAIL.toString())))
+                .andExpect(jsonPath("$.[*].beneficiary").value(hasItem(DEFAULT_BENEFICIARY.toString())))
+                .andExpect(jsonPath("$.[*].assignedTo").value(hasItem(DEFAULT_ASSIGNED_TO.toString())));
     }
 
     @Test
     public void getACHCase() throws Exception {
         // Initialize the database
-        achCaseRepository.save(ACHCase);
+        achCaseService.cascadeSave(ACHCase);
 
         // Get the ACHCase
         restACHCaseMockMvc.perform(get("/api/ach-case/{id}", ACHCase.getId()))
@@ -202,7 +226,11 @@ public class ACHCaseResourceIntTest {
             .andExpect(jsonPath("$.lastPaymentOn").value(DEFAULT_LAST_PAYMENT_ON_STR))
             .andExpect(jsonPath("$.slaDeadline").value(DEFAULT_SLA_DEADLINE_STR))
             .andExpect(jsonPath("$.daysOpen").value(DEFAULT_DAYS_OPEN.intValue()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.sla").value(DEFAULT_SLA.toString()))
+            .andExpect(jsonPath("$.caseDetail").value(DEFAULT_CASE_DETAIL.toString()))
+            .andExpect(jsonPath("$.beneficiary").value(DEFAULT_BENEFICIARY.toString()))
+            .andExpect(jsonPath("$.assignedTo").value(DEFAULT_ASSIGNED_TO.toString()));
     }
 
     @Test
@@ -215,7 +243,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void updateACHCase() throws Exception {
         // Initialize the database
-        achCaseRepository.save(ACHCase);
+        achCaseService.cascadeSave(ACHCase);
         int databaseSizeBeforeUpdate = achCaseRepository.findAll().size();
 
         // Update the ACHCase
@@ -227,6 +255,10 @@ public class ACHCaseResourceIntTest {
         updatedACHCase.setSlaDeadline(UPDATED_SLA_DEADLINE);
         updatedACHCase.setDaysOpen(UPDATED_DAYS_OPEN);
         updatedACHCase.setType(UPDATED_TYPE);
+        updatedACHCase.setSla(UPDATED_SLA);
+        updatedACHCase.setCaseDetail(UPDATED_CASE_DETAIL);
+        updatedACHCase.setBeneficiary(UPDATED_BENEFICIARY);
+        updatedACHCase.setAssignedTo(UPDATED_ASSIGNED_TO);
 
         restACHCaseMockMvc.perform(put("/api/ach-case")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -243,12 +275,16 @@ public class ACHCaseResourceIntTest {
         assertThat(testACHCase.getSlaDeadline()).isEqualTo(UPDATED_SLA_DEADLINE);
         assertThat(testACHCase.getDaysOpen()).isEqualTo(UPDATED_DAYS_OPEN);
         assertThat(testACHCase.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testACHCase.getSla()).isEqualTo(UPDATED_SLA);
+        assertThat(testACHCase.getCaseDetail()).isEqualTo(UPDATED_CASE_DETAIL);
+        assertThat(testACHCase.getBeneficiary()).isEqualTo(UPDATED_BENEFICIARY);
+        assertThat(testACHCase.getAssignedTo()).isEqualTo(UPDATED_ASSIGNED_TO);
     }
 
     @Test
     public void deleteACHCase() throws Exception {
         // Initialize the database
-        achCaseRepository.save(ACHCase);
+        achCaseService.cascadeSave(ACHCase);
         int databaseSizeBeforeDelete = achCaseRepository.findAll().size();
 
         // Get the ACHCase

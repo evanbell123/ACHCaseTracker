@@ -31,7 +31,7 @@ public class Recovery implements Serializable {
     @Field("detail_type")
     private RecoveryDetail detailType;
 
-    @Pattern(regexp = "^[0-9]$")
+    @Pattern(regexp = "^[0-9]+$")
     @Field("detail_value")
     private String detailValue;
 

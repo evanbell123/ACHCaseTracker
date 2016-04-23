@@ -67,6 +67,9 @@ public class BeneficiaryResourceIntTest {
     private static final Boolean DEFAULT_OTHER_GOV_BENEFITS = false;
     private static final Boolean UPDATED_OTHER_GOV_BENEFITS = true;
 
+    private static final String DEFAULT_GOV_BENEFITS_COMMENT = "CCCC";
+    private static final String UPDATED_GOV_BENEFITS_COMMENT = "DDDD";
+
     @Inject
     private BeneficiaryRepository beneficiaryRepository;
 
@@ -101,6 +104,7 @@ public class BeneficiaryResourceIntTest {
         beneficiary.setDateOfDeath(DEFAULT_DATE_OF_DEATH);
         beneficiary.setDateCBAware(DEFAULT_DATE_CB_AWARE);
         beneficiary.setOtherGovBenefits(DEFAULT_OTHER_GOV_BENEFITS);
+        beneficiary.setGovBenefitsComment(DEFAULT_GOV_BENEFITS_COMMENT);
     }
 
     @Test
@@ -188,6 +192,7 @@ public class BeneficiaryResourceIntTest {
         updatedBeneficiary.setDateOfDeath(UPDATED_DATE_OF_DEATH);
         updatedBeneficiary.setDateCBAware(UPDATED_DATE_CB_AWARE);
         updatedBeneficiary.setOtherGovBenefits(UPDATED_OTHER_GOV_BENEFITS);
+        updatedBeneficiary.setGovBenefitsComment(UPDATED_GOV_BENEFITS_COMMENT);
 
         restBeneficiaryMockMvc.perform(put("/api/beneficiaries")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -221,5 +226,36 @@ public class BeneficiaryResourceIntTest {
         // Validate the database is empty
         List<Beneficiary> beneficiaries = beneficiaryRepository.findAll();
         assertThat(beneficiaries).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    /* For use with ACHCaseResourceIntTest */
+    public static Beneficiary getDefaultBeneficiary()
+    {
+        Beneficiary defaultBeneficiary = new Beneficiary();
+        defaultBeneficiary.setCustomerID(DEFAULT_CUSTOMERID);
+        defaultBeneficiary.setName(DEFAULT_NAME);
+        defaultBeneficiary.setSSN(DEFAULT_SSN);
+        defaultBeneficiary.setAccountNum(DEFAULT_ACCOUNT_NUM);
+        defaultBeneficiary.setDateOfDeath(DEFAULT_DATE_OF_DEATH);
+        defaultBeneficiary.setDateCBAware(DEFAULT_DATE_CB_AWARE);
+        defaultBeneficiary.setOtherGovBenefits(DEFAULT_OTHER_GOV_BENEFITS);
+        defaultBeneficiary.setGovBenefitsComment(DEFAULT_GOV_BENEFITS_COMMENT);
+        return defaultBeneficiary;
+    }
+
+    /* For use with ACHCaseResourceIntTest */
+    public static Beneficiary getUpdatedBeneficiary(Beneficiary beneficiary)
+    {
+        Beneficiary updatedBeneficiary = new Beneficiary();
+        updatedBeneficiary.setId(beneficiary.getId());
+        updatedBeneficiary.setCustomerID(UPDATED_CUSTOMERID);
+        updatedBeneficiary.setName(UPDATED_NAME);
+        updatedBeneficiary.setSSN(UPDATED_SSN);
+        updatedBeneficiary.setAccountNum(UPDATED_ACCOUNT_NUM);
+        updatedBeneficiary.setDateOfDeath(UPDATED_DATE_OF_DEATH);
+        updatedBeneficiary.setDateCBAware(UPDATED_DATE_CB_AWARE);
+        updatedBeneficiary.setOtherGovBenefits(UPDATED_OTHER_GOV_BENEFITS);
+        updatedBeneficiary.setGovBenefitsComment(UPDATED_GOV_BENEFITS_COMMENT);
+        return updatedBeneficiary;
     }
 }

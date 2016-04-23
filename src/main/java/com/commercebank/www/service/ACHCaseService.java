@@ -30,22 +30,31 @@ public class ACHCaseService
     private CaseNoteRepository caseNoteRepository;
     @Inject
     private RecoveryRepository recoveryRepository;
+    @Inject
+    private SLARepository slaRepository;
 
+    /*
+    * Nested objects stored as DBRefs need to be saved before saving the case.
+    */
     public ACHCase cascadeSave(ACHCase achCase)
     {
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec != null)
         {
-            List<Payment> payments = govRec.getPayments();
-            for (Payment p : payments)
-                paymentRepository.save(p);
-            List<CaseNote> notes = govRec.getNotes();
-            for (CaseNote n : notes)
-                caseNoteRepository.save(n);
-            recoveryRepository.save(govRec.getRecoveryInfo());
+            if (govRec.getPayments() != null)
+                for (Payment p : govRec.getPayments())
+                    paymentRepository.save(p);
+            if (govRec.getNotes() != null)
+                for (CaseNote n : govRec.getNotes())
+                    caseNoteRepository.save(n);
+            if (govRec.getRecoveryInfo() != null)
+                recoveryRepository.save(govRec.getRecoveryInfo());
             govRecRepository.save(govRec);
         }
-        beneficiaryRepository.save(achCase.getBeneficiary());
+        if (achCase.getBeneficiary() != null)
+            beneficiaryRepository.save(achCase.getBeneficiary());
+        if (achCase.getSla() != null)
+            slaRepository.save(achCase.getSla());
         achCaseRepository.save(achCase);
         log.debug("Saved Information for ACH Case: {}", achCase);
         return achCase;

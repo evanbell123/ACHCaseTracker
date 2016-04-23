@@ -180,4 +180,21 @@ public class PaymentResourceIntTest {
         List<Payment> payments = paymentRepository.findAll();
         assertThat(payments).hasSize(databaseSizeBeforeDelete - 1);
     }
+
+    public static Payment getDefaultPayment()
+    {
+        Payment payment = new Payment();
+        payment.setAmount(DEFAULT_AMOUNT);
+        payment.setEffectiveOn(DEFAULT_EFFECTIVE_ON);
+        return payment;
+    }
+
+    public static Payment getUpdatedPayment(Payment payment)
+    {
+        Payment updatedPayment = new Payment();
+        updatedPayment.setId(payment.getId());
+        updatedPayment.setAmount(UPDATED_AMOUNT);
+        updatedPayment.setEffectiveOn(UPDATED_EFFECTIVE_ON);
+        return updatedPayment;
+    }
 }

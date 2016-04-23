@@ -24,11 +24,11 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Field("total_amount")
-    private BigDecimal totalAmount;
-
     @Id
     private String id;
+
+    @Field("total_amount")
+    private BigDecimal totalAmount;
 
     @NotNull
     @Field("status")
@@ -44,7 +44,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("sla")
     private SLA sla;
 
-    @Transient
+    //@Transient
     @Min(value = 0)
     @Field("days_open")
     private Long daysOpen;
