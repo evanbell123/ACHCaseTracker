@@ -11,11 +11,7 @@ import javax.inject.Inject;
 public class SLAService
 {
     @Inject
-    private static SLARepository slaRepository;
+    private SLARepository slaRepository;
 
-    public static SLA getSLA(String id)
-    {
-        return slaRepository.findOne(id);
-    }
 }
 

@@ -9,7 +9,7 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('ach-case', {
+        .state('ach-case', { //'ach-case'
             parent: 'entity',
             url: '/ach-case',
             data: {
@@ -62,6 +62,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                assignedTo: null,
                                 totalAmount: null,
                                 status: null,
                                 lastPaymentOn: null,

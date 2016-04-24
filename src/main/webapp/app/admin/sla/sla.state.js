@@ -10,15 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('sla', {
-            parent: 'entity',
+            parent: 'admin',
             url: '/sla',
             data: {
-                authorities: ['ROLE_ACHOPS'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'SLAS'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/sla/sla.html',
+                    templateUrl: 'app/admin/sla/sla.html',
                     controller: 'SLAController',
                     controllerAs: 'vm'
                 }
@@ -27,15 +27,15 @@
             }
         })
         .state('sla-detail', {
-            parent: 'entity',
+            parent: 'admin',
             url: '/sla/{id}',
             data: {
-                authorities: ['ROLE_ACHOPS'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'SLA'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/sla/sla-detail.html',
+                    templateUrl: 'app/admin/sla/sla-detail.html',
                     controller: 'SLADetailController',
                     controllerAs: 'vm'
                 }
@@ -50,11 +50,11 @@
             parent: 'sla',
             url: '/new',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/sla/sla-dialog.html',
+                    templateUrl: 'app/admin/sla/sla-dialog.html',
                     controller: 'SLADialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -62,9 +62,8 @@
                     resolve: {
                         entity: function () {
                             return {
-                                businessDays: null,
-                                typeName: null,
-                                id: null
+                                id: null,
+                                businessDays: 0
                             };
                         }
                     }
@@ -79,11 +78,11 @@
             parent: 'sla',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/sla/sla-dialog.html',
+                    templateUrl: 'app/admin/sla/sla-dialog.html',
                     controller: 'SLADialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -104,11 +103,11 @@
             parent: 'sla',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/sla/sla-delete-dialog.html',
+                    templateUrl: 'app/admin/sla/sla-delete-dialog.html',
                     controller: 'SLADeleteController',
                     controllerAs: 'vm',
                     size: 'md',

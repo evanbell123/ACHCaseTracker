@@ -9,12 +9,10 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 import com.commercebank.www.domain.enumeration.CaseType;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.*;
-import com.commercebank.www.service.SLAService;
 
-import javax.inject.Inject;
+import java.util.Optional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,8 +86,9 @@ public class Nacha
 
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
-                achCase.setSla(slaRepository.findOne("non-treasury-standard"));
-                achCase.setSlaDeadline(ZonedDateTime.now().plusDays(3));
+                Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
+                achCase.setSla(sla.orElse(slaRepository.save(new SLA("default" ,new Long(3)))));
+                achCase.setSlaDeadline(LocalDate.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);

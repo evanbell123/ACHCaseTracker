@@ -67,14 +67,14 @@
         vm.formData = {};
 
         vm.model = {
-          "totalAmount":null,
-          "id":null,
+          "totalAmount": null,
+          "id": null,
           "status":"OPEN",
           "lastPaymentOn": null,
           "slaDeadline":null,
           "sla": null,
-          "daysOpen":0,
-          "type":null,
+          "daysOpen": 0,
+          "type": null,
           "beneficiary": {
             "customerID": null,
             "name": null,
@@ -85,22 +85,23 @@
             "otherGovBenefits": false,
             "govBenefitsComment": null
           },
-          "assignedTo":null,
+          "assignedTo": null,
           "caseDetail": {
-            "assignedTo": null,
-            "claimNumber": null,
-            "completedOn": null,
-            "verifiedOn": null,
-            "fullRecovery": false,
-            "paymentTotal": 0.0,
-            "paymentCount": 0,
-            "verifiedBy": null,
-            "recoveryInfo": {
-              "method": null,
-              "detailType": null,
-              "detailValue": null,
-              "detailString": null,
-            },
+              "@class": "com.commercebank.www.domain.GovRec",
+              "claimNumber": null,
+              "completedOn": null,
+              "verifiedOn": null,
+              "fullRecovery": false,
+              "paymentTotal": 0.0,
+              "paymentCount": 0,
+              "verifiedBy": null,
+              "recoveryInfo": null,
+              //{
+              //"method": null,
+              //"detailType": null,
+              //"detailValue": null,
+              //"detailString": null,
+              // },
             "notes": null,
             "payments": null
           }
@@ -261,7 +262,8 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-                                    var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                    var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
+                                    //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " is not a valid ssn"'

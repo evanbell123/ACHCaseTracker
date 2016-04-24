@@ -49,10 +49,12 @@ public class BeneficiaryResourceIntTest {
 
     private static final String DEFAULT_CUSTOMERID = "AAAAA";
     private static final String UPDATED_CUSTOMERID = "BBBBB";
+
     private static final String DEFAULT_NAME = "AAAAA";
     private static final String UPDATED_NAME = "BBBBB";
-    private static final String DEFAULT_SSN = "AAAAA";
-    private static final String UPDATED_SSN = "BBBBB";
+
+    private static final String DEFAULT_SSN = "123456789";
+    private static final String UPDATED_SSN = "111223333";
 
     private static final String DEFAULT_ACCOUNT_NUM = "1";
     private static final String UPDATED_ACCOUNT_NUM = "2";
@@ -141,7 +143,7 @@ public class BeneficiaryResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(beneficiary.getId())))
-                .andExpect(jsonPath("$.[*].customerid").value(hasItem(DEFAULT_CUSTOMERID.toString())))
+                .andExpect(jsonPath("$.[*].customerID").value(hasItem(DEFAULT_CUSTOMERID.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].ssn").value(hasItem(DEFAULT_SSN.toString())))
                 .andExpect(jsonPath("$.[*].accountNum").value(hasItem(DEFAULT_ACCOUNT_NUM.toString())))
@@ -160,7 +162,7 @@ public class BeneficiaryResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(beneficiary.getId()))
-            .andExpect(jsonPath("$.customerid").value(DEFAULT_CUSTOMERID.toString()))
+            .andExpect(jsonPath("$.customerID").value(DEFAULT_CUSTOMERID.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.ssn").value(DEFAULT_SSN.toString()))
             .andExpect(jsonPath("$.accountNum").value(DEFAULT_ACCOUNT_NUM.toString()))

@@ -70,7 +70,6 @@ public class SLAResourceIntTest {
     public void initTest() {
         slaRepository.deleteAll();
         SLA = new SLA();
-        SLA.setId("gov-rec-Initial");
         SLA.setBusinessDays(DEFAULT_BUSINESS_DAYS);
     }
 

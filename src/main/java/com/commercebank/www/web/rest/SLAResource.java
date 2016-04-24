@@ -91,7 +91,7 @@ public class SLAResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<SLA>> getAllSLAS(Pageable pageable)
+    public ResponseEntity<List<SLA>> getAllSLAs(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of SLAS");
         Page<SLA> page = slaRepository.findAll(pageable);

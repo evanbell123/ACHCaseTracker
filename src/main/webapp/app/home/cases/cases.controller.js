@@ -14,7 +14,7 @@
       function updateRequest(data, successResponse, errorResonse) {
         $http({
             method: 'PUT',
-            url: 'api/ach-case',
+            url: 'api/my-cases',
             data: data
         }).then(function successCallback(response) {
 
@@ -148,7 +148,7 @@
                 cellTemplate: '<input type="checkbox" ng-model="row.entity.isWatched" ng-change="grid.appScope.watch(row.entity)">',
                 width: '5%'
             }, {
-                name: 'assignedTo.fullName',
+                name: 'assignedTo',
                 enableCellEdit: false,
                 displayName: 'Assigned To',
                 headerCellClass: $scope.highlightFilteredHeader,
@@ -246,12 +246,10 @@
         //console.log($location.path());
         var request = $location.path();
 
-        $http.get("api/ach-case")
+        $http.get("api/my-cases")
             .then(function(response) {
 
                 var data = response.data;
-
-
 
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i].status, data[i].type);
@@ -262,11 +260,10 @@
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
 
                     data[i].isWatched = false;
-
-                    if (data[i].assignedTo !== null) {
-                        data[i].isWatched = true;
-                        data[i].assignedTo.fullName = data[i].assignedTo.firstName + " " + data[i].assignedTo.lastName;
-                    }
+                    //if (data[i].assignedTo != null) {
+                     //   data[i].isWatched = true;
+                     //   data[i].assignedTo.fullName = data[i].assignedTo.firstName + " " + data[i].assignedTo.lastName;
+                    //}
                     //console.log(data[i].isWatched);
                 }
                 $scope.gridOptions.data = data;
@@ -275,6 +272,8 @@
                 //console.log(data);
             });
     }
+
+
     /*
         function getEnumIdFromName(CaseEnum, name) {
             var enumId = CaseEnum.filter(function(value) {

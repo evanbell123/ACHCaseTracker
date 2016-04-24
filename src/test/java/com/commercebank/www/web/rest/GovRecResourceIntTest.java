@@ -7,6 +7,7 @@ import com.commercebank.www.domain.Payment;
 import com.commercebank.www.domain.Recovery;
 import com.commercebank.www.repository.GovRecRepository;
 
+import com.commercebank.www.service.GovRecService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -33,6 +35,7 @@ import java.time.ZoneId;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -90,6 +93,9 @@ public class GovRecResourceIntTest {
 
     @Inject
     private GovRecRepository govRecRepository;
+
+    @Inject
+    private GovRecService govRecService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -179,7 +185,8 @@ public class GovRecResourceIntTest {
     @Test
     public void getAllGovRecs() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
 
         // Get all the govRecs
         restGovRecMockMvc.perform(get("/api/gov-recs?sort=id,desc"))
@@ -198,7 +205,8 @@ public class GovRecResourceIntTest {
     @Test
     public void getGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
 
         // Get the govRec
         restGovRecMockMvc.perform(get("/api/gov-recs/{id}", govRec.getId()))
@@ -224,7 +232,9 @@ public class GovRecResourceIntTest {
     @Test
     public void updateGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
+
         int databaseSizeBeforeUpdate = govRecRepository.findAll().size();
 
         // Update the govRec
@@ -239,11 +249,11 @@ public class GovRecResourceIntTest {
         updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
         updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
         updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
-        List<Payment> payments = govRec.getPayments();
+        List<Payment> payments = govRec.getPayments().get();
         payments.remove(DEFAULT_PAYMENT);
         payments.add(UPDATED_PAYMENT);
         updatedGovRec.setPayments(payments);
-        List<CaseNote> notes = govRec.getNotes();
+        List<CaseNote> notes = govRec.getNotes().get();
         notes.remove(DEFAULT_CASE_NOTE);
         notes.add(UPDATED_CASE_NOTE);
         updatedGovRec.setNotes(notes);
@@ -265,14 +275,16 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getSubtype()).isEqualTo(UPDATED_SUBTYPE);
         assertThat(testGovRec.isFullRecovery()).isEqualTo(UPDATED_FULL_RECOVERY);
         assertThat(testGovRec.getRecoveryInfo()).isEqualTo(UPDATED_RECOVERY_INFO);
-        assertThat(testGovRec.getPayments().get(0)).isEqualTo(UPDATED_PAYMENT);
-        assertThat(testGovRec.getNotes().get(0)).isEqualTo(UPDATED_CASE_NOTE);
+        assertThat(testGovRec.getPayments().get().get(0)).isEqualTo(UPDATED_PAYMENT);
+        assertThat(testGovRec.getNotes().get().get(0)).isEqualTo(UPDATED_CASE_NOTE);
     }
 
     @Test
     public void deleteGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
+
         int databaseSizeBeforeDelete = govRecRepository.findAll().size();
 
         // Get the govRec
@@ -319,11 +331,11 @@ public class GovRecResourceIntTest {
         updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
         updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
         updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
-        List<Payment> payments = govRec.getPayments();
+        List<Payment> payments = govRec.getPayments().get();
         payments.remove(DEFAULT_PAYMENT);
         payments.add(UPDATED_PAYMENT);
         updatedGovRec.setPayments(payments);
-        List<CaseNote> notes = govRec.getNotes();
+        List<CaseNote> notes = govRec.getNotes().get();
         notes.remove(DEFAULT_CASE_NOTE);
         notes.add(UPDATED_CASE_NOTE);
         updatedGovRec.setNotes(notes);

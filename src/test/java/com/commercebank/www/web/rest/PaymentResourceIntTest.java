@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
@@ -51,8 +52,8 @@ public class PaymentResourceIntTest {
     private static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_AMOUNT = new BigDecimal(2);
 
-    private static final ZonedDateTime DEFAULT_EFFECTIVE_ON = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
-    private static final ZonedDateTime UPDATED_EFFECTIVE_ON = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_EFFECTIVE_ON = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
+    private static final LocalDate UPDATED_EFFECTIVE_ON = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final String DEFAULT_EFFECTIVE_ON_STR = dateTimeFormatter.format(DEFAULT_EFFECTIVE_ON);
 
     @Inject

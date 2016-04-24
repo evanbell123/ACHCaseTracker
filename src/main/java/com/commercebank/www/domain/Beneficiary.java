@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,7 +14,7 @@ import java.util.Objects;
 /**
  * A Beneficiary.
  */
-
+@TypeName("Beneficiary")
 @Document(collection = "beneficiary")
 public class Beneficiary implements Serializable {
 
@@ -28,11 +29,11 @@ public class Beneficiary implements Serializable {
     @Field("name")
     private String name;
 
-    @Pattern(regexp = "^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$")
+    @Pattern(regexp = "^((?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}|)$")
     @Field("ssn")
     private String ssn;
 
-    @Pattern(regexp = "^[0-9]+$")
+    @Pattern(regexp = "^([0-9]+|)$")
     @Field("account_num")
     private String accountNum;
 
