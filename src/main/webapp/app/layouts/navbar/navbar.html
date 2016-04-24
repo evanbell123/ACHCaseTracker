@@ -1,3 +1,5 @@
+<div ng-cloak ng-switch="vm.isAuthenticated()">
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation"  style="background-color:#fff">
     <div class="container">
         <div class="navbar-header">
@@ -9,6 +11,7 @@
             </button>
             <img src="../content/images/commerce-bank-1.jpg" alt="Commerce-Bank" width="200px" height="auto" style = "margin:10px 0 0 0">
         </div>
+        <div class="row" ng-switch-when="true">
         <div class="collapse navbar-collapse" id="navbar-collapse" uib-collapse="vm.navCollapsed" ng-switch="vm.isAuthenticated()"  style="background-color:#fff">
             <ul class="nav navbar-nav navbar-right">
                 <!--<li ui-sref-active="active">-->
@@ -140,3 +143,4 @@
         </div>
     </div>
 </nav>
+</div>

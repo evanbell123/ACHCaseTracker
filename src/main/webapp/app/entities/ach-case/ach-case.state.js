@@ -9,7 +9,7 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('ach-case', { //'ach-case'
+        .state('ach-case', {
             parent: 'entity',
             url: '/ach-case',
             data: {
@@ -69,7 +69,8 @@
                                 slaDeadline: null,
                                 daysOpen: null,
                                 type: null,
-                                id: null
+                                id: null,
+                                beneficiary: null
                             };
                         }
                     }

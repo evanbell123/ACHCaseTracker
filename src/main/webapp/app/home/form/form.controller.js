@@ -67,14 +67,14 @@
         vm.formData = {};
 
         vm.model = {
-          "totalAmount": null,
-          "id": null,
+          "totalAmount":null,
+          "id":null,
           "status":"OPEN",
           "lastPaymentOn": null,
           "slaDeadline":null,
           "sla": null,
-          "daysOpen": 0,
-          "type": null,
+          "daysOpen":0,
+          "type":null,
           "beneficiary": {
             "customerID": null,
             "name": null,
@@ -85,23 +85,22 @@
             "otherGovBenefits": false,
             "govBenefitsComment": null
           },
-          "assignedTo": null,
+          "assignedTo":null,
           "caseDetail": {
               "@class": "com.commercebank.www.domain.GovRec",
-              "claimNumber": null,
-              "completedOn": null,
-              "verifiedOn": null,
-              "fullRecovery": false,
-              "paymentTotal": 0.0,
-              "paymentCount": 0,
-              "verifiedBy": null,
-              "recoveryInfo": null,
-              //{
-              //"method": null,
-              //"detailType": null,
-              //"detailValue": null,
-              //"detailString": null,
-              // },
+            "claimNumber": null,
+            "completedOn": null,
+            "verifiedOn": null,
+            "fullRecovery": false,
+            "paymentTotal": 0.0,
+            "paymentCount": 0,
+            "verifiedBy": null,
+            "recoveryInfo": {
+             // "method": null,
+             // "detailType": null,
+             // "detailValue": null,
+             // "detailString": null,
+            },
             "notes": null,
             "payments": null
           }
@@ -370,6 +369,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
 
                             label: 'Check Number'
@@ -390,6 +398,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
                             type: 'number',
                             label: 'GL and Call Center'
@@ -402,8 +419,16 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
-                            type: 'number',
                             label: 'Customer DDA Account Number'
                         },
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[2])
