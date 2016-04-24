@@ -372,7 +372,7 @@
                         validators: {
                             detailString: {
                                 expression: function() {
-                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " value must be numerical."'
@@ -401,7 +401,7 @@
                         validators: {
                             detailString: {
                                 expression: function() {
-                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " value must be numerical."'
@@ -422,7 +422,7 @@
                         validators: {
                             detailString: {
                                 expression: function() {
-                                    var pattern = var pattern = /^([0-9]+|)$/;
+                                    var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " value must be numerical."'
