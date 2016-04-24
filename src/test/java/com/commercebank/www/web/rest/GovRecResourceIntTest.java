@@ -1,12 +1,17 @@
 package com.commercebank.www.web.rest;
 
 import com.commercebank.www.AchCaseTrackingApp;
+import com.commercebank.www.domain.CaseNote;
 import com.commercebank.www.domain.GovRec;
+import com.commercebank.www.domain.Payment;
+import com.commercebank.www.domain.Recovery;
 import com.commercebank.www.repository.GovRecRepository;
 
+import com.commercebank.www.service.GovRecService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
@@ -19,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -27,7 +33,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -71,8 +79,23 @@ public class GovRecResourceIntTest {
     private static final Boolean DEFAULT_FULL_RECOVERY = false;
     private static final Boolean UPDATED_FULL_RECOVERY = true;
 
+    private static final String DEFAULT_VERIFIED_BY = "ADMIN";
+    private static final String UPDATED_VERIFIED_BY = "USER";
+
+    private static final Recovery DEFAULT_RECOVERY_INFO = RecoveryResourceIntTest.getDefaultRecovery();
+    private static final Recovery UPDATED_RECOVERY_INFO = RecoveryResourceIntTest.getUpdatedRecovery(DEFAULT_RECOVERY_INFO);
+
+    private static final Payment DEFAULT_PAYMENT = PaymentResourceIntTest.getDefaultPayment();
+    private static final Payment UPDATED_PAYMENT = PaymentResourceIntTest.getUpdatedPayment(DEFAULT_PAYMENT);
+
+    private static final CaseNote DEFAULT_CASE_NOTE = CaseNoteResourceIntTest.getDefaultCaseNote();
+    private static final CaseNote UPDATED_CASE_NOTE = CaseNoteResourceIntTest.getUpdatedCaseNote(DEFAULT_CASE_NOTE);
+
     @Inject
     private GovRecRepository govRecRepository;
+
+    @Inject
+    private GovRecService govRecService;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -105,6 +128,14 @@ public class GovRecResourceIntTest {
         govRec.setPaymentCount(DEFAULT_PAYMENT_COUNT);
         govRec.setSubtype(DEFAULT_SUBTYPE);
         govRec.setFullRecovery(DEFAULT_FULL_RECOVERY);
+        govRec.setVerifiedBy(DEFAULT_VERIFIED_BY);
+        govRec.setRecoveryInfo(DEFAULT_RECOVERY_INFO);
+        ArrayList<Payment> payments = new ArrayList<>(1);
+        payments.add(DEFAULT_PAYMENT);
+        govRec.setPayments(payments);
+        ArrayList<CaseNote> notes = new ArrayList<>(1);
+        notes.add(DEFAULT_CASE_NOTE);
+        govRec.setNotes(notes);
     }
 
     @Test
@@ -129,6 +160,9 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getPaymentCount()).isEqualTo(DEFAULT_PAYMENT_COUNT);
         assertThat(testGovRec.getSubtype()).isEqualTo(DEFAULT_SUBTYPE);
         assertThat(testGovRec.isFullRecovery()).isEqualTo(DEFAULT_FULL_RECOVERY);
+        assertThat(testGovRec.getRecoveryInfo()).isEqualTo(DEFAULT_RECOVERY_INFO);
+        assertThat(testGovRec.getPayments().get(0)).isEqualTo(DEFAULT_PAYMENT);
+        assertThat(testGovRec.getNotes().get(0)).isEqualTo(DEFAULT_CASE_NOTE);
     }
 
     @Test
@@ -151,7 +185,8 @@ public class GovRecResourceIntTest {
     @Test
     public void getAllGovRecs() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
 
         // Get all the govRecs
         restGovRecMockMvc.perform(get("/api/gov-recs?sort=id,desc"))
@@ -170,7 +205,8 @@ public class GovRecResourceIntTest {
     @Test
     public void getGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
 
         // Get the govRec
         restGovRecMockMvc.perform(get("/api/gov-recs/{id}", govRec.getId()))
@@ -196,7 +232,9 @@ public class GovRecResourceIntTest {
     @Test
     public void updateGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
+
         int databaseSizeBeforeUpdate = govRecRepository.findAll().size();
 
         // Update the govRec
@@ -209,6 +247,16 @@ public class GovRecResourceIntTest {
         updatedGovRec.setPaymentCount(UPDATED_PAYMENT_COUNT);
         updatedGovRec.setSubtype(UPDATED_SUBTYPE);
         updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
+        updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
+        updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
+        List<Payment> payments = govRec.getPayments().get();
+        payments.remove(DEFAULT_PAYMENT);
+        payments.add(UPDATED_PAYMENT);
+        updatedGovRec.setPayments(payments);
+        List<CaseNote> notes = govRec.getNotes().get();
+        notes.remove(DEFAULT_CASE_NOTE);
+        notes.add(UPDATED_CASE_NOTE);
+        updatedGovRec.setNotes(notes);
 
         restGovRecMockMvc.perform(put("/api/gov-recs")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -226,12 +274,17 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getPaymentCount()).isEqualTo(UPDATED_PAYMENT_COUNT);
         assertThat(testGovRec.getSubtype()).isEqualTo(UPDATED_SUBTYPE);
         assertThat(testGovRec.isFullRecovery()).isEqualTo(UPDATED_FULL_RECOVERY);
+        assertThat(testGovRec.getRecoveryInfo()).isEqualTo(UPDATED_RECOVERY_INFO);
+        assertThat(testGovRec.getPayments().get().get(0)).isEqualTo(UPDATED_PAYMENT);
+        assertThat(testGovRec.getNotes().get().get(0)).isEqualTo(UPDATED_CASE_NOTE);
     }
 
     @Test
     public void deleteGovRec() throws Exception {
         // Initialize the database
-        govRecRepository.save(govRec);
+        //govRecRepository.save(govRec);
+        govRecService.cascadeSave(Optional.of(govRec));
+
         int databaseSizeBeforeDelete = govRecRepository.findAll().size();
 
         // Get the govRec
@@ -242,5 +295,50 @@ public class GovRecResourceIntTest {
         // Validate the database is empty
         List<GovRec> govRecs = govRecRepository.findAll();
         assertThat(govRecs).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    public static GovRec getDefaultGovRec()
+    {
+        GovRec govRec = new GovRec();
+        govRec.setClaimNumber(DEFAULT_CLAIM_NUMBER);
+        govRec.setCompletedOn(DEFAULT_COMPLETED_ON);
+        govRec.setVerifiedOn(DEFAULT_VERIFIED_ON);
+        govRec.setPaymentTotal(DEFAULT_PAYMENT_TOTAL);
+        govRec.setPaymentCount(DEFAULT_PAYMENT_COUNT);
+        govRec.setSubtype(DEFAULT_SUBTYPE);
+        govRec.setFullRecovery(DEFAULT_FULL_RECOVERY);
+        govRec.setVerifiedBy(DEFAULT_VERIFIED_BY);
+        govRec.setRecoveryInfo(DEFAULT_RECOVERY_INFO);
+        ArrayList<Payment> payments = new ArrayList<>(1);
+        payments.add(DEFAULT_PAYMENT);
+        govRec.setPayments(payments);
+        ArrayList<CaseNote> notes = new ArrayList<>(1);
+        notes.add(DEFAULT_CASE_NOTE);
+        govRec.setNotes(notes);
+        return govRec;
+    }
+
+    public static GovRec getUpdatedGovRec(GovRec govRec)
+    {
+        GovRec updatedGovRec = new GovRec();
+        updatedGovRec.setId(govRec.getId());
+        updatedGovRec.setClaimNumber(UPDATED_CLAIM_NUMBER);
+        updatedGovRec.setCompletedOn(UPDATED_COMPLETED_ON);
+        updatedGovRec.setVerifiedOn(UPDATED_VERIFIED_ON);
+        updatedGovRec.setPaymentTotal(UPDATED_PAYMENT_TOTAL);
+        updatedGovRec.setPaymentCount(UPDATED_PAYMENT_COUNT);
+        updatedGovRec.setSubtype(UPDATED_SUBTYPE);
+        updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
+        updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
+        updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
+        List<Payment> payments = govRec.getPayments().get();
+        payments.remove(DEFAULT_PAYMENT);
+        payments.add(UPDATED_PAYMENT);
+        updatedGovRec.setPayments(payments);
+        List<CaseNote> notes = govRec.getNotes().get();
+        notes.remove(DEFAULT_CASE_NOTE);
+        notes.add(UPDATED_CASE_NOTE);
+        updatedGovRec.setNotes(notes);
+        return updatedGovRec;
     }
 }

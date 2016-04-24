@@ -19,7 +19,7 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="customerid"><span>Customerid</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="customerID"><span>Customerid</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="ssn"><span>Ssn</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="accountNum"><span>AccountNum</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -32,7 +32,7 @@
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
                 <tr ng-repeat="beneficiary in vm.beneficiaries track by beneficiary.id">
                     <td><a ui-sref="beneficiary-detail({id:beneficiary.id})">{{beneficiary.id}}</a></td>
-                    <td>{{beneficiary.customerid}}</td>
+                    <td>{{beneficiary.customerID}}</td>
                     <td>{{beneficiary.name}}</td>
                     <td>{{beneficiary.ssn}}</td>
                     <td>{{beneficiary.accountNum}}</td>

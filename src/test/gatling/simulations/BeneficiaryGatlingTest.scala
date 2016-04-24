@@ -68,7 +68,7 @@ class BeneficiaryGatlingTest extends Simulation {
             .exec(http("Create new beneficiary")
             .post("/api/beneficiaries")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "customerid":"SAMPLE_TEXT", "name":"SAMPLE_TEXT", "ssn":"SAMPLE_TEXT", "accountNum":null, "dateOfDeath":"2020-01-01T00:00:00.000Z", "dateCBAware":"2020-01-01T00:00:00.000Z", "otherGovBenefits":null}""")).asJSON
+            .body(StringBody("""{"id":null, "customerID":"SAMPLE_TEXT", "name":"SAMPLE_TEXT", "ssn":"SAMPLE_TEXT", "accountNum":null, "dateOfDeath":"2020-01-01T00:00:00.000Z", "dateCBAware":"2020-01-01T00:00:00.000Z", "otherGovBenefits":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_beneficiary_url"))).exitHereIfFailed
             .pause(10)

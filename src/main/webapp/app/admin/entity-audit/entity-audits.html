@@ -10,7 +10,7 @@
             <form name="auditForm" role="form" novalidate show-validation>
                 <div class="row">
                     <div class="col-md-8 form-group">
-                        <label>Entity/Table</label>
+                        <label>Entity</label>
                         <select class="input-sm form-control" name="qualifiedName" id="qualifiedName" required
                                 ng-options="vm.getEntityName(entity) for entity in vm.entities"
                                 ng-model="vm.qualifiedName"></select>
@@ -31,6 +31,10 @@
                     <button ng-disabled="auditForm.$invalid"
                             class="btn btn-primary pull-right" ng-click="vm.loadChanges()"><i
                         class="glyphicon glyphicon-import"></i>&nbsp;Load Change List
+                    </button>
+                    <button ng-disabled="auditForm.$invalid"
+                            class="btn btn-info pull-left" ng-click="vm.exportPDF()"><i
+                        class="glyphicon glyphicon-import"></i>&nbsp;Create PDF
                     </button>
                 </div>
             </form>
@@ -68,7 +72,8 @@
                     <!--<td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>-->
                     <!-- comment above line and uncomment below to have Table view of value -->
                     <td class="no-pad">
-                        <div class="audit-obj">
+                        <div class="col-sm-12">
+                        <!--<div class="audit-obj">-->
                             <table class="table table-bordered table-hover no-margin">
                                 <tr>
                                     <th>Field</th>

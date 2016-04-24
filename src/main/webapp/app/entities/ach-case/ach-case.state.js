@@ -62,6 +62,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                assignedTo: null,
                                 totalAmount: null,
                                 status: null,
                                 lastPaymentOn: null,

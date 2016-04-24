@@ -4,17 +4,26 @@
             db.sla.insert(
             {
                 "_id" : "non-treasury-initial",
-                "businessDays" : 3
+                "_class": "com.commercebank.www.domain.SLA",
+                "business_days" : 3,
+                "created_by": "system",
+                "created_date": new Date()
             });
             db.sla.insert(
             {
                 "_id" : "non-treasury-standard",
-                "businessDays" : 7
+                "_class": "com.commercebank.www.domain.SLA",
+                "business_days" : 7,
+                "created_by": "system",
+                "created_date": new Date()
             });
             db.sla.insert(
             {
                 "_id" : "treasury-standard",
-                "businessDays" : 7
+                "_class": "com.commercebank.www.domain.SLA",
+                "business_days" : 7,
+                "created_by": "system",
+                "created_date": new Date()
             });
         </script>
     </changeSet>

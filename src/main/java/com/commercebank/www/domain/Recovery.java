@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,7 +16,7 @@ import com.commercebank.www.domain.enumeration.RecoveryDetail;
 /**
  * A Recovery.
  */
-
+@TypeName("Recovery")
 @Document(collection = "recovery")
 public class Recovery implements Serializable {
 
@@ -31,7 +32,7 @@ public class Recovery implements Serializable {
     @Field("detail_type")
     private RecoveryDetail detailType;
 
-    @Pattern(regexp = "^[0-9]$")
+    @Pattern(regexp = "^([0-9]+|)$")
     @Field("detail_value")
     private String detailValue;
 

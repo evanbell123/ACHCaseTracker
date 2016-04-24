@@ -3,7 +3,7 @@
     "fields": [
         {
             "fieldId": 1,
-            "fieldName": "customerid",
+            "fieldName": "customerID",
             "fieldType": "String"
         },
         {

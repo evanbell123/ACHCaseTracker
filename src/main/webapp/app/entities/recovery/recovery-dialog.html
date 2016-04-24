@@ -41,9 +41,15 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="field_detailValue">DetailValue</label>
-            <input type="number" class="form-control" name="detailValue" id="field_detailValue"
+            <input type="text" class="form-control" name="detailValue" id="field_detailValue" pattern="^([0-9]+|null|)$"
                     ng-model="vm.recovery.detailValue"
                      />
+            <div ng-show="editForm.detailValue.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.detailValue.$error.pattern">
+                    This field should be number.
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label" for="field_comment">Comment</label>
@@ -57,7 +63,6 @@
                     ng-model="vm.recovery.fullRecovery"
                      />
         </div>
-
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

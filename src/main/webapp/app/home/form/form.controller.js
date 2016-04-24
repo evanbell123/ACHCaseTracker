@@ -87,7 +87,7 @@
           },
           "assignedTo":null,
           "caseDetail": {
-            "assignedTo": null,
+              "@class": "com.commercebank.www.domain.GovRec",
             "claimNumber": null,
             "completedOn": null,
             "verifiedOn": null,
@@ -96,10 +96,10 @@
             "paymentCount": 0,
             "verifiedBy": null,
             "recoveryInfo": {
-              "method": null,
-              "detailType": null,
-              "detailValue": null,
-              "detailString": null,
+             // "method": null,
+             // "detailType": null,
+             // "detailValue": null,
+             // "detailString": null,
             },
             "notes": null,
             "payments": null
@@ -261,7 +261,8 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-                                    var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                    var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
+                                    //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
@@ -368,6 +369,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
 
                             label: 'Check Number'
@@ -388,6 +398,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
                             type: 'number',
                             label: 'GL and Call Center'
@@ -400,8 +419,16 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
-                            type: 'number',
                             label: 'Customer DDA Account Number'
                         },
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[2])

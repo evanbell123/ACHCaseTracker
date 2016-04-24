@@ -10,30 +10,31 @@ import com.commercebank.www.domain.enumeration.CaseType;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.*;
 
+import java.util.Optional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Nacha
 {
     private static ACHCaseRepository achCaseRepository;
+    private static GovRecRepository govRecRepository;
     private static BeneficiaryRepository beneficiaryRepository;
     private static PaymentRepository paymentRepository;
-    private static GovRecRepository govRecRepository;
+    private static SLARepository slaRepository;
 
     public static void setRepos(ACHCaseRepository achCaseRepo, BeneficiaryRepository beneficiaryRepo,
-                                PaymentRepository paymentRepo, GovRecRepository govRecRepo)
+                                PaymentRepository paymentRepo, GovRecRepository govRecRepo, SLARepository slaRepo)
 
     {
         achCaseRepository = achCaseRepo;
         beneficiaryRepository = beneficiaryRepo;
         paymentRepository = paymentRepo;
         govRecRepository = govRecRepo;
+        slaRepository = slaRepo;
     }
 
-    //TODO: Break this into multiple methods, add exception handling and further initialize objects
     public static void processNacha(String fileName) throws Exception
     {
         ACHFile file = new ACHFile();
@@ -59,7 +60,7 @@ public class Nacha
                 beneficiary.setAccountNum(entryRec.getEntryDetail().getDfiAcctNbr().trim());
 
                 //There should be 1 addenda per entry detail record
-                if (entryRec.getAddendaRecs().size() == 0)
+                if (entryRec.getAddendaRecs().isEmpty())
                     throw new Exception("The file is missing an addenda record. Processing cannot continue.");
 
                 ACHRecordAddenda addenda = entryRec.getAddendaRecs().get(0);
@@ -68,12 +69,12 @@ public class Nacha
 
                 beneficiary.setDateOfDeath(LocalDate.parse(date));
                 beneficiary.setSSN(pmtInfo.substring(34, 43));
-                //beneficiary.setDateCBAware(ZonedDateTime.now());
                 beneficiaryRepository.save(beneficiary);
 
                 Payment payment = new Payment();
                 payment.setAmount(BigDecimal.valueOf(Double.parseDouble(pmtInfo.substring(52, pmtInfo.indexOf('\\')))));
                 paymentRepository.save(payment);
+
                 List<Payment> payments = new ArrayList<>();
                 payments.add(payment);
 
@@ -82,16 +83,16 @@ public class Nacha
                 govRec.setSubtype(CaseSubtype.DNE);
                 govRec.setPaymentCount(new Long(1));
                 govRecRepository.save(govRec);
+
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
-                //TODO: Add method in SLA Service to get SLA by ID
-                achCase.setSlaDeadline(ZonedDateTime.now().plusDays(3));
+                Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
+                achCase.setSla(sla.orElse(slaRepository.save(new SLA("default" ,new Long(3)))));
+                achCase.setSlaDeadline(LocalDate.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
                 achCase.setStatus(Status.OPEN);
-
-                //beneficiaryRepository.save(beneficiary);
                 achCaseRepository.save(achCase);
             }
         }

@@ -1,18 +1,20 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
  * A Payment.
  */
-
+@TypeName("Payment")
 @Document(collection = "payment")
 public class Payment implements Serializable {
 
@@ -25,7 +27,7 @@ public class Payment implements Serializable {
     private BigDecimal amount;
 
     @Field("effective_on")
-    private ZonedDateTime effectiveOn;
+    private LocalDate effectiveOn;
 
     public Payment() {}
 
@@ -45,11 +47,11 @@ public class Payment implements Serializable {
         this.amount = amount;
     }
 
-    public ZonedDateTime getEffectiveOn() {
+    public LocalDate getEffectiveOn() {
         return effectiveOn;
     }
 
-    public void setEffectiveOn(ZonedDateTime effectiveOn) {
+    public void setEffectiveOn(LocalDate effectiveOn) {
         this.effectiveOn = effectiveOn;
     }
 

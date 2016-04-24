@@ -162,4 +162,19 @@ public class CaseNoteResourceIntTest {
         List<CaseNote> caseNotes = caseNoteRepository.findAll();
         assertThat(caseNotes).hasSize(databaseSizeBeforeDelete - 1);
     }
+
+    public static CaseNote getDefaultCaseNote()
+    {
+        CaseNote caseNote = new CaseNote();
+        caseNote.setNote(DEFAULT_NOTE);
+        return caseNote;
+    }
+
+    public static CaseNote getUpdatedCaseNote(CaseNote caseNote)
+    {
+        CaseNote updatedCaseNote = new CaseNote();
+        updatedCaseNote.setId(caseNote.getId());
+        updatedCaseNote.setNote(UPDATED_NOTE);
+        return updatedCaseNote;
+    }
 }

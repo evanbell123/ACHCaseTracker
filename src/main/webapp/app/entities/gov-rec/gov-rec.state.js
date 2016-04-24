@@ -62,6 +62,10 @@
                     resolve: {
                         entity: function () {
                             return {
+                                payments: [],
+                                notes: [],
+                                recoveryInfo: null,
+                                fullRecovery: null,
                                 claimNumber: null,
                                 completedOn: null,
                                 verifiedOn: null,
