@@ -3,6 +3,7 @@ package com.commercebank.www.web.rest;
 import com.commercebank.www.domain.EntityAuditEvent;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.javers.core.Javers;
+import org.javers.core.JaversBuilder;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
 import com.commercebank.www.security.AuthoritiesConstants;
@@ -54,7 +55,7 @@ public class JaversEntityAuditResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public List<String> getAuditedEntities() {
 
-      return Arrays.asList("ACHCase","Beneficiary","CaseNote","GovRec","Payment","Recovery","Sla");
+      return Arrays.asList("ACH Case","Beneficiary","Case Note","Government Reclamation","Payment","Recovery","SLA");
     }
 
     /**
@@ -73,7 +74,7 @@ public class JaversEntityAuditResource {
         log.debug("REST request to get a page of EntityAuditEvents");
         Pageable pageRequest = createPageRequest(limit);
 
-        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + entityType);
+        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + entityType.replaceAll("\\s+",""));
         QueryBuilder jqlQuery = QueryBuilder.byClass(entityTypeToFetch)
                                             .limit(limit)
                                             .withNewObjectChanges(true);
@@ -93,7 +94,6 @@ public class JaversEntityAuditResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/audits/entity/changes");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-
     }
 
     /**
@@ -121,7 +121,6 @@ public class JaversEntityAuditResource {
         EntityAuditEvent prev = EntityAuditEvent.fromJaversSnapshot(javers.findSnapshots(jqlQuery.build()).get(0));
 
         return new ResponseEntity<>(prev, HttpStatus.OK);
-
     }
 
     /**

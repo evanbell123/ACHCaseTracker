@@ -18,7 +18,7 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 /**
  * A GovRec.
  */
-@TypeName("Gov Rec")
+@TypeName("GovRec")
 @Document(collection = "gov_rec")
 public class GovRec implements Serializable, CaseDetail {
 

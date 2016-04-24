@@ -12,7 +12,7 @@
             parent: 'admin',
             url: '/entity-audits',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                 pageTitle: 'Audits'
             },
             views: {

@@ -19,7 +19,7 @@ import com.commercebank.www.domain.enumeration.CaseType;
 /**
  * An ACH Case.
  */
-@TypeName("ACH Case")
+@TypeName("ACHCase")
 @Document(collection = "ach_case")
 public class ACHCase extends AbstractAuditingEntity implements Serializable {
 

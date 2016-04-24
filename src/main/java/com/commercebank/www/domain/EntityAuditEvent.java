@@ -3,6 +3,7 @@ package com.commercebank.www.domain;
 
 import java.time.ZonedDateTime;
 
+import org.javers.core.JaversBuilder;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.joda.time.LocalDateTime;
 import java.time.ZoneId;
@@ -14,7 +15,7 @@ import java.util.Objects;
 public class EntityAuditEvent implements Serializable{
 
     private static final long serialVersionUID = 1L;
-    
+
     private String id;
 
     private String entityId;
@@ -47,7 +48,7 @@ public class EntityAuditEvent implements Serializable{
         this.entityId = entityId;
     }
 
-    
+
 
     public String getEntityType() {
         return entityType;
@@ -128,7 +129,7 @@ public class EntityAuditEvent implements Serializable{
             '}';
     }
 
-    
+
     public static EntityAuditEvent fromJaversSnapshot(CdoSnapshot snapshot) {
         EntityAuditEvent entityAuditEvent = new EntityAuditEvent();
 
@@ -180,7 +181,6 @@ public class EntityAuditEvent implements Serializable{
         entityAuditEvent.setModifiedDate(modifyDate);
 
         return entityAuditEvent;
-
     }
 
 }
