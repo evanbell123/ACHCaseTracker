@@ -44,7 +44,7 @@
             })
             .state('cases', {
                 parent: 'home',
-                url: 'cases',
+                url: 'ach-case',
                 templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',

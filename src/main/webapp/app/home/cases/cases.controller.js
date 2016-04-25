@@ -14,7 +14,7 @@
       function updateRequest(data, successResponse, errorResonse) {
         $http({
             method: 'PUT',
-            url: 'api/my-cases',
+            url: 'api/ach-case',
             data: data
         }).then(function successCallback(response) {
 
@@ -37,8 +37,7 @@
                     copyAccount = account;
                     //console.log(copyAccount);
 
-                    data.assignedTo = Object.assign({}, copyAccount);
-                    data.assignedTo.fullName = data.assignedTo.firstName + " " + data.assignedTo.lastName;
+                    data.assignedTo = copyAccount.login;
                     //console.log(data.assignedTo);
                 });
 
@@ -246,7 +245,7 @@
         //console.log($location.path());
         var request = $location.path();
 
-        $http.get("api/my-cases")
+        $http.get("api"+request)
             .then(function(response) {
 
                 var data = response.data;

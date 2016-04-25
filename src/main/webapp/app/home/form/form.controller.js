@@ -106,6 +106,7 @@
           }
         }
 
+
         //vm.exampleTitle = 'Repeating Section';
 
 
@@ -197,7 +198,6 @@
                                 options: [],
                                 valueProp: 'id',
                                 labelProp: 'name'
-
                             },
                             controller: /* @ngInject */ function($scope, FormDataService) {
                                 $scope.$watch('model.type', function(newValue, oldValue, theScope) {
@@ -261,6 +261,7 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
+
                                     var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
                                     //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
                                     return pattern.test(value);
@@ -385,7 +386,7 @@
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
-                        key: 'caseDetail.recoveryInfo.comment',
+                        key: 'caseDetail.recoveryInfo.detailString',
                         type: 'input',
                         templateOptions: {
                             label: 'Mailed to'
@@ -437,7 +438,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'caseDetail.recoveryInfo.comment',
+                        key: 'caseDetail.recoveryInfo.detailString',
                         type: 'input',
                         templateOptions: {
                             label: 'Comment'
