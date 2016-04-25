@@ -3,6 +3,7 @@ package com.commercebank.www.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.GovRec;
 import com.commercebank.www.repository.GovRecRepository;
+import com.commercebank.www.service.GovRecService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -30,10 +31,13 @@ import java.util.Optional;
 public class GovRecResource {
 
     private final Logger log = LoggerFactory.getLogger(GovRecResource.class);
-        
+
     @Inject
     private GovRecRepository govRecRepository;
-    
+
+    @Inject
+    private GovRecService govRecService;
+
     /**
      * POST  /gov-recs : Create a new govRec.
      *
@@ -50,7 +54,8 @@ public class GovRecResource {
         if (govRec.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("govRec", "idexists", "A new govRec cannot already have an ID")).body(null);
         }
-        GovRec result = govRecRepository.save(govRec);
+        //GovRec result = govRecRepository.save(govRec);
+        GovRec result = govRecService.cascadeSave(govRec);
         return ResponseEntity.created(new URI("/api/gov-recs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("govRec", result.getId().toString()))
             .body(result);
@@ -74,7 +79,8 @@ public class GovRecResource {
         if (govRec.getId() == null) {
             return createGovRec(govRec);
         }
-        GovRec result = govRecRepository.save(govRec);
+        //GovRec result = govRecRepository.save(govRec);
+        GovRec result = govRecService.cascadeSave(govRec);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("govRec", govRec.getId().toString()))
             .body(result);
@@ -94,7 +100,7 @@ public class GovRecResource {
     public ResponseEntity<List<GovRec>> getAllGovRecs(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of GovRecs");
-        Page<GovRec> page = govRecRepository.findAll(pageable); 
+        Page<GovRec> page = govRecRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/gov-recs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -32,7 +32,7 @@ public class SLAResource {
     private final Logger log = LoggerFactory.getLogger(SLAResource.class);
 
     @Inject
-    private SLARepository sLARepository;
+    private SLARepository slaRepository;
 
     /**
      * POST  /sla : Create a new SLA.
@@ -50,7 +50,7 @@ public class SLAResource {
         if (SLA.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SLA", "idexists", "A new SLA cannot already have an ID")).body(null);
         }
-        SLA result = sLARepository.save(SLA);
+        SLA result = slaRepository.save(SLA);
         return ResponseEntity.created(new URI("/api/sla/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("SLA", result.getId().toString()))
             .body(result);
@@ -74,7 +74,7 @@ public class SLAResource {
         if (SLA.getId() == null) {
             return createSLA(SLA);
         }
-        SLA result = sLARepository.save(SLA);
+        SLA result = slaRepository.save(SLA);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("SLA", SLA.getId().toString()))
             .body(result);
@@ -91,10 +91,10 @@ public class SLAResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<SLA>> getAllSLAS(Pageable pageable)
+    public ResponseEntity<List<SLA>> getAllSLAs(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of SLAS");
-        Page<SLA> page = sLARepository.findAll(pageable);
+        Page<SLA> page = slaRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sla");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -110,9 +110,9 @@ public class SLAResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<SLA> getSLA(@PathVariable String id) {
-        log.debug("REST request to get SLA : {}", id);
-        SLA SLA = sLARepository.findOne(id);
-        return Optional.ofNullable(SLA)
+        log.debug("REST request to get sla : {}", id);
+        SLA sla = slaRepository.findOne(id);
+        return Optional.ofNullable(sla)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
@@ -131,7 +131,7 @@ public class SLAResource {
     @Timed
     public ResponseEntity<Void> deleteSLA(@PathVariable String id) {
         log.debug("REST request to delete SLA : {}", id);
-        sLARepository.delete(id);
+        slaRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("SLA", id.toString())).build();
     }
 

@@ -40,11 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class SLAResourceIntTest {
 
-
     private static final Long DEFAULT_BUSINESS_DAYS = 1L;
     private static final Long UPDATED_BUSINESS_DAYS = 2L;
-    private static final String DEFAULT_TYPE_NAME = "AAAAA";
-    private static final String UPDATED_TYPE_NAME = "BBBBB";
 
     @Inject
     private SLARepository slaRepository;
@@ -121,8 +118,7 @@ public class SLAResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(SLA.getId())))
-                .andExpect(jsonPath("$.[*].businessDays").value(hasItem(DEFAULT_BUSINESS_DAYS.intValue())))
-                .andExpect(jsonPath("$.[*].typeName").value(hasItem(DEFAULT_TYPE_NAME.toString())));
+                .andExpect(jsonPath("$.[*].businessDays").value(hasItem(DEFAULT_BUSINESS_DAYS.intValue())));
     }
 
     @Test
@@ -135,8 +131,7 @@ public class SLAResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(SLA.getId()))
-            .andExpect(jsonPath("$.businessDays").value(DEFAULT_BUSINESS_DAYS.intValue()))
-            .andExpect(jsonPath("$.typeName").value(DEFAULT_TYPE_NAME.toString()));
+            .andExpect(jsonPath("$.businessDays").value(DEFAULT_BUSINESS_DAYS.intValue()));
     }
 
     @Test
@@ -183,5 +178,20 @@ public class SLAResourceIntTest {
         // Validate the database is empty
         List<SLA> slas = slaRepository.findAll();
         assertThat(slas).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    public static SLA getDefaultSLA()
+    {
+        SLA sla = new SLA();
+        sla.setBusinessDays(DEFAULT_BUSINESS_DAYS);
+        return sla;
+    }
+
+    public static SLA getUpdatedSLA(SLA sla)
+    {
+        SLA updatedSLA = new SLA();
+        updatedSLA.setId(sla.getId());
+        updatedSLA.setBusinessDays(UPDATED_BUSINESS_DAYS);
+        return updatedSLA;
     }
 }

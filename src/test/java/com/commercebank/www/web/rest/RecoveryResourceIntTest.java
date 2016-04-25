@@ -49,8 +49,8 @@ public class RecoveryResourceIntTest {
     private static final RecoveryDetail DEFAULT_DETAIL_TYPE = RecoveryDetail.CHK_NUM;
     private static final RecoveryDetail UPDATED_DETAIL_TYPE = RecoveryDetail.GL_COST;
 
-    private static final String DEFAULT_DETAIL_VALUE = 1L;
-    private static final String UPDATED_DETAIL_VALUE = 2L;
+    private static final String DEFAULT_DETAIL_VALUE = "1";
+    private static final String UPDATED_DETAIL_VALUE = "2";
     private static final String DEFAULT_COMMENT = "AAAAA";
     private static final String UPDATED_COMMENT = "BBBBB";
 
@@ -137,7 +137,7 @@ public class RecoveryResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(recovery.getId())))
                 .andExpect(jsonPath("$.[*].method").value(hasItem(DEFAULT_METHOD.toString())))
                 .andExpect(jsonPath("$.[*].detailType").value(hasItem(DEFAULT_DETAIL_TYPE.toString())))
-                .andExpect(jsonPath("$.[*].detailValue").value(hasItem(DEFAULT_DETAIL_VALUE.intValue())))
+                .andExpect(jsonPath("$.[*].detailValue").value(hasItem(DEFAULT_DETAIL_VALUE.toString())))
                 .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT.toString())));
     }
 
@@ -153,7 +153,7 @@ public class RecoveryResourceIntTest {
             .andExpect(jsonPath("$.id").value(recovery.getId()))
             .andExpect(jsonPath("$.method").value(DEFAULT_METHOD.toString()))
             .andExpect(jsonPath("$.detailType").value(DEFAULT_DETAIL_TYPE.toString()))
-            .andExpect(jsonPath("$.detailValue").value(DEFAULT_DETAIL_VALUE.intValue()))
+            .andExpect(jsonPath("$.detailValue").value(DEFAULT_DETAIL_VALUE.toString()))
             .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT.toString()));
     }
 
@@ -207,5 +207,26 @@ public class RecoveryResourceIntTest {
         // Validate the database is empty
         List<Recovery> recoveries = recoveryRepository.findAll();
         assertThat(recoveries).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    public static Recovery getDefaultRecovery()
+    {
+        Recovery recovery = new Recovery();
+        recovery.setMethod(DEFAULT_METHOD);
+        recovery.setDetailType(DEFAULT_DETAIL_TYPE);
+        recovery.setDetailValue(DEFAULT_DETAIL_VALUE);
+        recovery.setComment(DEFAULT_COMMENT);
+        return recovery;
+    }
+
+    public static Recovery getUpdatedRecovery(Recovery recovery)
+    {
+        Recovery updatedRecovery = new Recovery();
+        updatedRecovery.setId(recovery.getId());
+        updatedRecovery.setMethod(UPDATED_METHOD);
+        updatedRecovery.setDetailType(UPDATED_DETAIL_TYPE);
+        updatedRecovery.setDetailValue(UPDATED_DETAIL_VALUE);
+        updatedRecovery.setComment(UPDATED_COMMENT);
+        return updatedRecovery;
     }
 }

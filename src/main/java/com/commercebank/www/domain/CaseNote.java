@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -10,7 +11,7 @@ import java.util.Objects;
 /**
  * A CaseNote.
  */
-
+@TypeName("Case Note")
 @Document(collection = "case_note")
 public class CaseNote implements Serializable {
 
@@ -21,7 +22,7 @@ public class CaseNote implements Serializable {
 
     @Field("note")
     private String note;
-    
+
     public CaseNote() {}
 
     public String getId() {

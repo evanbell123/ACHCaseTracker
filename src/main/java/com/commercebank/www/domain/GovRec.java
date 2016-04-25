@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +18,7 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 /**
  * A GovRec.
  */
-
+@TypeName("Gov Rec")
 @Document(collection = "gov_rec")
 public class GovRec implements Serializable, CaseDetail {
 
@@ -31,6 +32,9 @@ public class GovRec implements Serializable, CaseDetail {
 
     @Field("completed_on")
     private ZonedDateTime completedOn;
+
+    @Field("completed_by")
+    private String completedBy;
 
     @Field("verified_on")
     private ZonedDateTime verifiedOn;
@@ -63,6 +67,14 @@ public class GovRec implements Serializable, CaseDetail {
     private List<Payment> payments;
 
     public GovRec() {}
+
+    public GovRec(String claimNumber, ZonedDateTime completedOn, BigDecimal paymentTotal, CaseSubtype subtype)
+    {
+        this.claimNumber = claimNumber;
+        this.completedOn = completedOn;
+        this.paymentTotal = paymentTotal;
+        this.subtype = subtype;
+    }
 
     public String getId() {
         return id;
@@ -144,6 +156,10 @@ public class GovRec implements Serializable, CaseDetail {
         this.fullRecovery = fullRecovery;
     }
 
+    public String getCompletedBy() { return completedBy; }
+
+    public void setCompletedBy(String completedBy) { this.completedBy = completedBy; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -171,11 +187,11 @@ public class GovRec implements Serializable, CaseDetail {
             ", claimNumber='" + claimNumber + "'" +
             ", completedOn='" + completedOn + "'" +
             ", verifiedOn='" + verifiedOn + "'" +
-         //   ", verifiedBy='" + verifiedBy.getLogin() + "'" +
+            ", verifiedBy='" + verifiedBy + "'" +
             ", paymentTotal='" + paymentTotal + "'" +
             ", paymentCount='" + paymentCount + "'" +
             ", subtype='" + subtype + "'" +
-          //  ", recoveryMethod='" + recoveryInfo.getMethod() + "'" +
+          // ", recoveryMethod='" + recoveryInfo.getMethod() + "'" +
             ", fullRecovery='" + fullRecovery + "'" +
             '}';
     }

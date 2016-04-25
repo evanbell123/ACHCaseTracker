@@ -30,6 +30,10 @@
  */
 package com.commercebank.www;
 
+import com.commercebank.www.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 import java.io.*;
@@ -37,6 +41,8 @@ import java.util.*;
 
 public class WatchDirectory implements Runnable
 {
+    private final Logger log = LoggerFactory.getLogger(WatchDirectory.class);
+
     private final WatchService watcher;
     private final Map<WatchKey, Path> keys;
     private static Path directory;
@@ -74,7 +80,7 @@ public class WatchDirectory implements Runnable
      */
     WatchDirectory() throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
-        this.keys = new HashMap<WatchKey, Path>();
+        this.keys = new HashMap<>();
 
         register(directory);
 
@@ -141,14 +147,14 @@ public class WatchDirectory implements Runnable
     }
 
     public void run() {
-        System.out.println("Initializing directory watcher for: " + directory);
+        log.debug("\"Initializing directory watcher for: {}", directory);
         try
         {
             new WatchDirectory().processEvents();
         }
         catch (IOException e)
         {
-            System.out.println("There was a problem initializing the directory watcher.\n" + e.getLocalizedMessage());
+            log.debug("There was a problem initializing the directory watcher.\n {}", e.getLocalizedMessage());
         }
     }
 }

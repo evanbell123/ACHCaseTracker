@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,7 +12,7 @@ import java.util.Objects;
 /**
  * An SLA.
  */
-
+@TypeName("SLA")
 @Document(collection = "sla")
 public class SLA extends AbstractAuditingEntity implements Serializable {
 
@@ -23,6 +24,13 @@ public class SLA extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Field("business_days")
     private Long businessDays;
+
+    public SLA() {}
+
+    public SLA(String id, Long businessDays) {
+        this.businessDays = businessDays;
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -41,6 +49,7 @@ public class SLA extends AbstractAuditingEntity implements Serializable {
     }
 
     @Override
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;

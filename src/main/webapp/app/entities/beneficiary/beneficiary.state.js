@@ -62,7 +62,7 @@
                     resolve: {
                         entity: function () {
                             return {
-                                customerid: null,
+                                customerID: null,
                                 name: null,
                                 ssn: null,
                                 accountNum: null,

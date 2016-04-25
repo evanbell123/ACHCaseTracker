@@ -3,7 +3,6 @@ package com.commercebank.www.service.util;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjusters;
 
 /**
@@ -19,7 +18,7 @@ public class BusinessDayUtil
         System.out.println("Date 1: " + date1.toString() + " Number of days to add: " + days);
 
         //LocalDate date2 = LocalDate.of(2016, Month.SEPTEMBER, 19);
-        LocalDate date2 = LocalDate.from(addBusinessDays(date1, days));
+        LocalDate date2 = LocalDate.from(addBusinessDays(date1, new Long(days)));
         System.out.println("Date 2: " + date2.toString());
     }
 
@@ -28,9 +27,9 @@ public class BusinessDayUtil
      * @params earlier, later
      * @return Temporal
      */
-    public static Temporal addBusinessDays(Temporal date, int numDays)
+    public static LocalDate addBusinessDays(LocalDate date, Long numDays)
     {
-        LocalDate earlier = LocalDate.from(date);
+        LocalDate earlier = date;
         LocalDate later = earlier.plusDays(numDays);
 
         //Check if weekend

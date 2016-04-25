@@ -22,9 +22,9 @@
                     }
                 }
             })
-            .state('audit_log', {
+            .state('audit-log', {
                 parent: 'home',
-                url: 'audit_log',
+                url: 'audit-log',
                 templateUrl: 'app/home/auditlog/auditlog.html',
                 controller: 'AuditLogController',
                 controllerAs: 'vm',
@@ -44,7 +44,7 @@
             })
             .state('cases', {
                 parent: 'home',
-                url: 'cases',
+                url: 'ach-case',
                 templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',
@@ -52,9 +52,9 @@
                     authorities: []
                 },
             })
-            .state('my_cases', {
+            .state('my-cases', {
                 parent: 'home',
-                url: 'my_cases',
+                url: 'my-cases',
                 templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',
@@ -82,9 +82,9 @@
                     authorities: []
                 },
             })
-            .state('create_case', {
+            .state('create-case', {
                 parent: 'home',
-                url: 'create_case',
+                url: 'create-case',
                 templateUrl: 'app/home/form/caseForm.html',
                 controller: 'CaseFormController',
                 controllerAs: 'vm',

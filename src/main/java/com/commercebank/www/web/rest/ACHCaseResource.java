@@ -2,8 +2,11 @@ package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
+import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
+import com.commercebank.www.service.UserService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -20,6 +23,8 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,49 +43,54 @@ public class ACHCaseResource {
     @Inject
     private ACHCaseService achCaseService;
 
+    @Inject
+    private UserService userService;
+
     /**
-     * POST  /ach-case : Create a new ACHCase.
+     * POST  /ach-case : Create a new achCase.
      *
-     * @param ACHCase the ACHCase to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new ACHCase, or with status 400 (Bad Request) if the ACHCase has already an ID
+     * @param achCase the achCase to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new achCase, or with status 400 (Bad Request) if the achCase has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ACHCase> createACHCase(@Valid @RequestBody ACHCase ACHCase) throws URISyntaxException {
-        log.debug("REST request to save ACHCase : {}", ACHCase);
-        if (ACHCase.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACHCase", "idexists", "A new ACHCase cannot already have an ID")).body(null);
+    public ResponseEntity<ACHCase> createACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
+        log.debug("REST request to save achCase : {}", achCase);
+        if (achCase.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("achCase", "idexists", "A new achCase cannot already have an ID")).body(null);
         }
-        ACHCase result = achCaseRepository.save(ACHCase);
+        //achCase result = achCaseRepository.save(achCase);
+        achCase.setStatus(Status.OPEN);
+        ACHCase result = achCaseService.cascadeSave(achCase);
         return ResponseEntity.created(new URI("/api/ach-case/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("ACHCase", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert("achCase", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /ach-case : Updates an existing ACHCase.
+     * PUT  /ach-case : Updates an existing achCase.
      *
-     * @param ACHCase the ACHCase to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated ACHCase,
-     * or with status 400 (Bad Request) if the ACHCase is not valid,
-     * or with status 500 (Internal Server Error) if the ACHCase couldnt be updated
+     * @param achCase the achCase to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated achCase,
+     * or with status 400 (Bad Request) if the achCase is not valid,
+     * or with status 500 (Internal Server Error) if the achCase couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase ACHCase) throws URISyntaxException {
-        log.debug("REST request to update ACHCase : {}", ACHCase);
-        if (ACHCase.getId() == null) { return createACHCase(ACHCase); }
-        //TODO: Call ACHCase Service to update and validate info before saving to repo
-        ACHCase result = achCaseService.cascadeSave(ACHCase);
-       // ACHCase result = achCaseRepository.save(ACHCase);
+    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
+        log.debug("REST request to update achCase : {}", achCase);
+        if (achCase.getId() == null) { return createACHCase(achCase); }
+        achCase.setStatus(Status.IN_PROGRESS);
+        ACHCase result = achCaseService.cascadeSave(achCase);
+        //achCase result = achCaseRepository.save(achCase);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("ACHCase", ACHCase.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId().toString()))
             .body(result);
     }
 
@@ -98,7 +108,8 @@ public class ACHCaseResource {
     public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = achCaseRepository.findAll(pageable);
+        Page<ACHCase> page = achCaseRepository.findAllByStatusNot(Status.CLOSED, pageable);
+        page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -135,8 +146,31 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<Void> deleteACHCase(@PathVariable String id) {
         log.debug("REST request to delete ACHCase : {}", id);
-        achCaseRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("ACHCase", id.toString())).build();
+        //achCaseRepository.delete(id);
+        ACHCase achCase = achCaseRepository.findOne(id);
+        if (!achCaseService.closeCase(achCase)) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACH Case", "invalid", "Required fields are missing or have invalid values.")).body(null);
+        }
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityClosedAlert("ACH Case", id.toString())).build();
+    }
+
+    /**
+     * GET  /my-cases : get all the ACH Cases that belong to the current user.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of ACHCases in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/my-cases",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<ACHCase>> getMyACHCases(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of ACHCases");
+        Page<ACHCase> page = achCaseRepository.findByAssignedToAndStatusNot(SecurityUtils.getCurrentUserLogin(), Status.CLOSED, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/my-cases");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

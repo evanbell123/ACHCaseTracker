@@ -72,16 +72,10 @@
           "status":"OPEN",
           "lastPaymentOn": null,
           "slaDeadline":null,
-          "sla": {
-            //"@class": "com.commercebank.www.domain.SLA",
-            "id": null,
-            "businessDays": 0
-          },
+          "sla": null,
           "daysOpen":0,
           "type":null,
           "beneficiary": {
-            //"@class": "com.commercebank.www.domain.Beneficiary",
-            "id": null,
             "customerID": null,
             "name": null,
             "ssn": null,
@@ -93,28 +87,25 @@
           },
           "assignedTo":null,
           "caseDetail": {
-            "@class": "com.commercebank.www.domain.GovRec",
-            "id": null,
+              "@class": "com.commercebank.www.domain.GovRec",
             "claimNumber": null,
             "completedOn": null,
             "verifiedOn": null,
             "fullRecovery": false,
             "paymentTotal": 0.0,
             "paymentCount": 0,
-            "subtype": null,
             "verifiedBy": null,
             "recoveryInfo": {
-              //"@class": "com.commercebank.www.domain.Recovery",
-              "id": null,
-              "method": null,
-              "detailType": null,
-              "detailValue": null,
-              "detailString": null,
+             // "method": null,
+             // "detailType": null,
+             // "detailValue": null,
+             // "detailString": null,
             },
             "notes": null,
             "payments": null
           }
         }
+
 
         //vm.exampleTitle = 'Repeating Section';
 
@@ -207,7 +198,6 @@
                                 options: [],
                                 valueProp: 'id',
                                 labelProp: 'name'
-
                             },
                             controller: /* @ngInject */ function($scope, FormDataService) {
                                 $scope.$watch('model.type', function(newValue, oldValue, theScope) {
@@ -271,13 +261,10 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-                                    if (value === null) { //if the field is not filled out, don;
-                                      return true;
-                                    } else { //validate the input
-                                      var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
-                                      return pattern.test(value);
-                                    }
 
+                                    var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
+                                    //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
+                                    return pattern.test(value);
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
                             }
@@ -383,6 +370,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
 
                             label: 'Check Number'
@@ -390,7 +386,7 @@
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[0])
                     }, {
                         className: 'col-xs-6',
-                        key: 'caseDetail.recoveryInfo.comment',
+                        key: 'caseDetail.recoveryInfo.detailString',
                         type: 'input',
                         templateOptions: {
                             label: 'Mailed to'
@@ -403,6 +399,15 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
                             type: 'number',
                             label: 'GL and Call Center'
@@ -415,8 +420,16 @@
                         className: 'col-xs-6',
                         key: 'caseDetail.recoveryInfo.detailValue',
                         type: 'input',
+                        validators: {
+                            detailString: {
+                                expression: function() {
+                                    var pattern = /^([0-9]+|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " value must be numerical."'
+                            }
+                        },
                         templateOptions: {
-                            type: 'number',
                             label: 'Customer DDA Account Number'
                         },
                         hideExpression: generateHideExpression(Enums.RecoveryDetail[2])
@@ -425,7 +438,7 @@
                     className: "row",
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        key: 'caseDetail.recoveryInfo.comment',
+                        key: 'caseDetail.recoveryInfo.detailString',
                         type: 'input',
                         templateOptions: {
                             label: 'Comment'

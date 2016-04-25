@@ -1,7 +1,7 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -18,17 +19,17 @@ import com.commercebank.www.domain.enumeration.CaseType;
 /**
  * An ACH Case.
  */
-
+@TypeName("ACH Case")
 @Document(collection = "ach_case")
 public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Field("total_amount")
-    private BigDecimal totalAmount;
-
     @Id
     private String id;
+
+    @Field("total_amount")
+    private BigDecimal totalAmount;
 
     @NotNull
     @Field("status")
@@ -38,13 +39,13 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     private ZonedDateTime lastPaymentOn;
 
     @Field("sla_deadline")
-    private ZonedDateTime slaDeadline;
+    private LocalDate slaDeadline;
 
     @DBRef
     @Field("sla")
     private SLA sla;
 
-    @Transient
+    //@Transient
     @Min(value = 0)
     @Field("days_open")
     private Long daysOpen;
@@ -96,11 +97,11 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
         this.lastPaymentOn = lastPaymentOn;
     }
 
-    public ZonedDateTime getSlaDeadline() {
+    public LocalDate getSlaDeadline() {
         return slaDeadline;
     }
 
-    public void setSlaDeadline(ZonedDateTime slaDeadline) {
+    public void setSlaDeadline(LocalDate slaDeadline) {
         this.slaDeadline = slaDeadline;
     }
 

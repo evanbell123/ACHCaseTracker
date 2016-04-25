@@ -19,8 +19,7 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="businessDays"><span>BusinessDays</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="typeName"><span>TypeName</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="businessDays"><span>Business Days</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,7 +27,6 @@
                 <tr ng-repeat="SLA in vm.slas track by SLA.id">
                     <td><a ui-sref="sla-detail({id:SLA.id})">{{SLA.id}}</a></td>
                     <td>{{SLA.businessDays}}</td>
-                    <td>{{SLA.typeName}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
