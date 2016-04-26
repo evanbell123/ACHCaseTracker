@@ -63,8 +63,8 @@ public class ACHCaseResourceIntTest {
     private static final ZonedDateTime UPDATED_LAST_PAYMENT_ON = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final String DEFAULT_LAST_PAYMENT_ON_STR = dateTimeFormatter.format(DEFAULT_LAST_PAYMENT_ON);
 
-    private static final LocalDate DEFAULT_SLA_DEADLINE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
-    private static final LocalDate UPDATED_SLA_DEADLINE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_SLA_DEADLINE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_SLA_DEADLINE = LocalDate.now(ZoneId.systemDefault());
     private static final String DEFAULT_SLA_DEADLINE_STR = dateTimeFormatter.format(DEFAULT_SLA_DEADLINE);
 
     private static final Long DEFAULT_DAYS_OPEN = 0L;
@@ -191,7 +191,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void getAllACHCases() throws Exception {
         // Initialize the database
-        achCaseService.cascadeSave(Optional.of(ACHCase));
+        achCaseService.cascadeSave(ACHCase);
 
         // Get all the ACHCases
         restACHCaseMockMvc.perform(get("/api/ach-case?sort=id,desc"))
@@ -213,7 +213,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void getACHCase() throws Exception {
         // Initialize the database
-        achCaseService.cascadeSave(Optional.of(ACHCase));
+        achCaseService.cascadeSave(ACHCase);
 
         // Get the ACHCase
         restACHCaseMockMvc.perform(get("/api/ach-case/{id}", ACHCase.getId()))
@@ -242,7 +242,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void updateACHCase() throws Exception {
         // Initialize the database
-        achCaseService.cascadeSave(Optional.of(ACHCase));
+        achCaseService.cascadeSave(ACHCase);
         int databaseSizeBeforeUpdate = achCaseRepository.findAll().size();
 
         // Update the ACHCase
@@ -283,7 +283,7 @@ public class ACHCaseResourceIntTest {
     @Test
     public void deleteACHCase() throws Exception {
         // Initialize the database
-        achCaseService.cascadeSave(Optional.of(ACHCase));
+        achCaseService.cascadeSave(ACHCase);
         int databaseSizeBeforeDelete = achCaseRepository.findAll().size();
 
         // Get the ACHCase

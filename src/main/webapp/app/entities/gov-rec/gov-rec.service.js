@@ -15,8 +15,10 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.completedOn = DateUtils.convertDateTimeFromServer(data.completedOn);
-                    data.verifiedOn = DateUtils.convertDateTimeFromServer(data.verifiedOn);
+                    if (data.completedOn !== null) { data.completedOn = DateUtils.convertDateTimeFromServer(data.completedOn); }
+                    else { data.completedOn  = undefined; }
+                    if (data.verifiedOn !== null) { data.verifiedOn = DateUtils.convertDateTimeFromServer(data.verifiedOn); }
+                    else { data.verifiedOn = undefined; }
                     return data;
                 }
             },

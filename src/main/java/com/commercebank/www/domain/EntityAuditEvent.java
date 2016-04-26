@@ -3,11 +3,9 @@ package com.commercebank.www.domain;
 
 import java.time.ZonedDateTime;
 
-import org.javers.core.JaversBuilder;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.joda.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
 

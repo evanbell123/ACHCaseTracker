@@ -52,8 +52,8 @@ public class PaymentResourceIntTest {
     private static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_AMOUNT = new BigDecimal(2);
 
-    private static final LocalDate DEFAULT_EFFECTIVE_ON = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
-    private static final LocalDate UPDATED_EFFECTIVE_ON = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_EFFECTIVE_ON = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_EFFECTIVE_ON = LocalDate.now(ZoneId.systemDefault());
     private static final String DEFAULT_EFFECTIVE_ON_STR = dateTimeFormatter.format(DEFAULT_EFFECTIVE_ON);
 
     @Inject

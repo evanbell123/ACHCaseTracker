@@ -74,7 +74,7 @@ public class JaversEntityAuditResource {
         log.debug("REST request to get a page of EntityAuditEvents");
         Pageable pageRequest = createPageRequest(limit);
 
-        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + entityType.replaceAll("\\s+",""));
+        Class entityTypeToFetch = Class.forName(entityType.replaceAll("\\s+","") + ".Class");
         QueryBuilder jqlQuery = QueryBuilder.byClass(entityTypeToFetch)
                                             .limit(limit)
                                             .withNewObjectChanges(true);

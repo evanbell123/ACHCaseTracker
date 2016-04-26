@@ -25,7 +25,6 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/angular-ui-router/release/angular-ui-router.js',
             'src/main/webapp/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
             'src/main/webapp/bower_components/json3/lib/json3.js',
-            'src/main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'src/main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'src/main/webapp/bower_components/api-check/dist/api-check.js',
             'src/main/webapp/bower_components/angular-formly/dist/formly.js',
@@ -37,6 +36,9 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/angular-touch/angular-touch.js',
             'src/main/webapp/bower_components/angular-animate/angular-animate.js',
             'src/main/webapp/bower_components/angular-object-diff/dist/angular-object-diff.js',
+            'src/main/webapp/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+            'src/main/webapp/bower_components/bootstrap-material-design/dist/js/material.js',
+            'src/main/webapp/bower_components/bootstrap-material-design/dist/js/ripples.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

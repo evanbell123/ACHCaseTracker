@@ -1,4 +1,4 @@
-(function() {
+ (function() {
     'use strict';
     angular
         .module('achCaseTrackingApp')
@@ -15,8 +15,10 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.lastPaymentOn = DateUtils.convertDateTimeFromServer(data.lastPaymentOn);
-                    data.slaDeadline = DateUtils.convertDateTimeFromServer(data.slaDeadline);
+                    if (data.lastPaymentOn !== null) { data.lastPaymentOn = DateUtils.convertDateTimeFromServer(data.lastPaymentOn); }
+                    else { data.lastPaymentOn = undefined; }
+                    if (data.slaDeadline !== null) { data.slaDeadline = DateUtils.convertDateTimeFromServer(data.slaDeadline); }
+                    else { data.slaDeadline = undefined; }
                     return data;
                 }
             },

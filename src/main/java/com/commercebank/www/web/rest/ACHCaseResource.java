@@ -6,11 +6,8 @@ import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
 import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
-import com.commercebank.www.service.UserService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
 import com.commercebank.www.web.rest.util.PaginationUtil;
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,15 +17,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import static com.commercebank.www.AchCaseTrackingApp.NACHA_DIR_NAME;
 
 /**
  * REST controller for managing ACHCase.
@@ -44,9 +48,6 @@ public class ACHCaseResource {
 
     @Inject
     private ACHCaseService achCaseService;
-
-    @Inject
-    private UserService userService;
 
     /**
      * POST  /ach-case : Create a new achCase.
@@ -173,6 +174,38 @@ public class ACHCaseResource {
         Page<ACHCase> page = achCaseRepository.findByAssignedToAndStatusNot(SecurityUtils.getCurrentUserLogin(), Status.CLOSED, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/my-cases");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * POST  /import : Import a NACHA file to be processed
+     *
+     * @param request the file to be added
+     * @return the ResponseEntity with status 201 (Created) and with body the new achCase, or with status 400 (Bad Request) if the achCase has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @RequestMapping(value = "/import",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity importNachaFile(MultipartHttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to import a NACHA file : {}", request);
+        try {
+                Iterator<String> itr = request.getFileNames();
+
+                while (itr.hasNext()) {
+                    String uploadedFile = itr.next();
+                    MultipartFile file = request.getFile(uploadedFile);
+                    File destination = new File(NACHA_DIR_NAME + "\\" + file.getOriginalFilename() + "\\" + LocalDate.now());
+                    file.transferTo(destination);
+                }
+            }
+
+        catch (Exception e) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("NACHA File", "invalid", e.getMessage())).body(null);
+        }
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert("Nacha file imported", ""))
+            .body("");
     }
 
 }

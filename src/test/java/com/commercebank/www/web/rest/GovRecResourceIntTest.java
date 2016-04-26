@@ -186,7 +186,7 @@ public class GovRecResourceIntTest {
     public void getAllGovRecs() throws Exception {
         // Initialize the database
         //govRecRepository.save(govRec);
-        govRecService.cascadeSave(Optional.of(govRec));
+        govRecService.cascadeSave(govRec);
 
         // Get all the govRecs
         restGovRecMockMvc.perform(get("/api/gov-recs?sort=id,desc"))
@@ -206,20 +206,20 @@ public class GovRecResourceIntTest {
     public void getGovRec() throws Exception {
         // Initialize the database
         //govRecRepository.save(govRec);
-        govRecService.cascadeSave(Optional.of(govRec));
+        govRecService.cascadeSave(govRec);
 
         // Get the govRec
         restGovRecMockMvc.perform(get("/api/gov-recs/{id}", govRec.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(govRec.getId()))
-            .andExpect(jsonPath("$.claimNumber").value(DEFAULT_CLAIM_NUMBER.toString()))
+            .andExpect(jsonPath("$.claimNumber").value(DEFAULT_CLAIM_NUMBER))
             .andExpect(jsonPath("$.completedOn").value(DEFAULT_COMPLETED_ON_STR))
             .andExpect(jsonPath("$.verifiedOn").value(DEFAULT_VERIFIED_ON_STR))
             .andExpect(jsonPath("$.paymentTotal").value(DEFAULT_PAYMENT_TOTAL.intValue()))
             .andExpect(jsonPath("$.paymentCount").value(DEFAULT_PAYMENT_COUNT.intValue()))
             .andExpect(jsonPath("$.subtype").value(DEFAULT_SUBTYPE.toString()))
-            .andExpect(jsonPath("$.fullRecovery").value(DEFAULT_FULL_RECOVERY.booleanValue()));
+            .andExpect(jsonPath("$.fullRecovery").value(DEFAULT_FULL_RECOVERY));
     }
 
     @Test
@@ -233,7 +233,7 @@ public class GovRecResourceIntTest {
     public void updateGovRec() throws Exception {
         // Initialize the database
         //govRecRepository.save(govRec);
-        govRecService.cascadeSave(Optional.of(govRec));
+        govRecService.cascadeSave(govRec);
 
         int databaseSizeBeforeUpdate = govRecRepository.findAll().size();
 
@@ -249,11 +249,11 @@ public class GovRecResourceIntTest {
         updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
         updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
         updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
-        List<Payment> payments = govRec.getPayments().get();
+        List<Payment> payments = govRec.getPayments();
         payments.remove(DEFAULT_PAYMENT);
         payments.add(UPDATED_PAYMENT);
         updatedGovRec.setPayments(payments);
-        List<CaseNote> notes = govRec.getNotes().get();
+        List<CaseNote> notes = govRec.getNotes();
         notes.remove(DEFAULT_CASE_NOTE);
         notes.add(UPDATED_CASE_NOTE);
         updatedGovRec.setNotes(notes);
@@ -275,15 +275,15 @@ public class GovRecResourceIntTest {
         assertThat(testGovRec.getSubtype()).isEqualTo(UPDATED_SUBTYPE);
         assertThat(testGovRec.isFullRecovery()).isEqualTo(UPDATED_FULL_RECOVERY);
         assertThat(testGovRec.getRecoveryInfo()).isEqualTo(UPDATED_RECOVERY_INFO);
-        assertThat(testGovRec.getPayments().get().get(0)).isEqualTo(UPDATED_PAYMENT);
-        assertThat(testGovRec.getNotes().get().get(0)).isEqualTo(UPDATED_CASE_NOTE);
+        assertThat(testGovRec.getPayments().get(0)).isEqualTo(UPDATED_PAYMENT);
+        assertThat(testGovRec.getNotes().get(0)).isEqualTo(UPDATED_CASE_NOTE);
     }
 
     @Test
     public void deleteGovRec() throws Exception {
         // Initialize the database
         //govRecRepository.save(govRec);
-        govRecService.cascadeSave(Optional.of(govRec));
+        govRecService.cascadeSave(govRec);
 
         int databaseSizeBeforeDelete = govRecRepository.findAll().size();
 
@@ -331,11 +331,11 @@ public class GovRecResourceIntTest {
         updatedGovRec.setFullRecovery(UPDATED_FULL_RECOVERY);
         updatedGovRec.setVerifiedBy(UPDATED_VERIFIED_BY);
         updatedGovRec.setRecoveryInfo(UPDATED_RECOVERY_INFO);
-        List<Payment> payments = govRec.getPayments().get();
+        List<Payment> payments = govRec.getPayments();
         payments.remove(DEFAULT_PAYMENT);
         payments.add(UPDATED_PAYMENT);
         updatedGovRec.setPayments(payments);
-        List<CaseNote> notes = govRec.getNotes().get();
+        List<CaseNote> notes = govRec.getNotes();
         notes.remove(DEFAULT_CASE_NOTE);
         notes.add(UPDATED_CASE_NOTE);
         updatedGovRec.setNotes(notes);
