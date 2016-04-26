@@ -13,9 +13,12 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <link rel="stylesheet" href="bower_components/angular-object-diff/dist/angular-object-diff.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css content/css/main.css -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="content/css/main.css">
         <!-- endbuild -->
     </head>
@@ -52,7 +55,6 @@
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
         <script src="bower_components/json3/lib/json3.js"></script>
-        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="bower_components/api-check/dist/api-check.js"></script>
         <script src="bower_components/angular-formly/dist/formly.js"></script>
@@ -64,6 +66,9 @@
         <script src="bower_components/angular-touch/angular-touch.js"></script>
         <script src="bower_components/angular-animate/angular-animate.js"></script>
         <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+        <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
+        <script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -108,18 +113,18 @@
     <script src="app/entities/payment/payment-dialog.controller.js"></script>
     <script src="app/entities/payment/payment-detail.controller.js"></script>
     <script src="app/entities/payment/payment-delete-dialog.controller.js"></script>
-    <script src="app/entities/gov-rec/gov-rec.state.js"></script>
-    <script src="app/entities/gov-rec/gov-rec.service.js"></script>
-    <script src="app/entities/gov-rec/gov-rec.controller.js"></script>
-    <script src="app/entities/gov-rec/gov-rec-dialog.controller.js"></script>
-    <script src="app/entities/gov-rec/gov-rec-detail.controller.js"></script>
-    <script src="app/entities/gov-rec/gov-rec-delete-dialog.controller.js"></script>
     <script src="app/entities/case-note/case-note.state.js"></script>
     <script src="app/entities/case-note/case-note.service.js"></script>
     <script src="app/entities/case-note/case-note.controller.js"></script>
     <script src="app/entities/case-note/case-note-dialog.controller.js"></script>
     <script src="app/entities/case-note/case-note-detail.controller.js"></script>
     <script src="app/entities/case-note/case-note-delete-dialog.controller.js"></script>
+    <script src="app/entities/gov-rec/gov-rec.state.js"></script>
+    <script src="app/entities/gov-rec/gov-rec.service.js"></script>
+    <script src="app/entities/gov-rec/gov-rec.controller.js"></script>
+    <script src="app/entities/gov-rec/gov-rec-dialog.controller.js"></script>
+    <script src="app/entities/gov-rec/gov-rec-detail.controller.js"></script>
+    <script src="app/entities/gov-rec/gov-rec-delete-dialog.controller.js"></script>
     <script src="app/entities/beneficiary/beneficiary.state.js"></script>
     <script src="app/entities/beneficiary/beneficiary.service.js"></script>
     <script src="app/entities/beneficiary/beneficiary.controller.js"></script>
@@ -158,11 +163,11 @@
     <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
     <script src="app/blocks/interceptor/auth.interceptor.js"></script>
     <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
-    <script src="app/blocks/handlers/state.handler.js"></script>
     <script src="app/blocks/config/localstorage.config.js"></script>
     <script src="app/blocks/config/http.config.js"></script>
     <script src="app/blocks/config/compile.config.js"></script>
     <script src="app/blocks/config/alert.config.js"></script>
+    <script src="app/blocks/handlers/state.handler.js"></script>
     <script src="app/admin/user-management/user-management.state.js"></script>
     <script src="app/admin/user-management/user-management.controller.js"></script>
     <script src="app/admin/user-management/user-management-dialog.controller.js"></script>
@@ -207,10 +212,10 @@
     <script src="app/account/activate/activate.controller.js"></script>
     <script src="app/home/home.state.js"></script>
     <script src="app/home/home.controller.js"></script>
+    <script src="app/entities/entity.state.js"></script>
     <script src="app/enums/enums.service.js"></script>
     <script src="app/enums/enums.filters.js"></script>
     <script src="app/enums/enums.constants.js"></script>
-    <script src="app/entities/entity.state.js"></script>
     <script src="app/admin/admin.state.js"></script>
     <script src="app/account/account.state.js"></script>
     <script src="app/app.state.js"></script>
@@ -259,18 +264,18 @@
         <script src="app/entities/payment/payment-dialog.controller.js"></script>
         <script src="app/entities/payment/payment-detail.controller.js"></script>
         <script src="app/entities/payment/payment-delete-dialog.controller.js"></script>
-        <script src="app/entities/gov-rec/gov-rec.state.js"></script>
-        <script src="app/entities/gov-rec/gov-rec.service.js"></script>
-        <script src="app/entities/gov-rec/gov-rec.controller.js"></script>
-        <script src="app/entities/gov-rec/gov-rec-dialog.controller.js"></script>
-        <script src="app/entities/gov-rec/gov-rec-detail.controller.js"></script>
-        <script src="app/entities/gov-rec/gov-rec-delete-dialog.controller.js"></script>
         <script src="app/entities/case-note/case-note.state.js"></script>
         <script src="app/entities/case-note/case-note.service.js"></script>
         <script src="app/entities/case-note/case-note.controller.js"></script>
         <script src="app/entities/case-note/case-note-dialog.controller.js"></script>
         <script src="app/entities/case-note/case-note-detail.controller.js"></script>
         <script src="app/entities/case-note/case-note-delete-dialog.controller.js"></script>
+        <script src="app/entities/gov-rec/gov-rec.state.js"></script>
+        <script src="app/entities/gov-rec/gov-rec.service.js"></script>
+        <script src="app/entities/gov-rec/gov-rec.controller.js"></script>
+        <script src="app/entities/gov-rec/gov-rec-dialog.controller.js"></script>
+        <script src="app/entities/gov-rec/gov-rec-detail.controller.js"></script>
+        <script src="app/entities/gov-rec/gov-rec-delete-dialog.controller.js"></script>
         <script src="app/entities/beneficiary/beneficiary.state.js"></script>
         <script src="app/entities/beneficiary/beneficiary.service.js"></script>
         <script src="app/entities/beneficiary/beneficiary.controller.js"></script>
@@ -309,11 +314,11 @@
         <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
         <script src="app/blocks/interceptor/auth.interceptor.js"></script>
         <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
-        <script src="app/blocks/handlers/state.handler.js"></script>
         <script src="app/blocks/config/localstorage.config.js"></script>
         <script src="app/blocks/config/http.config.js"></script>
         <script src="app/blocks/config/compile.config.js"></script>
         <script src="app/blocks/config/alert.config.js"></script>
+        <script src="app/blocks/handlers/state.handler.js"></script>
         <script src="app/admin/user-management/user-management.state.js"></script>
         <script src="app/admin/user-management/user-management.controller.js"></script>
         <script src="app/admin/user-management/user-management-dialog.controller.js"></script>
@@ -358,15 +363,16 @@
         <script src="app/account/activate/activate.controller.js"></script>
         <script src="app/home/home.state.js"></script>
         <script src="app/home/home.controller.js"></script>
+        <script src="app/entities/entity.state.js"></script>
         <script src="app/enums/enums.service.js"></script>
         <script src="app/enums/enums.filters.js"></script>
         <script src="app/enums/enums.constants.js"></script>
-        <script src="app/entities/entity.state.js"></script>
         <script src="app/admin/admin.state.js"></script>
         <script src="app/account/account.state.js"></script>
         <script src="app/app.state.js"></script>
         <script src="app/app.constants.js"></script>
         <!-- endinject -->
         <!-- endbuild -->
+    <script>$.material.init()</script>
     </body>
 </html>
