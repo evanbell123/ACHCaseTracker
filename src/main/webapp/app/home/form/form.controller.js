@@ -1,3 +1,7 @@
+/*
+This controller is used for both /create-case and /edit-case
+*/
+
 (function() {
     'use strict';
 
@@ -5,31 +9,22 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', 'Enums', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$http', '$location', 'Enums', 'FormDataService'];
 
-    function CaseFormController($scope, $http, Enums, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $http, $location, Enums, FormDataService, formlyVersion) {
+
+
+
         var vm = this;
 
         vm.onSubmit = onSubmit;
 
         function onSubmit() {
 
-            //vm.model.openedDate = vm.model.openedDate.getTime();
-            //console.log(vm.model.openedDate);
-
             var data = vm.model
 
             var payments = data.payments;
             var notes = data.notes;
-/*
-            for (var i = 0; i < payments.length; i++) {
-              payments[i]["@class"] = "com.commercebank.www.domain.Payment";
-            }
-
-            for (var i = 0; i < notes.length; i++) {
-              notes[i]["@class"] = "com.commercebank.www.domain.Note";
-            }
-            */
 
             data.caseDetail.payments = payments;
             data.caseDetail.notes = notes;
@@ -38,13 +33,7 @@
             delete data.payments;
             delete data.notes;
 
-            console.log(data);
-
             data = angular.toJson(data);
-
-            console.log(data);
-
-            //data.name = vm.model.name.first + " " + vm.model.name.last;
 
             $http({
                 method: 'POST',
@@ -67,43 +56,43 @@
         vm.formData = {};
 
         vm.model = {
-          "totalAmount":null,
-          "id":null,
-          "status":"OPEN",
-          "lastPaymentOn": null,
-          "slaDeadline":null,
-          "sla": null,
-          "daysOpen":0,
-          "type":null,
-          "beneficiary": {
-            "customerID": null,
-            "name": null,
-            "ssn": null,
-            "accountNum": null,
-            "dateOfDeath": null,
-            "dateCBAware": null,
-            "otherGovBenefits": false,
-            "govBenefitsComment": null
-          },
-          "assignedTo":null,
-          "caseDetail": {
-              "@class": "com.commercebank.www.domain.GovRec",
-            "claimNumber": null,
-            "completedOn": null,
-            "verifiedOn": null,
-            "fullRecovery": false,
-            "paymentTotal": 0.0,
-            "paymentCount": 0,
-            "verifiedBy": null,
-            "recoveryInfo": {
-             // "method": null,
-             // "detailType": null,
-             // "detailValue": null,
-             // "detailString": null,
+            "totalAmount": null,
+            "id": null,
+            "status": "OPEN",
+            "lastPaymentOn": null,
+            "slaDeadline": null,
+            "sla": null,
+            "daysOpen": 0,
+            "type": null,
+            "beneficiary": {
+                "customerID": null,
+                "name": null,
+                "ssn": null,
+                "accountNum": null,
+                "dateOfDeath": null,
+                "dateCBAware": null,
+                "otherGovBenefits": false,
+                "govBenefitsComment": null
             },
-            "notes": null,
-            "payments": null
-          }
+            "assignedTo": null,
+            "caseDetail": {
+                "@class": "com.commercebank.www.domain.GovRec",
+                "claimNumber": null,
+                "completedOn": null,
+                "verifiedOn": null,
+                "fullRecovery": false,
+                "paymentTotal": 0.0,
+                "paymentCount": 0,
+                "verifiedBy": null,
+                "recoveryInfo": {
+                    // "method": null,
+                    // "detailType": null,
+                    // "detailValue": null,
+                    // "detailString": null,
+                },
+                "notes": null,
+                "payments": null
+            }
         }
 
 
@@ -125,7 +114,9 @@
         //vm.model = {};
 
         function generateHideExpression(RecoveryDetailEnum) {
-
+            /*
+            Here is an example of what a genereted expression may look like
+            */
             //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
             var hideExpression = "!model.caseDetail.recoveryInfo.method";
 
@@ -261,9 +252,7 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-
                                     var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
-                                    //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
@@ -489,7 +478,6 @@
                         ],
                         btnText: 'Add another payment'
                     },
-                    //controller: RepeatingSectionController
                 },
 
 
@@ -515,10 +503,19 @@
                         }],
                         btnText: 'Add another note'
                     },
-                    //controller: RepeatingSectionController
                 },
             ];
         }
     }
-
+/*
+    // at the bottom of your controller
+    var init = function(location) {
+        // check if there is query in url
+        // and fire search in case its value is not empty
+        var a = location.search();
+        console.log(a);
+    };
+    // and fire it after definition
+    init($location);
+*/
 })();

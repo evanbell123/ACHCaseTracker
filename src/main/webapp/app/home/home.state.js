@@ -42,6 +42,7 @@
                     authorities: []
                 },
             })
+            
             .state('cases', {
                 parent: 'home',
                 url: 'ach-case',
