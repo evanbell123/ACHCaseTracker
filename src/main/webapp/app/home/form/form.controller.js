@@ -19,6 +19,13 @@ This controller is used for both /create-case and /edit-case
 
         vm.onSubmit = onSubmit;
 
+        /*
+        When the user clicks submit,
+        Make sure the json is properly formatted,
+        then send a POST request if the current url = /create-case
+        other-wise the url must be /edit-case,
+        In this case send a PUT request to update the case.
+        */
         function onSubmit() {
 
             var data = vm.model
@@ -26,15 +33,24 @@ This controller is used for both /create-case and /edit-case
             var payments = data.payments;
             var notes = data.notes;
 
+            /*
+            Copy the payments and notes JSON,
+            into the proper spot
+            */
             data.caseDetail.payments = payments;
             data.caseDetail.notes = notes;
 
-
+            /*
+            Then get rid the copied payments and notes
+            */
             delete data.payments;
             delete data.notes;
 
             data = angular.toJson(data);
 
+            /*
+            Create a new case
+            */
             $http({
                 method: 'POST',
                 url: 'api/ach-case',
@@ -55,6 +71,11 @@ This controller is used for both /create-case and /edit-case
 
         vm.formData = {};
 
+        /*
+        Specify the JSON model
+        This is the model object that we reference
+        on the <formly-form> element in caseForm.html
+        */
         vm.model = {
             "totalAmount": null,
             "id": null,
@@ -85,20 +106,19 @@ This controller is used for both /create-case and /edit-case
                 "paymentCount": 0,
                 "verifiedBy": null,
                 "recoveryInfo": {
-                    // "method": null,
-                    // "detailType": null,
-                    // "detailValue": null,
-                    // "detailString": null,
+                    "method": null,
+                    "detailType": null,
+                    "detailValue": null,
+                    "detailString": null,
                 },
                 "notes": null,
                 "payments": null
             }
         }
 
-
-        //vm.exampleTitle = 'Repeating Section';
-
-
+        /*
+        specify form options
+        */
         vm.options = {
             formState: {
                 awesomeIsForced: true
@@ -108,16 +128,21 @@ This controller is used for both /create-case and /edit-case
         init();
 
         vm.originalFields = angular.copy(vm.fields);
+        
+        /*
+        Input: An element from the the RecoveryDetailEnum defined in enums.constants.js
+        that should be displayed if a certain recovery method has been selected by the user
+        Output: a boolean conditional expression
+        that will return true if the field should be hidden
+        and false if it should be displayed
 
-        // The model object that we reference
-        // on the <formly-form> element in index.html
-        //vm.model = {};
-
+        Example Input: { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]}
+        Example Output: !model.caseDetail.recoveryInfo.method||model.caseDetail.recoveryInfo.method != 3
+        */
         function generateHideExpression(RecoveryDetailEnum) {
             /*
             Here is an example of what a genereted expression may look like
             */
-            //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
             var hideExpression = "!model.caseDetail.recoveryInfo.method";
 
             if (RecoveryDetailEnum.fk.length === 0) {
@@ -134,7 +159,7 @@ This controller is used for both /create-case and /edit-case
                 }
             }
 
-            //console.log(hideExpression);
+            console.log(hideExpression);
 
             return hideExpression;
 
@@ -148,11 +173,6 @@ This controller is used for both /create-case and /edit-case
                     type: "radio",
                     key: "status",
                     defaultValue: 'open',
-                    /*
-                    data: {
-                        allOptions: people
-                    }
-                    */
                     templateOptions: {
                         options: FormDataService.status(),
                         "label": "Field Type",
@@ -507,15 +527,4 @@ This controller is used for both /create-case and /edit-case
             ];
         }
     }
-/*
-    // at the bottom of your controller
-    var init = function(location) {
-        // check if there is query in url
-        // and fire search in case its value is not empty
-        var a = location.search();
-        console.log(a);
-    };
-    // and fire it after definition
-    init($location);
-*/
 })();
