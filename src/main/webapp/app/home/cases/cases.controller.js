@@ -15,17 +15,7 @@ This controller is used for both /ach-case and /my-cases
 
     function CasesController($scope, $location, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
 
-        function updateRequest(data, successResponse, errorResonse) {
-            $http({
-                method: 'PUT',
-                url: 'api/ach-case',
-                data: data
-            }).then(function successCallback(response) {
-                $scope.msg.lastCellEdited = successResponse;
-            }, function errorCallback(response) {
-                alert(errorResonse);
-            });
-        }
+
 
         /*
         Listen for when the user checks or unchecks the watch item check box
@@ -47,7 +37,8 @@ This controller is used for both /ach-case and /my-cases
             /*
             notify the server of this change of assignment
             */
-            updateRequest(data, "Item watched", "Watch item failed");
+            
+            ACHCaseTwo.update(data);
         }
 
         /*
@@ -234,7 +225,9 @@ This controller is used for both /ach-case and /my-cases
             //set gridApi on scope
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-                updateRequest(rowEntity, 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update");
+                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update";
+                ACHCaseTwo.update(rowEntity);
+
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
@@ -256,11 +249,11 @@ This controller is used for both /ach-case and /my-cases
         that is currently logged in
         */
         if (currentLocation !== "/ach-case") {
-          $scope.gridOptions.data = ACHCaseTwo.assigned();
-          //console.log($scope.gridOptions.data);
+            $scope.gridOptions.data = ACHCaseTwo.assigned();
+            //console.log($scope.gridOptions.data);
         } else { //else the current location is /ach-case
-          $scope.gridOptions.data = ACHCaseTwo.all();
-          //console.log($scope.gridOptions.data);
+            $scope.gridOptions.data = ACHCaseTwo.all();
+            //console.log($scope.gridOptions.data);
         }
         /*
         $http.get("api" + request)

@@ -33,36 +33,38 @@
             'create': {
               method: 'POST',
               transformRequest: function(data) {
-
-                /*
-                make a copy
-                */
-                var copyData = data;
-
-                /*
-                Copy the payments and notes JSON,
-                into the proper spot
-                */
-                copyData.caseDetail.payments = data.payments;
-                copyData.caseDetail.notes = data.notes;
-
-                /*
-                Then get rid the copied payments and notes
-                */
-                delete copyData.payments;
-                delete copyData.notes;
-
-                console.log(copyData);
-
-                copyData = angular.toJson(copyData);
-
-                return copyData;
+                return transformCaseRequest(data);
               }
             },
             'update': {
-                method: 'PUT'
+                method: 'PUT',
+                transformRequest: function(data) {
+                  return transformCaseRequest(data);
+                }
             }
         });
+
+        function transformCaseRequest(caseData) {
+          /*
+          make a copy
+          */
+          var copyData = caseData;
+
+          /*
+          Copy the payments and notes JSON,
+          into the proper spot
+          */
+          copyData.caseDetail.payments = caseData.payments;
+          copyData.caseDetail.notes = caseData.notes;
+
+          /*
+          Then get rid the copied payments and notes
+          */
+          delete copyData.payments;
+          delete copyData.notes;
+
+          return angular.toJson(copyData);
+        }
 
         function transformSingleAchCase(caseData) {
           /*

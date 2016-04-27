@@ -14,6 +14,14 @@ This controller is used for both /create-case and /edit-case
     function CaseFormController($scope, $http, $location, $stateParams, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
         var vm = this;
 
+        vm.editMode = function() {
+          if ($location.path !== "/create-case") {
+            return true;
+          } else {
+            return false;
+          }
+        };
+
         vm.onSubmit = onSubmit;
 
         /*
@@ -25,30 +33,18 @@ This controller is used for both /create-case and /edit-case
         */
         function onSubmit() {
 
-            //var newCase = new ACHCaseTwo(vm.model);
-
-            //console.log(newCase);
-
+          /*
+          if the form is in edit mode,
+          update the case Information
+          else create a new case
+          */
+          if (vm.editMode) {
+            ACHCaseTwo.update(vm.model);
+          } else {
             ACHCaseTwo.create(vm.model);
+          }
 
 
-
-            /*
-            Create a new case
-            */
-            /*
-            $http({
-                method: 'POST',
-                url: 'api/ach-case',
-                data: vm.model
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-            });
-            */
         }
 
         vm.env = {
@@ -152,17 +148,17 @@ This controller is used for both /create-case and /edit-case
 
         }
 
-        //vm.currentLocation = $location.path();
+
 
         function init() {
-            var currentLocation = $location.path()
-                /*
-                if the current state is edit-case
-                */
-            if (currentLocation !== "/create-case") {
-                console.log($stateParams.caseId);
-
-                vm.model = ACHCaseTwo.one({id: $stateParams.caseId});
+            /*
+            if the current state is edit-case
+            initialize the form fields with case values
+            */
+            if (vm.editMode) {
+                vm.model = ACHCaseTwo.one({
+                    id: $stateParams.caseId
+                });
             }
 
             // An array of our form fields with configuration
