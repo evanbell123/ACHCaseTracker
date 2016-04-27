@@ -13,12 +13,32 @@
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.ACHCase.id" readonly />
         </div>
-        <div class="form-group">
+        <!-------Beneficiary------------------------------------------------------------------------------------------------->
+        <div class="row">
+            <h4 id="myBeneficiaryLabel">Beneficiary Info</h4>
+        </div>
+        <div class="col-md-6 form-group">
             <label class="control-label" for="field_Beneficiary _name">Beneficiary Name</label>
             <input type="text" class="form-control" name="beneficiaryName" id="field_Beneficiary _name"
-                    ng-model="vm.ACHCase.beneficiary.name"
-                     />
+                    ng-model="vm.ACHCase.beneficiary.name"/>
         </div>
+        <!-------------------------------------------------------------------------------------------------------------------->
+        <!-------Case Detail/Subtype------------------------------------------------------------------------------------------>
+        <div class="row">
+            <h4 id="myGovRecLabel">Case Details</h4>
+        </div>
+        <div class="col-md-6 form-group">
+        </div>
+        <!--------Will have payment and case note info------------------------------------------------------------------------>
+        <!-------Case Detail/Subtype------------------------------------------------------------------------------------------>
+        <div class="row">
+            <h4 id="myRecoveryLabel">Disposition</h4>
+        </div>
+        <div class="col-md-6 form-group">
+        </div>
+        <!--------Will have payment and case note info------------------------------------------------------------------------>
+
+
         <div class="form-group">
             <label class="control-label" for="field_totalAmount">Total Amount</label>
             <input type="number" class="form-control" name="totalAmount" id="field_totalAmount"

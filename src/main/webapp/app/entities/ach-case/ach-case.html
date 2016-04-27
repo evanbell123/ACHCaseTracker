@@ -10,9 +10,12 @@
                         Create new ACH Case
                     </span>
                 </button>
+                </div>
+            <div class="col-md-4 col-md-offset-4">
+            <nit-advanced-searchbox ng-model="searchParams" parameters="availableSearchParams" placeholder="Search..."></nit-advanced-searchbox>
             </div>
         </div>
-    </div>
+        </div>
     <br/>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
@@ -29,17 +32,14 @@
                 </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="ACHCase in vm.ACHCases track by ACHCase.id ">
+                <tr ng-repeat="ACHCase in vm.ACHCases | filter:searchParams track by ACHCase.id ">
                     <td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>
                     <td>{{ACHCase.totalAmount}}</td>
-                    <td translate="{{'achCaseTrackingApp.Status.' + ACHCase.status}}">{{ACHCase.status}}</td>
+                    <td><span ng-class="{'label':true, 'label-success':ACHCase.status == 'OPEN', 'label-warning':ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
                     <td>{{ACHCase.lastPaymentOn | date:'medium'}}</td>
                     <td>{{ACHCase.slaDeadline | date:'medium'}}</td>
                     <td>{{ACHCase.daysOpen}}</td>
-                    <td translate="{{'achCaseTrackingApp.CaseType.' + ACHCase.type}}">{{ACHCase.type}}</td>
-                    <td>{{ACHCase.beneficiary.name}}</td>
-                    <td>{{ACHCase.caseDetail.paymentCount}}</td>
-                    <td>{{ACHCase.assignedTo}}</td>
+                    <td>{{ACHCase.type}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

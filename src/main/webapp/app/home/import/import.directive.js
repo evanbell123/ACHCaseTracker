@@ -1,66 +1,48 @@
-(function() {
-    'use strict';
+var ImportDirectives = angular.module('ImportDirectives', []);
 
-    angular
-        .module('achCaseTrackingApp')
-        .directive('onReadFile', onReadFileDirective);
+ImportDirectives.directive('dropzone', function() {
+    return {
+        restrict: 'C',
+        link: function(scope, element, attrs) {
 
-    onReadFileDirective.$inject = ['$parse'];
+            var config = {
+                url: 'api/import',
+                maxFilesize: 100,
+                paramName: "importfile",
+                maxThumbnailFilesize: 10,
+                parallelUploads: 1,
+                autoProcessQueue: false
+            };
 
-    function onReadFileDirective($parse) {
-        return {
-            restrict: 'A',
-            scope: false,
-            link: function(scope, element, attrs) {
-                var fn = $parse(attrs.onReadFile);
+            var eventHandlers    = {
+                'addedfile': function(file) {
+                    scope.file = file;
+                    if (this.files[1]!=null) {
+                        this.removeFile(this.files[0]);
+                    }
+                    scope.$apply(function() {
+                        scope.fileAdded = true;
+                    });
+                },
 
-                element.on('change', function(onChangeEvent) {
-                    var reader = new FileReader();
+                'success': function (file, response) {
+                }
 
-                    reader.onload = function(onLoadEvent) {
-                        scope.$apply(function() {
-                            fn(scope, {
-                                $fileContent: onLoadEvent.target.result
-                            });
-                        });
+            };
 
+            var dropzone = new Dropzone(element[0], config);
 
-                        var cases = [];
-                        var lines = this.result.split('\n');
-                        for (var line = 2; line < lines.length; line += 2) {
-                            var nachaLineOne = lines[line];
+            angular.forEach(eventHandlers, function(handler, event) {
+                dropzone.on(event, handler);
+            });
 
+            scope.processDropzone = function() {
+                dropzone.processQueue();
+            };
 
-                            if (nachaLineOne !== '' && isNaN(nachaLineOne[51])) {
-                                var firstName = nachaLineOne.substring(51, 62).replace(/ /g, '');
-                                var lastName = nachaLineOne.substring(63, 71).replace(/ /g, '');
-                                var beneficiaryNumber = nachaLineOne.substring(12, 50).replace(/ /g, '');
-
-                                var nachaLineTwo = lines[line + 1];
-
-                                var dateOfDeath = nachaLineTwo.substring(17, 23);
-                                var ssn = nachaLineTwo.substring(37, 46);
-                                var paymentAmount = nachaLineTwo.substring(54, 83);
-                                paymentAmount = paymentAmount.substring(0, paymentAmount.indexOf('\\'));
-
-                                cases.push({
-                                    "firstName": firstName,
-                                    "lastName": lastName,
-                                    "beneficiaryNumber": beneficiaryNumber,
-                                    "dateOfDeath": dateOfDeath,
-                                    "ssn": ssn,
-                                    "paymentAmount": paymentAmount
-                                });
-                            }
-
-                        }
-                        console.log(cases);
-                    };
-
-
-                    reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
-                });
+            scope.resetDropzone = function() {
+                dropzone.removeAllFiles();
             }
-        };
+        }
     }
-})();
+});

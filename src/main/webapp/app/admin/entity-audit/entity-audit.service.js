@@ -26,7 +26,7 @@
         function findByEntity(entityType, limit) {
             return $http.get('api/audits/entity/changes', {
                 params: {
-                    entityType: (entityType === "Government Reclamation" ? entityType = "GovRec" : entityType),
+                    entityType: (entityType === "Case Detail" ? entityType = "GovRec" : entityType),
                     limit: limit
                 }
             }).then(function (response) {

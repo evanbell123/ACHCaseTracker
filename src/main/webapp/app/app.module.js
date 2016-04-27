@@ -13,6 +13,8 @@
             'ui.router',
             'infinite-scroll',
             'ds.objectDiff',
+            'angular-advanced-searchbox',
+            'ngMaterial',
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar',
             'ui.grid',

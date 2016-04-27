@@ -54,14 +54,14 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("type")
     private CaseType type;
 
-    @DBRef
+    //@DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
     @Field("assigned_to")
     private String assignedTo;
 
-    @DBRef
+    //@DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
 

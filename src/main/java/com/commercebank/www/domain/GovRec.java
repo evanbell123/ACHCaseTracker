@@ -18,7 +18,6 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 /**
  * A GovRec.
  */
-@TypeName("GovRec")
 @Document(collection = "gov_rec")
 public class GovRec implements Serializable, CaseDetail {
 
@@ -56,7 +55,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("verified_by")
     private String verifiedBy;
 
-    @DBRef
+    //@DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 

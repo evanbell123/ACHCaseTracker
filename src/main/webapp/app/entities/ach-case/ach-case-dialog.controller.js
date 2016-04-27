@@ -44,6 +44,10 @@
         vm.datePickerOpenStatus.slaDeadline = false;
 
         vm.openCalendar = function(date) {
+            //Hack fix - if the date is null, the date picker opens as Dec. 31, 1969
+            if (vm.ACHCase.lastPaymentOn === null) { vm.ACHCase.lastPaymentOn = undefined; }
+            if (vm.ACHCase.slaDeadline === null) { vm.ACHCase.slaDeadline = undefined; }
+
             vm.datePickerOpenStatus[date] = true;
         };
     }
