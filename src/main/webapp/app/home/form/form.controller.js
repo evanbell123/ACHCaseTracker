@@ -1,3 +1,7 @@
+/*
+This controller is used for both /create-case and /edit-case
+*/
+
 (function() {
     'use strict';
 
@@ -5,58 +9,42 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', 'Enums', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$http', '$location', '$stateParams', 'Enums', 'ACHCaseTwo', 'FormDataService'];
 
-    function CaseFormController($scope, $http, Enums, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $http, $location, $stateParams, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
         var vm = this;
+
+        vm.editMode = function() {
+          if ($location.path !== "/create-case") {
+            return true;
+          } else {
+            return false;
+          }
+        };
 
         vm.onSubmit = onSubmit;
 
+        /*
+        When the user clicks submit,
+        Make sure the json is properly formatted,
+        then send a POST request if the current url = /create-case
+        other-wise the url must be /edit-case,
+        In this case send a PUT request to update the case.
+        */
         function onSubmit() {
 
-            //vm.model.openedDate = vm.model.openedDate.getTime();
-            //console.log(vm.model.openedDate);
-
-            var data = vm.model
-
-            var payments = data.payments;
-            var notes = data.notes;
-/*
-            for (var i = 0; i < payments.length; i++) {
-              payments[i]["@class"] = "com.commercebank.www.domain.Payment";
-            }
-
-            for (var i = 0; i < notes.length; i++) {
-              notes[i]["@class"] = "com.commercebank.www.domain.Note";
-            }
-            */
-
-            data.caseDetail.payments = payments;
-            data.caseDetail.notes = notes;
+          /*
+          if the form is in edit mode,
+          update the case Information
+          else create a new case
+          */
+          if (vm.editMode) {
+            ACHCaseTwo.update(vm.model);
+          } else {
+            ACHCaseTwo.create(vm.model);
+          }
 
 
-            delete data.payments;
-            delete data.notes;
-
-            console.log(data);
-
-            data = angular.toJson(data);
-
-            console.log(data);
-
-            //data.name = vm.model.name.first + " " + vm.model.name.last;
-
-            $http({
-                method: 'POST',
-                url: 'api/ach-case',
-                data: vm.model
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-            });
         }
 
         vm.env = {
@@ -66,50 +54,54 @@
 
         vm.formData = {};
 
+        /*
+        Specify the JSON model
+        This is the model object that we reference
+        on the <formly-form> element in caseForm.html
+        */
         vm.model = {
-          "totalAmount":null,
-          "id":null,
-          "status":"OPEN",
-          "lastPaymentOn": null,
-          "slaDeadline":null,
-          "sla": null,
-          "daysOpen":0,
-          "type":null,
-          "beneficiary": {
-            "customerID": null,
-            "name": null,
-            "ssn": null,
-            "accountNum": null,
-            "dateOfDeath": null,
-            "dateCBAware": null,
-            "otherGovBenefits": false,
-            "govBenefitsComment": null
-          },
-          "assignedTo":null,
-          "caseDetail": {
-              "@class": "com.commercebank.www.domain.GovRec",
-            "claimNumber": null,
-            "completedOn": null,
-            "verifiedOn": null,
-            "fullRecovery": false,
-            "paymentTotal": 0.0,
-            "paymentCount": 0,
-            "verifiedBy": null,
-            "recoveryInfo": {
-             // "method": null,
-             // "detailType": null,
-             // "detailValue": null,
-             // "detailString": null,
+            "totalAmount": null,
+            "id": null,
+            "status": "OPEN",
+            "lastPaymentOn": null,
+            "slaDeadline": null,
+            "sla": null,
+            "daysOpen": 0,
+            "type": null,
+            "beneficiary": {
+                "customerID": null,
+                "name": null,
+                "ssn": null,
+                "accountNum": null,
+                "dateOfDeath": null,
+                "dateCBAware": null,
+                "otherGovBenefits": false,
+                "govBenefitsComment": null
             },
-            "notes": null,
-            "payments": null
-          }
+            "assignedTo": null,
+            "caseDetail": {
+                "@class": "com.commercebank.www.domain.GovRec",
+                "claimNumber": null,
+                "completedOn": null,
+                "verifiedOn": null,
+                "fullRecovery": false,
+                "paymentTotal": 0.0,
+                "paymentCount": 0,
+                "verifiedBy": null,
+                "recoveryInfo": {
+                    "method": null,
+                    "detailType": null,
+                    "detailValue": null,
+                    "detailString": null,
+                },
+                "notes": null,
+                "payments": null
+            }
         }
 
-
-        //vm.exampleTitle = 'Repeating Section';
-
-
+        /*
+        specify form options
+        */
         vm.options = {
             formState: {
                 awesomeIsForced: true
@@ -120,13 +112,20 @@
 
         vm.originalFields = angular.copy(vm.fields);
 
-        // The model object that we reference
-        // on the <formly-form> element in index.html
-        //vm.model = {};
+        /*
+        Input: An element from the the RecoveryDetailEnum defined in enums.constants.js
+        that should be displayed if a certain recovery method has been selected by the user
+        Output: a boolean conditional expression
+        that will return true if the field should be hidden
+        and false if it should be displayed
 
+        Example Input: { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]}
+        Example Output: !model.caseDetail.recoveryInfo.method||model.caseDetail.recoveryInfo.method != 3
+        */
         function generateHideExpression(RecoveryDetailEnum) {
-
-            //'!model.recovery_method || (model.recovery_method != 2 && model.recovery_method != 5 && model.recovery_method != 8 && model.recovery_method != 11)'
+            /*
+            Here is an example of what a genereted expression may look like
+            */
             var hideExpression = "!model.caseDetail.recoveryInfo.method";
 
             if (RecoveryDetailEnum.fk.length === 0) {
@@ -143,13 +142,25 @@
                 }
             }
 
-            //console.log(hideExpression);
+            console.log(hideExpression);
 
             return hideExpression;
 
         }
 
+
+
         function init() {
+            /*
+            if the current state is edit-case
+            initialize the form fields with case values
+            */
+            if (vm.editMode) {
+                vm.model = ACHCaseTwo.one({
+                    id: $stateParams.caseId
+                });
+            }
+
             // An array of our form fields with configuration
             // and options set. We make reference to this in
             // the 'fields' attribute on the <formly-form> element
@@ -157,11 +168,6 @@
                     type: "radio",
                     key: "status",
                     defaultValue: 'open',
-                    /*
-                    data: {
-                        allOptions: people
-                    }
-                    */
                     templateOptions: {
                         options: FormDataService.status(),
                         "label": "Field Type",
@@ -261,9 +267,7 @@
                             ssn: {
                                 expression: function(viewValue, modelValue) {
                                     var value = modelValue || viewValue;
-
                                     var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
-                                    //var pattern = /^\d{3}-?\d{2}-?\d{4}$/;
                                     return pattern.test(value);
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
@@ -489,7 +493,6 @@
                         ],
                         btnText: 'Add another payment'
                     },
-                    //controller: RepeatingSectionController
                 },
 
 
@@ -515,10 +518,8 @@
                         }],
                         btnText: 'Add another note'
                     },
-                    //controller: RepeatingSectionController
                 },
             ];
         }
     }
-
 })();

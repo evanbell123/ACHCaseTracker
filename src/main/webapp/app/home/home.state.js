@@ -42,6 +42,7 @@
                     authorities: []
                 },
             })
+
             .state('cases', {
                 parent: 'home',
                 url: 'ach-case',
@@ -85,6 +86,16 @@
             .state('create-case', {
                 parent: 'home',
                 url: 'create-case',
+                templateUrl: 'app/home/form/caseForm.html',
+                controller: 'CaseFormController',
+                controllerAs: 'vm',
+                data: {
+                    authorities: []
+                },
+            })
+            .state('edit-case', {
+                parent: 'home',
+                url: 'edit-case/:caseId',
                 templateUrl: 'app/home/form/caseForm.html',
                 controller: 'CaseFormController',
                 controllerAs: 'vm',

@@ -20,7 +20,16 @@
       ],
 
       /*
+      In order to understand this remaining enums,
+      think of the id as the primary key, and
+      fk is the foriegn key to which it depends on
+      */
+
+      /*
       Case sub-type depends on case type
+      This means that the foriegn for each sub-type
+      refers to the primary id of the case type to which it
+      depends on
       */
       CaseSubtype: [
         { id: 0, name: "DNE", displayName: "DNE", fk: [0]},

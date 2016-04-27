@@ -1,3 +1,7 @@
+/*
+This controller is used for both /ach-case and /my-cases
+*/
+
 (function() {
     'use strict';
 
@@ -5,53 +9,41 @@
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService', 'Principal'];
+    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'ACHCaseTwo', 'Enums', 'EnumsService', 'Principal'];
 
 
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService, Principal) {
+    function CasesController($scope, $location, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
 
-      function updateRequest(data, successResponse, errorResonse) {
-        $http({
-            method: 'PUT',
-            url: 'api/ach-case',
-            data: data
-        }).then(function successCallback(response) {
 
-            //console.log(response.data.status);
 
-            $scope.msg.lastCellEdited = successResponse;
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            alert(errorResonse);
-        });
-      }
-
+        /*
+        Listen for when the user checks or unchecks the watch item check box
+        */
         $scope.watch = function(data) {
-
+            /*
+            If the user checks 'watch item'
+            assign that user to the case
+            */
             if (data.isWatched == true) {
-              var copyAccount;
+                var copyAccount;
                 Principal.identity().then(function(account) {
-                    //console.log(account);
                     copyAccount = account;
-                    //console.log(copyAccount);
-
                     data.assignedTo = copyAccount.login;
-                    //console.log(data.assignedTo);
                 });
-
-
-
-                //console.log(data.assignedTo);
-            } else {
+            } else { //If the user unchecks 'watch item', unassign the currently assigned user
                 data.assignedTo = null;
             }
-            console.log(data);
-
-            updateRequest(data, "Item watched", "Watch item failed");
+            /*
+            notify the server of this change of assignment
+            */
+            
+            ACHCaseTwo.update(data);
         }
 
+        /*
+        Highlight columns that are filtering the results
+        */
         $scope.highlightFilteredHeader = function(row, rowRenderIndex, col, colRenderIndex) {
             if (col.filters[0].term) {
                 return 'header-filtered';
@@ -60,6 +52,9 @@
             }
         };
 
+        /*
+        Export to CSV or PDF
+        */
         $scope.export = function() {
             if ($scope.export_format == 'csv') {
                 var myElement = angular.element(document.querySelectorAll(".custom-csv-link-location"));
@@ -69,6 +64,9 @@
             };
         };
 
+        /*
+        Set basic grid options
+        */
         $scope.gridOptions = {
             enableFiltering: true,
             enableGridMenu: true,
@@ -90,6 +88,12 @@
                 text: "Cases",
                 style: 'headerStyle'
             },
+            /*
+            Convert integers back to enum values
+            before exporting to PDF
+            If any data needs to be altered to a more presentable format before exporting,
+            to that here
+            */
             exporterFieldCallback: function(grid, row, col, input) {
                 if (col.name == 'status') {
                     return Enums.CaseStatus[input].displayName;
@@ -104,12 +108,19 @@
                 }
             },
 
+            /*
+            Specify the PDF footer
+            */
             exporterPdfFooter: function(currentPage, pageCount) {
                 return {
                     text: currentPage.toString() + ' of ' + pageCount.toString(),
                     style: 'footerStyle'
                 };
             },
+
+            /*
+            Customize PDF Style
+            */
             exporterPdfCustomFormatter: function(docDefinition) {
                 docDefinition.styles.headerStyle = {
                     fontSize: 22,
@@ -127,18 +138,10 @@
             exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location"))
         };
 
-        $scope.gridOptions.columnDefs = [
-            /*
-                            name: 'id',
-                            headerCellClass: $scope.highlightFilteredHeader,
-                            enableCellEdit: false,
-                            displayName: 'Case ID',
-                            type: 'number',
-                            width: '9%',
-                            cellTemplate: '<div class="ui-grid-cell-contents">{{COL_FIELD}}</div>'
-                        },
-                        */
-            {
+        /*
+        Add columns to the grid
+        */
+        $scope.gridOptions.columnDefs = [{
                 name: 'isWatched',
                 displayName: 'Watch Item',
                 enableCellEdit: false,
@@ -207,45 +210,53 @@
 
         $scope.msg = {};
 
+        $scope.selectGridRow = function() {
+            if ($scope.selectedItem[0].total != 0) {
+                //$location.path('edit-case/' + $scope.selecteditem[0].id);
+                return $scope.selecteditem[0].id;
+            }
+        };
+
+        /*
+        Specify what happens after editing a cell
+        and custom templates if needed
+        */
         $scope.gridOptions.onRegisterApi = function(gridApi) {
             //set gridApi on scope
             $scope.gridApi = gridApi;
             gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+                $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update";
+                ACHCaseTwo.update(rowEntity);
 
-
-
-                //console.log(colDef.isWatched);
-                updateRequest(rowEntity, 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue, "Failed to update");
-/*
-                $http({
-                    method: 'PUT',
-                    url: 'api/ach-case',
-                    data: rowEntity
-                }).then(function successCallback(response) {
-
-                    //console.log(response.data.status);
-
-                    $scope.msg.lastCellEdited = 'You changed ' + colDef.displayName + ' of case number ' + rowEntity.id + ' from ' + oldValue + ' to ' + newValue;
-                }, function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-
-                });
-                */
                 $scope.$apply();
             });
             $scope.gridApi.core.addRowHeaderColumn({
                 name: 'rowHeaderCol',
                 displayName: '',
                 width: 60,
-                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/ach-case/{{id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/edit-case/{{row.entity.id}}"><button class="btn" type="button"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
             });
         };
 
-        //console.log($location.path());
-        var request = $location.path();
-
-        $http.get("api"+request)
+        /*
+        If the user clicks the cases tab, request == /ach-case
+        If the user clicks the my cases tab, request == /my-cases
+        */
+        var currentLocation = $location.path();
+        /*
+        If the current location == /my-cases
+        then show only cases that are assigned to the user
+        that is currently logged in
+        */
+        if (currentLocation !== "/ach-case") {
+            $scope.gridOptions.data = ACHCaseTwo.assigned();
+            //console.log($scope.gridOptions.data);
+        } else { //else the current location is /ach-case
+            $scope.gridOptions.data = ACHCaseTwo.all();
+            //console.log($scope.gridOptions.data);
+        }
+        /*
+        $http.get("api" + request)
             .then(function(response) {
 
                 var data = response.data;
@@ -259,34 +270,18 @@
                     data[i].slaDeadline = new Date(data[i].slaDeadline);
 
                     data[i].isWatched = false;
-                    //if (data[i].assignedTo != null) {
-                     //   data[i].isWatched = true;
-                     //   data[i].assignedTo.fullName = data[i].assignedTo.firstName + " " + data[i].assignedTo.lastName;
-                    //}
-                    //console.log(data[i].isWatched);
                 }
                 $scope.gridOptions.data = data;
-
-
-                //console.log(data);
             });
+            */
+
     }
 
-
     /*
-        function getEnumIdFromName(CaseEnum, name) {
-            var enumId = CaseEnum.filter(function(value) {
-                return value.name === name;
-            })[0].id;
-
-            console.log(enumId, name);
-
-            return enumId;
-        }
-        */
-
+    Input: Constant Enum Value from enums.constants.js
+    Output: Array of selectOptions for that constant enum value
+    */
     function dropdownEditorOptions(CaseEnum) {
-        //console.log(caseStatus);
         var selectOptions = [];
         for (var i = 0; i < CaseEnum.length; i++) {
             var option = {
@@ -295,20 +290,22 @@
             };
             selectOptions.push(option);
         }
-        //console.log(selectOptions);
         return selectOptions;
     }
 
+    /*
+    Input: Constant Enum Value from enums.constants.js
+    Output: Array of filterOptions for that constant enum value
+    */
     function dropdownFilterOptions(CaseEnum) {
-        var selectOptions = [];
+        var filterOptions = [];
         for (var i = 0; i < CaseEnum.length; i++) {
             var option = {
                 value: CaseEnum[i].id,
                 label: CaseEnum[i].name
             };
-            selectOptions.push(option);
+            filterOptions.push(option);
         }
-        //console.log(selectOptions);
-        return selectOptions;
+        return filterOptions;
     }
 })();
