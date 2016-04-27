@@ -9,11 +9,11 @@ This controller is used for both /ach-case and /my-cases
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'Enums', 'EnumsService', 'Principal'];
+    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'ACHCaseTwo', 'Enums', 'EnumsService', 'Principal'];
 
 
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, Enums, EnumsService, Principal) {
+    function CasesController($scope, $location, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
 
         function updateRequest(data, successResponse, errorResonse) {
             $http({
@@ -31,10 +31,10 @@ This controller is used for both /ach-case and /my-cases
         Listen for when the user checks or unchecks the watch item check box
         */
         $scope.watch = function(data) {
-          /*
-          If the user checks 'watch item'
-          assign that user to the case
-          */
+            /*
+            If the user checks 'watch item'
+            assign that user to the case
+            */
             if (data.isWatched == true) {
                 var copyAccount;
                 Principal.identity().then(function(account) {
@@ -150,8 +150,7 @@ This controller is used for both /ach-case and /my-cases
         /*
         Add columns to the grid
         */
-        $scope.gridOptions.columnDefs = [
-            {
+        $scope.gridOptions.columnDefs = [{
                 name: 'isWatched',
                 displayName: 'Watch Item',
                 enableCellEdit: false,
@@ -220,6 +219,13 @@ This controller is used for both /ach-case and /my-cases
 
         $scope.msg = {};
 
+        $scope.selectGridRow = function() {
+            if ($scope.selectedItem[0].total != 0) {
+                //$location.path('edit-case/' + $scope.selecteditem[0].id);
+                return $scope.selecteditem[0].id;
+            }
+        };
+
         /*
         Specify what happens after editing a cell
         and custom templates if needed
@@ -235,7 +241,7 @@ This controller is used for both /ach-case and /my-cases
                 name: 'rowHeaderCol',
                 displayName: '',
                 width: 60,
-                cellTemplate: '<div class="ui-grid-cell-contents"><a href="index.html#/ach-case/{{id.COL_FIELD}}"><button class="btn" type="button" ng-click="grid.appScope.Main.openAddress(COL_FIELD)"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/edit-case/{{row.entity.id}}"><button class="btn" type="button"  style="background-color:#309479; color:#fff; text-align:center; padding:0 12px">Edit</button></a> </div>'
             });
         };
 
@@ -243,8 +249,20 @@ This controller is used for both /ach-case and /my-cases
         If the user clicks the cases tab, request == /ach-case
         If the user clicks the my cases tab, request == /my-cases
         */
-        var request = $location.path();
-
+        var currentLocation = $location.path();
+        /*
+        If the current location == /my-cases
+        then show only cases that are assigned to the user
+        that is currently logged in
+        */
+        if (currentLocation !== "/ach-case") {
+          $scope.gridOptions.data = ACHCaseTwo.assigned();
+          //console.log($scope.gridOptions.data);
+        } else { //else the current location is /ach-case
+          $scope.gridOptions.data = ACHCaseTwo.all();
+          //console.log($scope.gridOptions.data);
+        }
+        /*
         $http.get("api" + request)
             .then(function(response) {
 
@@ -262,6 +280,8 @@ This controller is used for both /ach-case and /my-cases
                 }
                 $scope.gridOptions.data = data;
             });
+            */
+
     }
 
     /*

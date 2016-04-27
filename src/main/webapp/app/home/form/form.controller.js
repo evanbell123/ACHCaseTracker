@@ -9,12 +9,9 @@ This controller is used for both /create-case and /edit-case
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', '$location', 'Enums', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$http', '$location', '$stateParams', 'Enums', 'ACHCaseTwo', 'FormDataService'];
 
-    function CaseFormController($scope, $http, $location, Enums, FormDataService, formlyVersion) {
-
-
-
+    function CaseFormController($scope, $http, $location, $stateParams, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
         var vm = this;
 
         vm.onSubmit = onSubmit;
@@ -128,7 +125,7 @@ This controller is used for both /create-case and /edit-case
         init();
 
         vm.originalFields = angular.copy(vm.fields);
-        
+
         /*
         Input: An element from the the RecoveryDetailEnum defined in enums.constants.js
         that should be displayed if a certain recovery method has been selected by the user
@@ -165,7 +162,19 @@ This controller is used for both /create-case and /edit-case
 
         }
 
+        //vm.currentLocation = $location.path();
+
         function init() {
+            var currentLocation = $location.path()
+                /*
+                if the current state is edit-case
+                */
+            if (currentLocation !== "/create-case") {
+                console.log($stateParams.caseId);
+
+                vm.model = ACHCaseTwo.one({id: $stateParams.caseId});
+            }
+
             // An array of our form fields with configuration
             // and options set. We make reference to this in
             // the 'fields' attribute on the <formly-form> element
