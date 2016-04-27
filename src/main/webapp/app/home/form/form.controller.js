@@ -25,29 +25,18 @@ This controller is used for both /create-case and /edit-case
         */
         function onSubmit() {
 
-            var data = vm.model
+            //var newCase = new ACHCaseTwo(vm.model);
 
-            var payments = data.payments;
-            var notes = data.notes;
+            //console.log(newCase);
 
-            /*
-            Copy the payments and notes JSON,
-            into the proper spot
-            */
-            data.caseDetail.payments = payments;
-            data.caseDetail.notes = notes;
+            ACHCaseTwo.create(vm.model);
 
-            /*
-            Then get rid the copied payments and notes
-            */
-            delete data.payments;
-            delete data.notes;
 
-            data = angular.toJson(data);
 
             /*
             Create a new case
             */
+            /*
             $http({
                 method: 'POST',
                 url: 'api/ach-case',
@@ -59,6 +48,7 @@ This controller is used for both /create-case and /edit-case
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
+            */
         }
 
         vm.env = {
