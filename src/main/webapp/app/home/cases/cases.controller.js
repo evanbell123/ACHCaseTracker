@@ -37,7 +37,7 @@ This controller is used for both /ach-case and /my-cases
             /*
             notify the server of this change of assignment
             */
-            
+
             ACHCaseTwo.update(data);
         }
 
@@ -154,7 +154,8 @@ This controller is used for both /ach-case and /my-cases
                 enableCellEdit: false,
                 displayName: 'Assigned To',
                 headerCellClass: $scope.highlightFilteredHeader,
-                width: '16%'
+                width: '16%',
+                visible: false
             }, {
                 name: 'status',
                 displayName: 'Status',
