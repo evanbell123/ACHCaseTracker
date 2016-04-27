@@ -8,9 +8,6 @@
 
     function ACHCaseTwo($resource, DateUtils, Enums, EnumsService) {
         var resourceUrl = 'api/ach-case/:id';
-
-
-
         return $resource(resourceUrl, {}, {
             'all': {
                 method: 'GET',
@@ -56,9 +53,12 @@
           } else {
             caseData.isWatched = true;
           }
-          
+
           caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
           caseData.slaDeadline = DateUtils.convertDateTimeFromServer(caseData.slaDeadline);
+          caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
+          caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
+          caseData.caseDetail.completedOn = DateUtils.convertDateTimeFromServer(caseData.caseDetail.completedOn);
 
           return caseData;
         }
