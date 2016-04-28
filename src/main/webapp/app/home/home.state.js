@@ -42,9 +42,10 @@
                     authorities: []
                 },
             })
+
             .state('cases', {
                 parent: 'home',
-                url: 'cases',
+                url: 'ach-case',
                 templateUrl: 'app/home/cases/cases.html',
                 controller: 'CasesController',
                 controllerAs: 'vm',
@@ -79,7 +80,17 @@
                 controller: 'CaseFormController',
                 controllerAs: 'vm',
                 data: {
-                    authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
+                    authorities: []
+                },
+            })
+            .state('edit-case', {
+                parent: 'home',
+                url: 'edit-case/:caseId',
+                templateUrl: 'app/home/form/caseForm.html',
+                controller: 'CaseFormController',
+                controllerAs: 'vm',
+                data: {
+                    authorities: []
                 },
             })
             .state('import', {
