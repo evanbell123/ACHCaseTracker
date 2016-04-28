@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,7 @@ import java.util.Objects;
 /**
  * An SLA.
  */
+@Entity
 @TypeName("SLA")
 @Document(collection = "sla")
 public class SLA extends AbstractAuditingEntity implements Serializable {

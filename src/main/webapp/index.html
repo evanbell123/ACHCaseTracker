@@ -30,7 +30,7 @@
         <!--[if lt IE 9]> <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p> <![endif]-->
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak></div>
         <div ui-view="navbar" ng-cloak></div>
-        <div class="container-fluid">
+        <div class="col-lg-10 col-lg-offset-1 top-buffer container">
             <div ui-view="content"></div>
         </div>
 
@@ -107,6 +107,7 @@
     <script src="app/home/import/dropzone.js"></script>
     <script src="app/home/form/form.service.js"></script>
     <script src="app/home/form/form.controller.js"></script>
+    <script src="app/home/dashboard/dashboard.service.js"></script>
     <script src="app/home/dashboard/dashboard.controller.js"></script>
     <script src="app/home/cases/cases.controller.js"></script>
     <script src="app/home/auditlog/auditlog.controller.js"></script>
@@ -165,13 +166,13 @@
     <script src="app/components/form/pagination.constants.js"></script>
     <script src="app/components/form/minbytes.directive.js"></script>
     <script src="app/components/form/maxbytes.directive.js"></script>
+    <script src="app/components/alert/alert.service.js"></script>
+    <script src="app/components/alert/alert.directive.js"></script>
+    <script src="app/components/alert/alert-error.directive.js"></script>
     <script src="app/blocks/interceptor/notification.interceptor.js"></script>
     <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
     <script src="app/blocks/interceptor/auth.interceptor.js"></script>
     <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
-    <script src="app/components/alert/alert.service.js"></script>
-    <script src="app/components/alert/alert.directive.js"></script>
-    <script src="app/components/alert/alert-error.directive.js"></script>
     <script src="app/blocks/handlers/state.handler.js"></script>
     <script src="app/blocks/config/localstorage.config.js"></script>
     <script src="app/blocks/config/http.config.js"></script>
@@ -219,11 +220,11 @@
     <script src="app/account/password/password-strength-bar.directive.js"></script>
     <script src="app/account/activate/activate.state.js"></script>
     <script src="app/account/activate/activate.controller.js"></script>
-    <script src="app/home/home.state.js"></script>
-    <script src="app/home/home.controller.js"></script>
     <script src="app/enums/enums.service.js"></script>
     <script src="app/enums/enums.filters.js"></script>
     <script src="app/enums/enums.constants.js"></script>
+    <script src="app/home/home.state.js"></script>
+    <script src="app/home/home.controller.js"></script>
     <script src="app/entities/entity.state.js"></script>
     <script src="app/admin/admin.state.js"></script>
     <script src="app/account/account.state.js"></script>
@@ -259,6 +260,7 @@
         <script src="app/home/import/dropzone.js"></script>
         <script src="app/home/form/form.service.js"></script>
         <script src="app/home/form/form.controller.js"></script>
+        <script src="app/home/dashboard/dashboard.service.js"></script>
         <script src="app/home/dashboard/dashboard.controller.js"></script>
         <script src="app/home/cases/cases.controller.js"></script>
         <script src="app/home/auditlog/auditlog.controller.js"></script>
@@ -317,13 +319,13 @@
         <script src="app/components/form/pagination.constants.js"></script>
         <script src="app/components/form/minbytes.directive.js"></script>
         <script src="app/components/form/maxbytes.directive.js"></script>
+        <script src="app/components/alert/alert.service.js"></script>
+        <script src="app/components/alert/alert.directive.js"></script>
+        <script src="app/components/alert/alert-error.directive.js"></script>
         <script src="app/blocks/interceptor/notification.interceptor.js"></script>
         <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
         <script src="app/blocks/interceptor/auth.interceptor.js"></script>
         <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
-        <script src="app/components/alert/alert.service.js"></script>
-        <script src="app/components/alert/alert.directive.js"></script>
-        <script src="app/components/alert/alert-error.directive.js"></script>
         <script src="app/blocks/handlers/state.handler.js"></script>
         <script src="app/blocks/config/localstorage.config.js"></script>
         <script src="app/blocks/config/http.config.js"></script>
@@ -371,11 +373,11 @@
         <script src="app/account/password/password-strength-bar.directive.js"></script>
         <script src="app/account/activate/activate.state.js"></script>
         <script src="app/account/activate/activate.controller.js"></script>
-        <script src="app/home/home.state.js"></script>
-        <script src="app/home/home.controller.js"></script>
         <script src="app/enums/enums.service.js"></script>
         <script src="app/enums/enums.filters.js"></script>
         <script src="app/enums/enums.constants.js"></script>
+        <script src="app/home/home.state.js"></script>
+        <script src="app/home/home.controller.js"></script>
         <script src="app/entities/entity.state.js"></script>
         <script src="app/admin/admin.state.js"></script>
         <script src="app/account/account.state.js"></script>

@@ -2,6 +2,7 @@ package com.commercebank.www.domain;
 
 import com.commercebank.www.domain.enumeration.CaseSubtype;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 
 /**

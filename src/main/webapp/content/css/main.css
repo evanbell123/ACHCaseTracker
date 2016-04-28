@@ -451,6 +451,8 @@ ul#strengthBar {
     color: red;
 }
 
+.top-buffer { margin-top: 7%; }
+
 .dropzone {
   border: 2px dashed #1ab394 !important;
   padding: 40px 20px !important;

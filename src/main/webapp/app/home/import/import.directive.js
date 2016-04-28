@@ -6,7 +6,7 @@ ImportDirectives.directive('dropzone', function() {
         link: function(scope, element, attrs) {
 
             var config = {
-                url: 'api/import',
+                url: 'http://localhost:8080/import',
                 maxFilesize: 100,
                 paramName: "importfile",
                 maxThumbnailFilesize: 10,
@@ -18,6 +18,7 @@ ImportDirectives.directive('dropzone', function() {
                 'addedfile': function(file) {
                     scope.file = file;
                     if (this.files[1]!=null) {
+                        console.log("added file");
                         this.removeFile(this.files[0]);
                     }
                     scope.$apply(function() {
@@ -30,13 +31,14 @@ ImportDirectives.directive('dropzone', function() {
 
             };
 
-            var dropzone = new Dropzone(element[0], config);
+            dropzone = new Dropzone(element[0], config);
 
             angular.forEach(eventHandlers, function(handler, event) {
                 dropzone.on(event, handler);
             });
 
             scope.processDropzone = function() {
+                console.log("process dropzone");
                 dropzone.processQueue();
             };
 

@@ -72,16 +72,6 @@
                     authorities: []
                 },
             })
-            .state('import', {
-                parent: 'home',
-                url: 'import',
-                templateUrl: 'app/home/import/import.html',
-                controller: 'ImportController',
-                controllerAs: 'vm',
-                data: {
-                    authorities: []
-                },
-            })
             .state('create-case', {
                 parent: 'home',
                 url: 'create-case',
@@ -89,8 +79,27 @@
                 controller: 'CaseFormController',
                 controllerAs: 'vm',
                 data: {
-                    authorities: []
+                    authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
                 },
+            })
+            .state('import', {
+                parent: 'home',
+                url: "import",
+                templateUrl: "app/home/import/import.html",
+                controller: 'ImportController',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'File import',
+                    authorities: [] },
+                resolve: {
+                    loadPlugin: function ($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            {
+                                files: ['app/content/css/basic.css','app/content/css/dropzone.css','app/home/import/dropzone.js']
+                            }
+                        ]);
+                    }
+                }
             });
     }
 })();

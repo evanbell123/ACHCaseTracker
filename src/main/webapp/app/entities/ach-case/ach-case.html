@@ -22,6 +22,8 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by=""><span>Watch Item</span><i class="fa fa-sort" aria-hidden="true"></i></th>
+                    <th jh-sort-by="assignedTo"><span>Assigned To</span><i class="fa fa-sort" aria-hidden="true"></i></th>
                     <th jh-sort-by="totalAmount"><span>Total Amount</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="lastPaymentOn"><span>Last Payment On</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -34,10 +36,12 @@
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:searchParams track by ACHCase.id ">
                     <td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>
+                    <td><input class="checkbox" type="checkbox"/></td>
+                    <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
-                    <td><span ng-class="{'label':true, 'label-success':ACHCase.status == 'OPEN', 'label-warning':ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
-                    <td>{{ACHCase.lastPaymentOn | date:'medium'}}</td>
-                    <td>{{ACHCase.slaDeadline | date:'medium'}}</td>
+                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-warning': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
+                    <td>{{ACHCase.lastPaymentOn | date:'mediumDate'}}</td>
+                    <td><span ng-class="{'red':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.daysOpen}}</td>
                     <td>{{ACHCase.type}}</td>
                     <td class="text-right">

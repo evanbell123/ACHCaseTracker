@@ -12,6 +12,7 @@
         $scope.filename = '';
 
         $scope.uploadFile = function () {
+            console.log("upload file");
             $scope.processQueue();
         };
 

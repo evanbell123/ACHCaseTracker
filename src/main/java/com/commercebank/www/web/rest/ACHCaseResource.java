@@ -2,8 +2,10 @@ package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
+import com.commercebank.www.domain.GovRec;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.repository.GovRecRepository;
 import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +48,9 @@ public class ACHCaseResource {
 
     @Inject
     private ACHCaseRepository achCaseRepository;
+
+    @Inject
+    private GovRecRepository govRecRepository;
 
     @Inject
     private ACHCaseService achCaseService;
@@ -89,7 +95,7 @@ public class ACHCaseResource {
     public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
         if (achCase.getId() == null) { return createACHCase(achCase); }
-        achCase.setStatus(Status.IN_PROGRESS);
+        //achCase.setStatus(Status.IN_PROGRESS);
         ACHCase result = achCaseService.cascadeSave(achCase);
         //achCase result = achCaseRepository.save(achCase);
         return ResponseEntity.ok()
@@ -111,7 +117,7 @@ public class ACHCaseResource {
     public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = achCaseRepository.findAllByStatusNot(Status.CLOSED, pageable);
+        Page<ACHCase> page = achCaseRepository.findAllByStatusNotOrderBySlaDeadlineAsc(Status.CLOSED, pageable);
         page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -207,5 +213,35 @@ public class ACHCaseResource {
             .headers(HeaderUtil.createAlert("Nacha file imported", ""))
             .body("");
     }
+
+    /**
+     * GET  /dashboard : get a page of AuditEvents between the fromDate and toDate.
+     *
+     * @param fromDate the start of the time period of AuditEvents to get
+     * @param toDate the end of the time period of AuditEvents to get
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+
+    @RequestMapping(method = RequestMethod.GET,
+        params = {"fromDate", "toDate"})
+    public ResponseEntity<List<ACHCase>> getByDates(
+        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+        Pageable pageable) throws URISyntaxException {
+
+        Long createdCount = achCaseRepository.countByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        Long closedCount = govRecRepository.countByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        List<ACHCase> createdList = achCaseRepository.findByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        List<ACHCase> closedList = govRecRepository.findByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/dashboard");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
 }

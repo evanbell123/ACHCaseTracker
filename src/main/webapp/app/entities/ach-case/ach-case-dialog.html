@@ -62,7 +62,7 @@
         <div class="form-group">
             <label class="control-label" for="field_lastPaymentOn">Last Payment On</label>
                 <div class="input-group">
-                    <input id="field_lastPaymentOn" type="text" class="form-control" name="lastPaymentOn" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.lastPaymentOn" is-open="vm.datePickerOpenStatus.lastPaymentOn"
+                    <input id="field_lastPaymentOn" type="text" class="form-control" name="lastPaymentOn" uib-datepicker-popup="{{dateformat}}" ng-model="vm.ACHCase.lastPaymentOn" is-open="vm.datePickerOpenStatus.lastPaymentOn"
                       />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('lastPaymentOn')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -72,7 +72,7 @@
         <div class="form-group">
             <label class="control-label" for="field_slaDeadline">SLA Deadline</label>
                 <div class="input-group">
-                    <input id="field_slaDeadline" type="text" class="form-control" name="slaDeadline" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.slaDeadline" is-open="vm.datePickerOpenStatus.slaDeadline"
+                    <input id="field_slaDeadline" type="text" class="form-control" name="slaDeadline" uib-datepicker-popup="{{dateformat}}" ng-model="vm.ACHCase.slaDeadline" is-open="vm.datePickerOpenStatus.slaDeadline"
                       />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('slaDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>

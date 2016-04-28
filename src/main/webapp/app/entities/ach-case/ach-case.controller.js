@@ -13,6 +13,9 @@
         vm.predicate = 'id';
         vm.reverse = true;
         vm.page = 0;
+        vm.slaPast = function(deadline){
+           return Date.parse(deadline) < new Date();
+        }
         vm.loadAll = function() {
             ACHCase.query({
                 page: vm.page,
@@ -49,10 +52,6 @@
         };
 
         vm.loadAll();
-
-        vm.pastSLA = function(deadline) {
-            return (new Date() > deadline);
-        }
 
         $scope.availableSearchParams = [
             { key: "status", name: "Status", placeholder: "Status..." },

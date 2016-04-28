@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +15,7 @@ import java.util.Objects;
 /**
  * A Payment.
  */
+@Entity
 @TypeName("Payment")
 @Document(collection = "payment")
 public class Payment implements Serializable {
