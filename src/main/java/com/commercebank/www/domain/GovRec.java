@@ -31,12 +31,6 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("claim_number")
     private String claimNumber;
 
-    @Field("completed_on")
-    private ZonedDateTime completedOn;
-
-    @Field("completed_by")
-    private String completedBy;
-
     @Field("verified_on")
     private ZonedDateTime verifiedOn;
 

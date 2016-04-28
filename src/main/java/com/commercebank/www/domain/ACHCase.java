@@ -55,6 +55,12 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("days_open")
     private Long daysOpen;
 
+    @Field("completed_on")
+    private ZonedDateTime completedOn;
+
+    @Field("completed_by")
+    private String completedBy;
+
     @NotNull
     @Field("type")
     private CaseType type;
