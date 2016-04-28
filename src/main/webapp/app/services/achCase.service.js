@@ -93,6 +93,10 @@
           caseData.payments = caseData.caseDetail.payments;
           caseData.notes = caseData.caseDetail.notes;
 
+          for (var i = 0; i < caseData.payments.length; i++) {
+            caseData.payments[i].effectiveOn = DateUtils.convertDateTimeFromServer(caseData.payments[i].effectiveOn);
+          }
+
           caseData.caseDetail.payments = null;
           caseData.caseDetail.notes = null;
 
