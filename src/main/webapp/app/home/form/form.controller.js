@@ -17,7 +17,7 @@ This controller is used for both /create-case and /edit-case
         vm.model = entity;
 
         var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function(event, result) {
-            vm.ACHCase = result;
+            vm.model = result;
         });
         $scope.$on('$destroy', unsubscribe);
 
@@ -25,7 +25,7 @@ This controller is used for both /create-case and /edit-case
             ACHCase.get({
                 id: id
             }, function(result) {
-                vm.ACHCase = result;
+                vm.model = result;
             });
         };
 
@@ -35,14 +35,20 @@ This controller is used for both /create-case and /edit-case
             vm.isSaving = false;
         };
 
+        var onSaveError = function () {
+            vm.isSaving = false;
+        };
+
         vm.save = function() {
             vm.isSaving = true;
-            if (vm.ACHCase.id !== null) {
-                ACHCase.update(vm.ACHCase, onSaveSuccess, onSaveError);
+            if (vm.model.id !== null) {
+                ACHCase.update(vm.model, onSaveSuccess, onSaveError);
             } else {
-                ACHCase.save(vm.ACHCase, onSaveSuccess, onSaveError);
+                ACHCase.save(vm.model, onSaveSuccess, onSaveError);
             }
         };
+
+
 
         vm.clear = function() {
             $uibModalInstance.dismiss('cancel');
@@ -341,7 +347,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
@@ -370,7 +377,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
@@ -391,7 +399,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
