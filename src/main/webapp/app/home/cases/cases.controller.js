@@ -9,11 +9,11 @@ This controller is used for both /ach-case and /my-cases
         .module('achCaseTrackingApp')
         .controller('CasesController', CasesController)
 
-    CasesController.$inject = ['$scope', '$location', '$http', '$timeout', 'uiGridConstants', 'ACHCaseTwo', 'Enums', 'EnumsService', 'Principal'];
+    CasesController.$inject = ['$scope', '$state', '$http', '$timeout', 'uiGridConstants', 'ACHCaseTwo', 'Enums', 'EnumsService', 'Principal'];
 
 
 
-    function CasesController($scope, $location, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
+    function CasesController($scope, $state, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
 
 
 
@@ -210,13 +210,6 @@ This controller is used for both /ach-case and /my-cases
 
         $scope.msg = {};
 
-        $scope.selectGridRow = function() {
-            if ($scope.selectedItem[0].total != 0) {
-                //$location.path('edit-case/' + $scope.selecteditem[0].id);
-                return $scope.selecteditem[0].id;
-            }
-        };
-
         /*
         Specify what happens after editing a cell
         and custom templates if needed
@@ -242,13 +235,14 @@ This controller is used for both /ach-case and /my-cases
         If the user clicks the cases tab, request == /ach-case
         If the user clicks the my cases tab, request == /my-cases
         */
-        var currentLocation = $location.path();
+        //var currentLocation = $location.path();
         /*
         If the current location == /my-cases
         then show only cases that are assigned to the user
         that is currently logged in
         */
-        if (currentLocation !== "/ach-case") {
+
+        if (!$state.is("cases")) {
             $scope.gridOptions.data = ACHCaseTwo.assigned();
             //console.log($scope.gridOptions.data);
         } else { //else the current location is /ach-case

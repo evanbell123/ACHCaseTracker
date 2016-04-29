@@ -9,43 +9,50 @@ This controller is used for both /create-case and /edit-case
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', '$location', '$stateParams', 'Enums', 'ACHCaseTwo', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$rootScope', '$stateParams', '$uibModalInstance', 'entity', 'Enums', 'ACHCase', 'FormDataService'];
 
-    function CaseFormController($scope, $http, $location, $stateParams, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $rootScope, $stateParams, $uibModalInstance, entity, Enums, ACHCase, FormDataService, formlyVersion) {
         var vm = this;
 
-        vm.editMode = function() {
-          if ($location.path !== "/create-case") {
-            return true;
-          } else {
-            return false;
-          }
+        vm.model = entity;
+
+        var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function(event, result) {
+            vm.model = result;
+        });
+        $scope.$on('$destroy', unsubscribe);
+
+        vm.load = function(id) {
+            ACHCase.get({
+                id: id
+            }, function(result) {
+                vm.model = result;
+            });
         };
 
-        vm.onSubmit = onSubmit;
+        var onSaveSuccess = function(result) {
+            $scope.$emit('achCaseTrackingApp:ACHCaseUpdate', result);
+            $uibModalInstance.close(result);
+            vm.isSaving = false;
+        };
 
-        /*
-        When the user clicks submit,
-        Make sure the json is properly formatted,
-        then send a POST request if the current url = /create-case
-        other-wise the url must be /edit-case,
-        In this case send a PUT request to update the case.
-        */
-        function onSubmit() {
+        var onSaveError = function () {
+            vm.isSaving = false;
+        };
 
-          /*
-          if the form is in edit mode,
-          update the case Information
-          else create a new case
-          */
-          if (vm.editMode) {
-            ACHCaseTwo.update(vm.model);
-          } else {
-            ACHCaseTwo.create(vm.model);
-          }
+        vm.save = function() {
+            vm.isSaving = true;
+            if (vm.model.id !== null) {
+                ACHCase.update(vm.model, onSaveSuccess, onSaveError);
+            } else {
+                ACHCase.save(vm.model, onSaveSuccess, onSaveError);
+            }
+        };
 
 
-        }
+
+        vm.clear = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
 
         vm.env = {
             angularVersion: angular.version.full,
@@ -59,45 +66,7 @@ This controller is used for both /create-case and /edit-case
         This is the model object that we reference
         on the <formly-form> element in caseForm.html
         */
-        vm.model = {
-            "totalAmount": null,
-            "id": null,
-            "status": "OPEN",
-            "lastPaymentOn": null,
-            "slaDeadline": null,
-            "sla": null,
-            "daysOpen": 0,
-            "type": null,
-            "beneficiary": {
-                "customerID": null,
-                "name": null,
-                "ssn": null,
-                "accountNum": null,
-                "dateOfDeath": null,
-                "dateCBAware": null,
-                "otherGovBenefits": false,
-                "govBenefitsComment": null
-            },
-            "assignedTo": null,
-            "caseDetail": {
-                "@class": "com.commercebank.www.domain.GovRec",
-                "claimNumber": null,
-                "completedOn": null,
-                "verifiedOn": null,
-                "fullRecovery": false,
-                "paymentTotal": 0.0,
-                "paymentCount": 0,
-                "verifiedBy": null,
-                "recoveryInfo": {
-                    "method": null,
-                    "detailType": null,
-                    "detailValue": null,
-                    "detailString": null,
-                },
-                "notes": null,
-                "payments": null
-            }
-        }
+
 
         /*
         specify form options
@@ -151,15 +120,17 @@ This controller is used for both /create-case and /edit-case
 
 
         function init() {
+
             /*
             if the current state is edit-case
             initialize the form fields with case values
-            */
+
             if (vm.editMode) {
-                vm.model = ACHCaseTwo.one({
+                vm.model = ACHCase.one({
                     id: $stateParams.caseId
                 });
             }
+            */
 
             // An array of our form fields with configuration
             // and options set. We make reference to this in
@@ -170,8 +141,8 @@ This controller is used for both /create-case and /edit-case
                     defaultValue: 'open',
                     templateOptions: {
                         options: FormDataService.status(),
-                        "label": "Field Type",
-                        "required": true
+                        label: "Case Status",
+                        required: true,
                     }
                 }, {
                     className: 'row',
@@ -225,7 +196,7 @@ This controller is used for both /create-case and /edit-case
                         }
                     ]
                 }, {
-                    
+
                     template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
                 }, {
                     className: 'row',
@@ -376,7 +347,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
@@ -405,7 +377,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
@@ -426,7 +399,8 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function() {
+                                expression: function(viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
                                 },
