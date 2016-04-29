@@ -1,8 +1,10 @@
 package com.commercebank.www.web.rest;
 
+import com.commercebank.www.domain.Beneficiary;
 import com.commercebank.www.domain.EntityAuditEvent;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.javers.core.Javers;
+import org.javers.core.JaversBuilder;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
 import com.commercebank.www.security.AuthoritiesConstants;
@@ -54,7 +56,7 @@ public class JaversEntityAuditResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public List<String> getAuditedEntities() {
 
-      return Arrays.asList("ACHCase","Beneficiary","CaseNote","GovRec","Payment","Recovery","Sla");
+      return Arrays.asList("ACH Case","Beneficiary","Case Note","Case Detail","Payment","Recovery","SLA");
     }
 
     /**
@@ -73,7 +75,8 @@ public class JaversEntityAuditResource {
         log.debug("REST request to get a page of EntityAuditEvents");
         Pageable pageRequest = createPageRequest(limit);
 
-        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + entityType);
+        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + entityType.replaceAll("\\s+",""));
+
         QueryBuilder jqlQuery = QueryBuilder.byClass(entityTypeToFetch)
                                             .limit(limit)
                                             .withNewObjectChanges(true);

@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/ach-case-two',
             data: {
-                authorities: ['ROLE_ACHOPS'],
+                authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                 pageTitle: 'ACHCases'
             },
             views: {
@@ -30,7 +30,7 @@
             parent: 'entity',
             url: '/ach-case/{id}',
             data: {
-                authorities: ['ROLE_ACHOPS'],
+                authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                 pageTitle: 'ACHCase'
             },
             views: {
@@ -50,7 +50,7 @@
             parent: 'ach-case',
             url: '/new',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -85,7 +85,7 @@
             parent: 'ach-case',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -110,7 +110,7 @@
             parent: 'ach-case',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_ACHOPS']
+                authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

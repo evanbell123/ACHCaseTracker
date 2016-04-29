@@ -34,6 +34,7 @@ public class AchCaseTrackingApp {
     @Inject
     private Environment env;
 
+    public static final String NACHA_DIR_NAME = "nacha_files";
 
     @Bean
     CommandLineRunner init(ACHCaseRepository achCaseRepository, BeneficiaryRepository beneficiaryRepository,
@@ -42,7 +43,7 @@ public class AchCaseTrackingApp {
         return (evt) ->
         {
             Nacha.setRepos(achCaseRepository, beneficiaryRepository, paymentRepository, govRecRepository, slaRepository);
-            WatchDirectory.setDirectory("nacha_files");
+            WatchDirectory.setDirectory(NACHA_DIR_NAME);
             try
             {
                 (new Thread(new WatchDirectory())).start();

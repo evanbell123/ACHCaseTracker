@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -18,7 +19,7 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 /**
  * A GovRec.
  */
-@TypeName("Gov Rec")
+@Entity
 @Document(collection = "gov_rec")
 public class GovRec implements Serializable, CaseDetail {
 
@@ -29,12 +30,6 @@ public class GovRec implements Serializable, CaseDetail {
 
     @Field("claim_number")
     private String claimNumber;
-
-    @Field("completed_on")
-    private ZonedDateTime completedOn;
-
-    @Field("completed_by")
-    private String completedBy;
 
     @Field("verified_on")
     private ZonedDateTime verifiedOn;
@@ -56,7 +51,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("verified_by")
     private String verifiedBy;
 
-    @DBRef
+    //@DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 

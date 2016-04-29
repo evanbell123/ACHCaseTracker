@@ -13,6 +13,9 @@
         vm.predicate = 'id';
         vm.reverse = true;
         vm.page = 0;
+        vm.slaPast = function(deadline){
+           return Date.parse(deadline) < new Date();
+        }
         vm.loadAll = function() {
             ACHCase.query({
                 page: vm.page,
@@ -50,5 +53,15 @@
 
         vm.loadAll();
 
+        $scope.availableSearchParams = [
+            { key: "status", name: "Status", placeholder: "Status..." },
+            { key: "daysOpen", name: "Days Open", placeholder: "Days Open..." },
+            { key: "type", name: "Type", placeholder: "Case Type..." },
+            { key: "totalAmount", name: "Total Amount", placeholder: "Total Amount..." },
+            { key: "slaDeadline", name: "SLA Deadline", placeholder: "SLA Deadline..." },
+            { key: "assignedTo", name: "Assigned To", placeholder: "Assigned To..." }
+        ];
     }
 })();
+
+

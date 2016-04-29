@@ -2,31 +2,40 @@ package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
+import com.commercebank.www.domain.GovRec;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.repository.GovRecRepository;
 import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
-import com.commercebank.www.service.UserService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import static com.commercebank.www.AchCaseTrackingApp.NACHA_DIR_NAME;
 
 /**
  * REST controller for managing ACHCase.
@@ -41,10 +50,10 @@ public class ACHCaseResource {
     private ACHCaseRepository achCaseRepository;
 
     @Inject
-    private ACHCaseService achCaseService;
+    private GovRecRepository govRecRepository;
 
     @Inject
-    private UserService userService;
+    private ACHCaseService achCaseService;
 
     /**
      * POST  /ach-case : Create a new achCase.
@@ -86,7 +95,7 @@ public class ACHCaseResource {
     public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
         if (achCase.getId() == null) { return createACHCase(achCase); }
-        achCase.setStatus(Status.IN_PROGRESS);
+        //achCase.setStatus(Status.IN_PROGRESS);
         ACHCase result = achCaseService.cascadeSave(achCase);
         //achCase result = achCaseRepository.save(achCase);
         return ResponseEntity.ok()
@@ -108,7 +117,7 @@ public class ACHCaseResource {
     public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = achCaseRepository.findAllByStatusNot(Status.CLOSED, pageable);
+        Page<ACHCase> page = achCaseRepository.findAllByStatusNotOrderBySlaDeadlineAsc(Status.CLOSED, pageable);
         page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -172,5 +181,67 @@ public class ACHCaseResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/my-cases");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    /**
+     * POST  /import : Import a NACHA file to be processed
+     *
+     * @param request the file to be added
+     * @return the ResponseEntity with status 201 (Created) and with body the new achCase, or with status 400 (Bad Request) if the achCase has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @RequestMapping(value = "/import",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity importNachaFile(MultipartHttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to import a NACHA file : {}", request);
+        try {
+                Iterator<String> itr = request.getFileNames();
+
+                while (itr.hasNext()) {
+                    String uploadedFile = itr.next();
+                    MultipartFile file = request.getFile(uploadedFile);
+                    File destination = new File(NACHA_DIR_NAME + "\\" + file.getOriginalFilename() + "\\" + LocalDate.now());
+                    file.transferTo(destination);
+                }
+            }
+
+        catch (Exception e) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("NACHA File", "invalid", e.getMessage())).body(null);
+        }
+        return ResponseEntity.accepted()
+            .headers(HeaderUtil.createAlert("Nacha file imported", ""))
+            .body("");
+    }
+
+    /**
+     * GET  /dashboard : get a page of AuditEvents between the fromDate and toDate.
+     *
+     * @param fromDate the start of the time period of AuditEvents to get
+     * @param toDate the end of the time period of AuditEvents to get
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+
+    @RequestMapping(method = RequestMethod.GET,
+        params = {"fromDate", "toDate"})
+    public ResponseEntity<List<ACHCase>> getByDates(
+        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+        Pageable pageable) throws URISyntaxException {
+
+        Long createdCount = achCaseRepository.countByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        Long closedCount = govRecRepository.countByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        List<ACHCase> createdList = achCaseRepository.findByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        List<ACHCase> closedList = govRecRepository.findByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/dashboard");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
 }

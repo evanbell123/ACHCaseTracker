@@ -1,4 +1,4 @@
- (function() {
+(function() {
     'use strict';
     angular
         .module('achCaseTrackingApp')
@@ -7,7 +7,7 @@
     ACHCase.$inject = ['$resource', 'DateUtils'];
 
     function ACHCase ($resource, DateUtils) {
-        var resourceUrl =  'api/ach-case/:id';
+        var resourceUrl =  'api/dashboard/';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

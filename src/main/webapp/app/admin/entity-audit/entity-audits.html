@@ -6,12 +6,11 @@
     <div class="row">
         <div class="col-md-12 pad">
             <h4>Filter</h4>
-
             <form name="auditForm" role="form" novalidate show-validation>
                 <div class="row">
                     <div class="col-md-8 form-group">
                         <label>Entity</label>
-                        <select class="input-sm form-control" name="qualifiedName" id="qualifiedName" required
+                        <select class="form-control" name="qualifiedName" id="qualifiedName" required
                                 ng-options="vm.getEntityName(entity) for entity in vm.entities"
                                 ng-model="vm.qualifiedName"></select>
                         <div ng-show="auditForm.qualifiedName.$invalid">
@@ -22,7 +21,7 @@
                     </div>
                     <div class="col-md-4 form-group">
                         <label>Limit to</label>
-                        <select class="input-sm form-control" name="limit" id="limit" required
+                        <select class="form-control" name="limit" id="limit" required
                                 ng-options="option for option in vm.limits"
                                 ng-model="vm.limit"></select>
                     </div>
@@ -69,11 +68,10 @@
                     <td>{{audit.entityId}}</td>
                     <td>{{audit.action}}</td>
                     <td>{{audit.commitVersion}}</td>
-                    <!--<td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>-->
+                    <td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>
                     <!-- comment above line and uncomment below to have Table view of value -->
-                    <td class="no-pad">
-                        <div class="col-sm-12">
-                        <!--<div class="audit-obj">-->
+                    <!--<td class="no-pad">
+                        <div class="audit-obj">
                             <table class="table table-bordered table-hover no-margin">
                                 <tr>
                                     <th>Field</th>
@@ -87,14 +85,14 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
+                      </div>-->
                     </td>
                     <td>{{audit.modifiedDate | date:'medium'}}</td>
                     <td>{{audit.modifiedBy}}</td>
                     <td>
                         <button type="button" ng-click="vm.openChange(audit)"
                                 uib-tooltip="View Audit Change Details" uib-tooltip-placement="auto"
-                                class="btn btn-info btn-xs">
+                                class="btn btn-info">
                             <i class="glyphicon glyphicon-eye-open"></i>
                         </button>
                     </td>

@@ -13,17 +13,24 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
         <link rel="stylesheet" href="bower_components/angular-object-diff/dist/angular-object-diff.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
+        <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
+        <link rel="stylesheet" href="bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox.min.css" />
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css content/css/main.css -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="content/css/main.css">
+        <link rel="stylesheet" href="content/css/basic.css">
+        <link rel="stylesheet" href="content/css/dropzone.css">
         <!-- endbuild -->
     </head>
     <body ng-app="achCaseTrackingApp">
         <!--[if lt IE 9]> <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p> <![endif]-->
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak></div>
         <div ui-view="navbar" ng-cloak></div>
-        <div class="container">
+        <div class="col-lg-10 col-lg-offset-1 top-buffer container">
             <div ui-view="content"></div>
         </div>
 
@@ -52,7 +59,6 @@
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
         <script src="bower_components/json3/lib/json3.js"></script>
-        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="bower_components/api-check/dist/api-check.js"></script>
         <script src="bower_components/angular-formly/dist/formly.js"></script>
@@ -64,6 +70,13 @@
         <script src="bower_components/angular-touch/angular-touch.js"></script>
         <script src="bower_components/angular-animate/angular-animate.js"></script>
         <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
+        <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+        <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
+        <script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox-tpls.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
+        <script src="bower_components/angular-material/angular-material.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -91,8 +104,10 @@
     <script src="app/layouts/error/error.state.js"></script>
     <script src="app/home/import/import.directive.js"></script>
     <script src="app/home/import/import.controller.js"></script>
+    <script src="app/home/import/dropzone.js"></script>
     <script src="app/home/form/form.service.js"></script>
     <script src="app/home/form/form.controller.js"></script>
+    <script src="app/home/dashboard/dashboard.service.js"></script>
     <script src="app/home/dashboard/dashboard.controller.js"></script>
     <script src="app/home/cases/cases.controller.js"></script>
     <script src="app/home/auditlog/auditlog.controller.js"></script>
@@ -243,8 +258,10 @@
         <script src="app/layouts/error/error.state.js"></script>
         <script src="app/home/import/import.directive.js"></script>
         <script src="app/home/import/import.controller.js"></script>
+        <script src="app/home/import/dropzone.js"></script>
         <script src="app/home/form/form.service.js"></script>
         <script src="app/home/form/form.controller.js"></script>
+        <script src="app/home/dashboard/dashboard.service.js"></script>
         <script src="app/home/dashboard/dashboard.controller.js"></script>
         <script src="app/home/cases/cases.controller.js"></script>
         <script src="app/home/auditlog/auditlog.controller.js"></script>
@@ -370,5 +387,6 @@
         <script src="app/app.constants.js"></script>
         <!-- endinject -->
         <!-- endbuild -->
+    <script>$.material.init()</script>
     </body>
 </html>

@@ -71,9 +71,10 @@
         function openChange(audit){
 
             if(audit.commitVersion < 2){
-                AlertService.warning("There is no previous version available for this entry.\nThis is the first" +
+               AlertService.warning("There is no previous version available for this entry.\nThis is the first" +
                     " audit entry captured for this object");
-            } else {
+            }
+            else {
                 EntityAuditService.getPrevVersion(audit.entityType, audit.entityId, audit.commitVersion).then(function (data) {
                     var previousVersion = JSON.parse(data.entityValue),
                         currentVersion = audit.entityValue;

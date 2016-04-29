@@ -73,16 +73,6 @@
                     authorities: []
                 },
             })
-            .state('import', {
-                parent: 'home',
-                url: 'import',
-                templateUrl: 'app/home/import/import.html',
-                controller: 'ImportController',
-                controllerAs: 'vm',
-                data: {
-                    authorities: []
-                },
-            })
             .state('create-case', {
                 parent: 'home',
                 url: 'create-case',
@@ -102,6 +92,25 @@
                 data: {
                     authorities: []
                 },
+            })
+            .state('import', {
+                parent: 'home',
+                url: "import",
+                templateUrl: "app/home/import/import.html",
+                controller: 'ImportController',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'File import',
+                    authorities: [] },
+                resolve: {
+                    loadPlugin: function ($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            {
+                                files: ['app/content/css/basic.css','app/content/css/dropzone.css','app/home/import/dropzone.js']
+                            }
+                        ]);
+                    }
+                }
             });
     }
 })();

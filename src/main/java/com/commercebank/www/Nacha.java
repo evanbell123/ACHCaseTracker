@@ -87,7 +87,7 @@ public class Nacha
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
                 Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
-                achCase.setSla(sla.orElse(slaRepository.save(new SLA("default" ,new Long(3)))));
+                achCase.setSla(sla.get());
                 achCase.setSlaDeadline(LocalDate.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);

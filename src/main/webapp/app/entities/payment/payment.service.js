@@ -15,7 +15,8 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.effectiveOn = DateUtils.convertDateTimeFromServer(data.effectiveOn);
+                    if (data.effectiveOn !== null) { data.effectiveOn = DateUtils.convertDateTimeFromServer(data.effectiveOn); }
+                    else { data.effectiveOn = undefined; }
                     return data;
                 }
             },

@@ -1,5 +1,6 @@
 package com.commercebank.www.domain;
 
+import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -19,7 +20,8 @@ import com.commercebank.www.domain.enumeration.CaseType;
 /**
  * An ACH Case.
  */
-@TypeName("ACH Case")
+@Entity
+@TypeName("ACHCase")
 @Document(collection = "ach_case")
 public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
@@ -41,7 +43,10 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("sla_deadline")
     private LocalDate slaDeadline;
 
-    @DBRef
+    @Field("sla_count")
+    private Long slaCount;
+
+    //@DBRef
     @Field("sla")
     private SLA sla;
 
@@ -50,18 +55,27 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("days_open")
     private Long daysOpen;
 
+    @Field("completed_on")
+    private ZonedDateTime completedOn;
+
+    @Field("completed_by")
+    private String completedBy;
+
     @NotNull
     @Field("type")
     private CaseType type;
 
-    @DBRef
+    //@DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
     @Field("assigned_to")
     private String assignedTo;
 
-    @DBRef
+    @Field("closed_on")
+    private ZonedDateTime closedOn;
+
+    //@DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
 
@@ -136,6 +150,14 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     public SLA getSla() { return sla; }
 
     public void setSla(SLA sla) { this.sla = sla; }
+
+    public Long getSlaCount() { return slaCount; }
+
+    public void setSlaCount(Long slaCount) { this.slaCount = slaCount; }
+
+    public ZonedDateTime getClosedOn() { return closedOn; }
+
+    public void setClosedOn(ZonedDateTime closedOn) { this.closedOn = closedOn; }
 
     @Override
     public boolean equals(Object o) {

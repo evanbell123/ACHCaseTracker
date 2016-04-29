@@ -1,35 +1,57 @@
-
-<style>
-    a:link    {color:green; background-color:transparent; text-decoration:underline}
-    a:visited {color:white; background-color:transparent; text-decoration:underline}
-    a:hover   {color:red; background-color:transparent; text-decoration:underline}
-    a:active  {color:white; background-color:transparent; text-decoration:underline}
-</style>
-    <div class="container" style="max-width: 1000px">
-        <div class="row">
-            <div class = "col-xs-3" style="background-color: #078C63; height: 200px; ">
-                <p><font color = "white" size="5">Cases that passed SLA deadline</font></p>
-                <p><font color = "white" size="7"><center><a href="/#/sla_passed_cases">{{SLApassed}}</a></center></font></p>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Monthly</span>
+                    <h5>Cases Opened</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">40 886,200</h1>
+                    <div class="stat-percent font-bold text-success">98% <i class="material-icons">&#xE3E7;</i></div>
+                    <small>Total income</small>
+                </div>
             </div>
-
-            <div class = "col-xs-3 col-xs-offset-1" style="background-color: #6AB244; height: 200px; ">
-                <p><font color = "white" size="5">Cases that reach SLA deadline soon</font></p>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">Today</span>
+                    <h5>Payments Received</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">106,120</h1>
+                    <div class="stat-percent font-bold text-navy">44% <i class="material-icons">&#xE8E5;</i></div>
+                    <small>New visits</small>
+                </div>
             </div>
-            <div class = "col-xs-3 col-xs-offset-1" style="background-color: #B3D78B; height: 200px; ">
-                <p><font color = "white" size="5">Current watch items</font></p>
+        </div>
+    <div class="col-lg-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-info pull-right">Annual</span>
+                <h5>Orders</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">275,800</h1>
+                <div class="stat-percent font-bold text-info">20% <i class="material-icons">&#xE8E5;</i></div>
+                <small>New orders</small>
             </div>
         </div>
     </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right">Low value</span>
+                    <h5>SLA Count</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">80,600</h1>
 
-    <!--<div class="dashboard-container">-->
-
-        <!--<div ng-include src="model.titleTemplateUrl"></div>-->
-        <!--<div class="dashboard" x-ng-class="{'edit' : editMode}">-->
-            <!--<adf-dashboard-row row="row"-->
-                               <!--adf-model="model"-->
-                               <!--options="options"-->
-                               <!--ng-repeat="row in model.rows"-->
-                               <!--edit-mode="editMode"-->
-                               <!--continuous-edit-mode="continuousEditMode"-->
-            <!--/>-->
-        <!--</div>-->
+                    <div class="stat-percent font-bold text-danger">38% <i class="material-icons">&#xE8E3;</i></div>
+                    <small>In first month</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

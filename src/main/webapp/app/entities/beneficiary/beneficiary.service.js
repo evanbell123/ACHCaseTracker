@@ -15,8 +15,10 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.dateOfDeath = DateUtils.convertLocalDateFromServer(data.dateOfDeath);
-                    data.dateCBAware = DateUtils.convertDateTimeFromServer(data.dateCBAware);
+                    if (data.dateOfDeath !== null) { data.dateOfDeath = DateUtils.convertLocalDateFromServer(data.dateOfDeath); }
+                    else { data.dateOfDeath = undefined; }
+                    if (data.dateCBAware !== null) data.dateCBAware = DateUtils.convertDateTimeFromServer(data.dateCBAware);
+                    else { data.dateCBAware = undefined; }
                     return data;
                 }
             },
