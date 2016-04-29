@@ -225,7 +225,7 @@ This controller is used for both /create-case and /edit-case
                         }
                     ]
                 }, {
-                    className: 'section-label',
+                    
                     template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
                 }, {
                     className: 'row',

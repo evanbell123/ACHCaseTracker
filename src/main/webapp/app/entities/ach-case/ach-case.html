@@ -11,8 +11,8 @@
                     </span>
                 </button>
                 </div>
-            <div class="col-md-4 col-md-offset-4">
-            <nit-advanced-searchbox ng-model="searchParams" parameters="availableSearchParams" placeholder="Search..."></nit-advanced-searchbox>
+            <div class="col-md-6 col-md-offset-2">
+            <nit-advanced-searchbox ng-model="searchParams" parameters="availableSearchParams" placeholder="Filter"></nit-advanced-searchbox>
             </div>
         </div>
         </div>
@@ -21,7 +21,7 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
-                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <!--<th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
                     <th jh-sort-by=""><span>Watch Item</span><i class="fa fa-sort" aria-hidden="true"></i></th>
                     <th jh-sort-by="assignedTo"><span>Assigned To</span><i class="fa fa-sort" aria-hidden="true"></i></th>
                     <th jh-sort-by="totalAmount"><span>Total Amount</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -30,13 +30,21 @@
                     <th jh-sort-by="slaDeadline"><span>SLA Deadline</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span>Type</span><i class="fa fa-sort" aria-hidden="true"></i></th>
+                    <th jh-sort-by="completedOn"><span>Completed On</span></th>
+                    <th jh-sort-by="completedOn"><span>Completed By</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:searchParams track by ACHCase.id ">
-                    <td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>
-                    <td><input class="checkbox" type="checkbox"/></td>
+                    <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
+                    <td>
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                            </div>
+                    </td>
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
                     <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-warning': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
@@ -44,6 +52,7 @@
                     <td><span ng-class="{'red':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.daysOpen}}</td>
                     <td>{{ACHCase.type}}</td>
+                    <td>{{ACHCase.beneficiary.name}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

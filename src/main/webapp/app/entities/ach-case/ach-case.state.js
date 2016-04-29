@@ -11,7 +11,7 @@
         $stateProvider
         .state('ach-case', {
             parent: 'entity',
-            url: '/ach-case-two',
+            url: '/ach-case/',
             data: {
                 authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                 pageTitle: 'ACHCases'
@@ -70,7 +70,9 @@
                                 daysOpen: null,
                                 type: null,
                                 id: null,
-                                beneficiary: null
+                                beneficiary: {
+                                    name: null
+                                }
                             };
                         }
                     }

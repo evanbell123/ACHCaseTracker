@@ -54,12 +54,13 @@
         vm.loadAll();
 
         $scope.availableSearchParams = [
-            { key: "status", name: "Status", placeholder: "Status..." },
+            { key: "status", name: "Status", placeholder: "Status...", restrictToSuggestedValues: true, suggestedValues: ['Open', 'In Progress', 'Closed']},
             { key: "daysOpen", name: "Days Open", placeholder: "Days Open..." },
             { key: "type", name: "Type", placeholder: "Case Type..." },
             { key: "totalAmount", name: "Total Amount", placeholder: "Total Amount..." },
             { key: "slaDeadline", name: "SLA Deadline", placeholder: "SLA Deadline..." },
-            { key: "assignedTo", name: "Assigned To", placeholder: "Assigned To..." }
+            { key: "assignedTo", name: "Assigned To", placeholder: "Assigned To..." },
+            { key: "beneficiary: {name", name: "Beneficiary Name", placeholder: "Name" }
         ];
     }
 })();
