@@ -5,19 +5,19 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseController', ACHCaseController);
 
-    ACHCaseController.$inject = ['$scope', '$state', 'ACHCase', 'ParseLinks', 'AlertService'];
+    ACHCaseController.$inject = ['$scope', '$state', 'ACHCase', 'ParseLinks', 'AlertService', 'Principal'];
 
-    function ACHCaseController ($scope, $state, ACHCase, ParseLinks, AlertService) {
+    function ACHCaseController($scope, $state, ACHCase, ParseLinks, AlertService, Principal) {
         var vm = this;
         vm.ACHCases = [];
         vm.predicate = 'id';
         vm.reverse = true;
         vm.page = 0;
-        vm.slaPast = function(deadline){
-           return Date.parse(deadline) < new Date();
+        vm.slaPast = function(deadline) {
+            return Date.parse(deadline) < new Date();
         }
         vm.loadAll = function() {
-            ACHCase.query({
+            ACHCase.all({
                 page: vm.page,
                 size: 20,
                 sort: sort()
@@ -29,14 +29,16 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
+
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
                     vm.ACHCases.push(data[i]);
                 }
-                console.log(vm.ACHCases);
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
