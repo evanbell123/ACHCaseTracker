@@ -66,7 +66,6 @@ public class GovRec implements Serializable, CaseDetail {
     public GovRec(String claimNumber, ZonedDateTime completedOn, BigDecimal paymentTotal, CaseSubtype subtype)
     {
         this.claimNumber = claimNumber;
-        this.completedOn = completedOn;
         this.paymentTotal = paymentTotal;
         this.subtype = subtype;
     }
@@ -85,14 +84,6 @@ public class GovRec implements Serializable, CaseDetail {
 
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
-    }
-
-    public ZonedDateTime getCompletedOn() {
-        return completedOn;
-    }
-
-    public void setCompletedOn(ZonedDateTime completedOn) {
-        this.completedOn = completedOn;
     }
 
     public ZonedDateTime getVerifiedOn() {
@@ -151,10 +142,6 @@ public class GovRec implements Serializable, CaseDetail {
         this.fullRecovery = fullRecovery;
     }
 
-    public String getCompletedBy() { return completedBy; }
-
-    public void setCompletedBy(String completedBy) { this.completedBy = completedBy; }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -180,7 +167,6 @@ public class GovRec implements Serializable, CaseDetail {
         return "GovRec{" +
             "id=" + id +
             ", claimNumber='" + claimNumber + "'" +
-            ", completedOn='" + completedOn + "'" +
             ", verifiedOn='" + verifiedOn + "'" +
             ", verifiedBy='" + verifiedBy + "'" +
             ", paymentTotal='" + paymentTotal + "'" +

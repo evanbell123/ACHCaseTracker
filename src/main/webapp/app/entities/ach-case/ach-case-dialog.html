@@ -13,31 +13,6 @@
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.ACHCase.id" readonly />
         </div>
-        <!-------Beneficiary------------------------------------------------------------------------------------------------->
-        <div class="row">
-            <h4 id="myBeneficiaryLabel">Beneficiary Info</h4>
-        </div>
-        <div class="col-md-6 form-group">
-            <label class="control-label" for="field_Beneficiary _name">Beneficiary Name</label>
-            <input type="text" class="form-control" name="beneficiaryName" id="field_Beneficiary _name"
-                    ng-model="vm.ACHCase.beneficiary.name"/>
-        </div>
-        <!-------------------------------------------------------------------------------------------------------------------->
-        <!-------Case Detail/Subtype------------------------------------------------------------------------------------------>
-        <div class="row">
-            <h4 id="myGovRecLabel">Case Details</h4>
-        </div>
-        <div class="col-md-6 form-group">
-        </div>
-        <!--------Will have payment and case note info------------------------------------------------------------------------>
-        <!-------Case Detail/Subtype------------------------------------------------------------------------------------------>
-        <div class="row">
-            <h4 id="myRecoveryLabel">Disposition</h4>
-        </div>
-        <div class="col-md-6 form-group">
-        </div>
-        <!--------Will have payment and case note info------------------------------------------------------------------------>
-
 
         <div class="form-group">
             <label class="control-label" for="field_totalAmount">Total Amount</label>
@@ -105,9 +80,9 @@
         <div class="form-group">
             <label class="control-label" for="field_type">Type</label>
             <select class="form-control" name="type" ng-model="vm.ACHCase.type" id="field_type" required>
-                <option value="GOV_REC" translate="achCaseTrackingApp.CaseType.GOV_REC">Government Reclamation</option>
+                <option value="GOV_REC">Government Reclamation</option>
                 <option value="POA">POA</option>
-                <option value="REV_DEL" translate="achCaseTrackingApp.CaseType.REV_DEL">Reversal/Deletion</option>
+                <option value="REV_DEL">Reversal/Deletion</option>
                 <option value="RETURN">Return</option>
                 <option value="UNRESOLVED">Unresolved/Dishonored Return</option>
             </select>

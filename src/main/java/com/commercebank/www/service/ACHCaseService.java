@@ -80,7 +80,7 @@ public class ACHCaseService {
 
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec == null) { return false; }
-        if (govRec.getCompletedOn() == null) { return false; }
+        //if (govRec.getCompletedOn() == null) { return false; }
         if (govRec.getSubtype() == CaseSubtype.TREAS_REFUND || govRec.getSubtype() == CaseSubtype.TREAS_REFERRAL)
             if (govRec.getClaimNumber() == null || govRec.getClaimNumber().isEmpty()) { return false; }
 
