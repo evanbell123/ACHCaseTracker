@@ -44,9 +44,6 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("payment_count")
     private Long paymentCount;
 
-    @Field("sla_count")
-    private Long slaCount;
-
     @NotNull
     @Field("subtype")
     private CaseSubtype subtype;

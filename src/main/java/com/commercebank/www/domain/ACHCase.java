@@ -155,9 +155,17 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     public void setSlaCount(Long slaCount) { this.slaCount = slaCount; }
 
-    public ZonedDateTime getClosedOn() { return closedOn; }
+    public ZonedDateTime getCompletedOn() {
+        return completedOn;
+    }
 
-    public void setClosedOn(ZonedDateTime closedOn) { this.closedOn = closedOn; }
+    public void setCompletedOn(ZonedDateTime completedOn) {
+        this.completedOn = completedOn;
+    }
+
+    public String getCompletedBy() { return completedBy; }
+
+    public void setCompletedBy(String completedBy) { this.completedBy = completedBy; }
 
     @Override
     public boolean equals(Object o) {
@@ -190,6 +198,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
           //  ", slaType='" + sla.getTypeName() + "'" +
             ", daysOpen='" + daysOpen + "'" +
             ", type='" + type + "'" +
+            ", completedOn='" + completedOn + "'" +
           //  ", beneficiary='" + beneficiary.getName() + "'" +
           //  ", assigned to'" + assignedTo.getLogin() + "'" +
             '}';

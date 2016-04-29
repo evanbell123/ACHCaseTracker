@@ -233,11 +233,13 @@ public class ACHCaseResource {
 
         Long createdCount = achCaseRepository.countByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
 
-        Long closedCount = govRecRepository.countByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+        //Long closedCount = govRecRepository.countByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
 
-        List<ACHCase> createdList = achCaseRepository.findByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+        //List<ACHCase> createdList = achCaseRepository.findByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
 
-        List<ACHCase> closedList = govRecRepository.findByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+        //List<ACHCase> closedList = govRecRepository.findByCompletedOnBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59));
+
+        Page<ACHCase> page = (Page<ACHCase>) achCaseRepository.findByCreatedDateBetween(fromDate.atTime(0, 0), toDate.atTime(23, 59), pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/dashboard");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

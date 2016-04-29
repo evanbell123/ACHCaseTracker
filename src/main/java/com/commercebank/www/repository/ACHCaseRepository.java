@@ -27,7 +27,7 @@ public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
 
     Page<ACHCase> findAllByStatusNotOrderBySlaDeadlineAsc(Status closed, Pageable pageable);
 
-    List<ACHCase> findByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
+    List<ACHCase> findByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1, Pageable pageable);
 
     Long countByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }
