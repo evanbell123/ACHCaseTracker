@@ -30,17 +30,18 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('dashboard', {
                 parent: 'home',
-                url: 'dashboard',
+                url: '/dashboard',
                 templateUrl: 'app/home/dashboard/dashboard.html',
                 controller: 'DashboardController',
                 controllerAs: 'vm',
                 data: {
-                    authorities: []
-                },
+                    authorities: ['ROLE_ADMIN'],
+                    pageTitle: 'Audits'
+                }
             })
 
             .state('cases', {
@@ -51,7 +52,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('my-cases', {
                 parent: 'home',
@@ -61,7 +62,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('sla_passed_cases', {
                 parent: 'home',
@@ -71,7 +72,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('create-case', {
                 parent: 'home',
@@ -81,7 +82,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('edit-case', {
                 parent: 'home',

@@ -108,18 +108,19 @@ public class ACHCaseService {
         return achCase;
     }
 
-    private ACHCase updateSLA(ACHCase achCase)
+    public ACHCase updateSLA(ACHCase achCase)
     {
-        //User has selected to watch the item
-        if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty()) {
             if (achCase.getType() == GOV_REC) {
                 //Cases of treasury types do not update their SLAs
                 if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
-                    achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
+                    achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
+                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+                }
+                else {
+                    achCase.setSla(slaRepository.findOneById("treasury-standard").get());
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
                 }
             }
-        }
-        return null;
+        return achCase;
     }
 }

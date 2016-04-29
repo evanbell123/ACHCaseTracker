@@ -164,6 +164,10 @@
                     }
                 }
             }])
+        },
+        function config(mdThemingProvider) {
+            mdThemingProvider.theme('defaultTheme')
+                .primaryPal
         })
         .run(run);
 

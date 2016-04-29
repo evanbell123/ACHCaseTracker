@@ -30,21 +30,13 @@
                     <th jh-sort-by="slaDeadline"><span>SLA Deadline</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span>Type</span><i class="fa fa-sort" aria-hidden="true"></i></th>
-                    <th jh-sort-by="completedOn"><span>Completed On</span></th>
-                    <th jh-sort-by="completedOn"><span>Completed By</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="ACHCase in vm.ACHCases | filter:searchParams track by ACHCase.id ">
+                <tr ng-repeat="ACHCase in vm.ACHCases | filter: searchParams track by ACHCase.id ">
                     <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
-                    <td>
-                        <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                        </label>
-                            </div>
-                    </td>
+                    <td><md-checkbox class="md-primary" aria-label="Watch Item Checkbox"></md-checkbox></td>
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
                     <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-warning': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
@@ -52,7 +44,6 @@
                     <td><span ng-class="{'red':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.daysOpen}}</td>
                     <td>{{ACHCase.type}}</td>
-                    <td>{{ACHCase.beneficiary.name}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

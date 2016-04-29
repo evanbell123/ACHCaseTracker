@@ -9,7 +9,9 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 import com.commercebank.www.domain.enumeration.CaseType;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.*;
+import com.commercebank.www.service.ACHCaseService;
 
+import javax.inject.Inject;
 import java.util.Optional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,17 +24,17 @@ public class Nacha
     private static GovRecRepository govRecRepository;
     private static BeneficiaryRepository beneficiaryRepository;
     private static PaymentRepository paymentRepository;
-    private static SLARepository slaRepository;
+    private static ACHCaseService achCaseService;
 
     public static void setRepos(ACHCaseRepository achCaseRepo, BeneficiaryRepository beneficiaryRepo,
-                                PaymentRepository paymentRepo, GovRecRepository govRecRepo, SLARepository slaRepo)
+                                PaymentRepository paymentRepo, GovRecRepository govRecRepo, ACHCaseService achCaseServ)
 
     {
         achCaseRepository = achCaseRepo;
         beneficiaryRepository = beneficiaryRepo;
         paymentRepository = paymentRepo;
         govRecRepository = govRecRepo;
-        slaRepository = slaRepo;
+        achCaseService = achCaseServ;
     }
 
     public static void processNacha(String fileName) throws Exception
@@ -86,14 +88,17 @@ public class Nacha
 
                 ACHCase achCase = new ACHCase();
                 achCase.setDaysOpen(new Long(0));
-                Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
-                achCase.setSla(sla.get());
-                achCase.setSlaDeadline(LocalDate.now().plusDays(3));
+               // Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
+               // achCase.setSla(sla.get());
+               // achCase.setSlaDeadline(LocalDate.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
                 achCase.setStatus(Status.OPEN);
+                achCase = achCaseService.updateSLA(achCase);
                 achCaseRepository.save(achCase);
+
+                //achCaseService.cascadeSave(achCase);
             }
         }
     }

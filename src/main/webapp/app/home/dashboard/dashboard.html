@@ -1,5 +1,17 @@
-
-
+<div>
+    <div class="row">
+        <div class="container-fluid">
+        <h1>Dashboard
+                <div class="col-md-5 pull-right input-group">
+                    <span class="input-group-addon">From:</span>
+                    <input type="date" class="input-sm form-control" name="start" ng-model="vm.fromDate" ng-change="vm.onChangeDate()" required/>
+                    <span class="input-group-addon">To:</span>
+                    <input type="date" class="input-sm form-control" name="end" ng-model="vm.toDate" ng-change="vm.onChangeDate()" required/>
+                </div>
+        </h1>
+            <br/>
+        </div>
+    </div>
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-3">
@@ -9,7 +21,7 @@
                     <h5>Cases Opened</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">40 886,200</h1>
+                    <h1 class="no-margins">{{vm.totals.createdCount}}</h1>
                     <div class="stat-percent font-bold text-success">98% <i class="material-icons">&#xE3E7;</i></div>
                     <small>Total income</small>
                 </div>
@@ -19,10 +31,10 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-primary pull-right">Today</span>
-                    <h5>Payments Received</h5>
+                    <h5>Cases Closed</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">106,120</h1>
+                    <h1 class="no-margins">{{vm.totals.closedCount}}</h1>
                     <div class="stat-percent font-bold text-navy">44% <i class="material-icons">&#xE8E5;</i></div>
                     <small>New visits</small>
                 </div>
@@ -32,10 +44,10 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <span class="label label-info pull-right">Annual</span>
-                <h5>Orders</h5>
+                <h5>Payments Returned</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">275,800</h1>
+                <h1 class="no-margins">{{vm.totals.paymentsReturned}}</h1>
                 <div class="stat-percent font-bold text-info">20% <i class="material-icons">&#xE8E5;</i></div>
                 <small>New orders</small>
             </div>
@@ -45,10 +57,10 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">Low value</span>
-                    <h5>SLA Count</h5>
+                    <h5>Average SLA Cycles</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">80,600</h1>
+                    <h1 class="no-margins">{{vm.totals.slaAverage}}</h1>
 
                     <div class="stat-percent font-bold text-danger">38% <i class="material-icons">&#xE8E3;</i></div>
                     <small>In first month</small>
@@ -57,3 +69,4 @@
         </div>
     </div>
     </div>
+</div>

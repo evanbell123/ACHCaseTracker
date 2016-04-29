@@ -71,7 +71,7 @@
                                 type: null,
                                 id: null,
                                 beneficiary: {
-                                    name: null
+                                    
                                 }
                             };
                         }
