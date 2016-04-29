@@ -9,50 +9,44 @@ This controller is used for both /create-case and /edit-case
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'entity', 'Enums', 'ACHCaseTwo', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$rootScope', '$stateParams', '$uibModalInstance', 'entity', 'Enums', 'ACHCase', 'FormDataService'];
 
-    function CaseFormController($scope, $rootScope, $state, $stateParams, entity, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $rootScope, $stateParams, $uibModalInstance, entity, Enums, ACHCase, FormDataService, formlyVersion) {
         var vm = this;
+
+        vm.model = entity;
 
         var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function(event, result) {
             vm.ACHCase = result;
         });
         $scope.$on('$destroy', unsubscribe);
 
+        vm.load = function(id) {
+            ACHCase.get({
+                id: id
+            }, function(result) {
+                vm.ACHCase = result;
+            });
+        };
 
-        if (!$state.is("create-case")) {
-            vm.editMode = true;
-        } else {
-            vm.editMode = false;
-        }
+        var onSaveSuccess = function(result) {
+            $scope.$emit('achCaseTrackingApp:ACHCaseUpdate', result);
+            $uibModalInstance.close(result);
+            vm.isSaving = false;
+        };
 
-
-        console.log(vm.editMode);
-
-        vm.onSubmit = onSubmit;
-
-        /*
-        When the user clicks submit,
-        Make sure the json is properly formatted,
-        then send a POST request if the current url = /create-case
-        other-wise the url must be /edit-case,
-        In this case send a PUT request to update the case.
-        */
-        function onSubmit() {
-
-            /*
-            if the form is in edit mode,
-            update the case Information
-            else create a new case
-            */
-            if (vm.editMode) {
-                ACHCaseTwo.update(vm.model);
+        vm.save = function() {
+            vm.isSaving = true;
+            if (vm.ACHCase.id !== null) {
+                ACHCase.update(vm.ACHCase, onSaveSuccess, onSaveError);
             } else {
-                ACHCaseTwo.create(vm.model);
+                ACHCase.save(vm.ACHCase, onSaveSuccess, onSaveError);
             }
+        };
 
-
-        }
+        vm.clear = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
 
         vm.env = {
             angularVersion: angular.version.full,
@@ -66,7 +60,7 @@ This controller is used for both /create-case and /edit-case
         This is the model object that we reference
         on the <formly-form> element in caseForm.html
         */
-        vm.model = entity;
+
 
         /*
         specify form options
@@ -120,15 +114,17 @@ This controller is used for both /create-case and /edit-case
 
 
         function init() {
+
             /*
             if the current state is edit-case
             initialize the form fields with case values
-            */
+
             if (vm.editMode) {
-                vm.model = ACHCaseTwo.one({
+                vm.model = ACHCase.one({
                     id: $stateParams.caseId
                 });
             }
+            */
 
             // An array of our form fields with configuration
             // and options set. We make reference to this in

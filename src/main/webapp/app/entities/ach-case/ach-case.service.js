@@ -20,7 +20,6 @@
                      } else {
                          return data;
                      }
-
                  }
              },
              'assigned': {
@@ -103,7 +102,7 @@
              caseData.payments = caseData.caseDetail.payments;
              caseData.notes = caseData.caseDetail.notes;
 
-             if (caseData.payment !== null) {
+             if (caseData.payments !== null) {
                  for (var i = 0; i < caseData.payments.length; i++) {
                      caseData.payments[i].effectiveOn = DateUtils.convertDateTimeFromServer(caseData.payments[i].effectiveOn);
                  }
