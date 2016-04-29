@@ -155,7 +155,6 @@ This controller is used for both /ach-case and /my-cases
                 displayName: 'Assigned To',
                 headerCellClass: $scope.highlightFilteredHeader,
                 width: '16%',
-                visible: false
             }, {
                 name: 'status',
                 displayName: 'Status',

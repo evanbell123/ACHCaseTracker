@@ -67,7 +67,7 @@
                                 recoveryInfo: null,
                                 fullRecovery: null,
                                 claimNumber: null,
-                                completedOn: null,
+                                //completedOn: null,
                                 verifiedOn: null,
                                 paymentTotal: null,
                                 paymentCount: null,
