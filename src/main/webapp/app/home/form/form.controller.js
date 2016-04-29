@@ -9,18 +9,25 @@ This controller is used for both /create-case and /edit-case
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$http', '$location', '$stateParams', 'Enums', 'ACHCaseTwo', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'entity', 'Enums', 'ACHCaseTwo', 'FormDataService'];
 
-    function CaseFormController($scope, $http, $location, $stateParams, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $rootScope, $state, $stateParams, entity, Enums, ACHCaseTwo, FormDataService, formlyVersion) {
         var vm = this;
 
-        vm.editMode = function() {
-          if ($location.path !== "/create-case") {
-            return true;
-          } else {
-            return false;
-          }
-        };
+        var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function(event, result) {
+            vm.ACHCase = result;
+        });
+        $scope.$on('$destroy', unsubscribe);
+
+
+        if (!$state.is("create-case")) {
+            vm.editMode = true;
+        } else {
+            vm.editMode = false;
+        }
+
+
+        console.log(vm.editMode);
 
         vm.onSubmit = onSubmit;
 
@@ -33,16 +40,16 @@ This controller is used for both /create-case and /edit-case
         */
         function onSubmit() {
 
-          /*
-          if the form is in edit mode,
-          update the case Information
-          else create a new case
-          */
-          if (vm.editMode) {
-            ACHCaseTwo.update(vm.model);
-          } else {
-            ACHCaseTwo.create(vm.model);
-          }
+            /*
+            if the form is in edit mode,
+            update the case Information
+            else create a new case
+            */
+            if (vm.editMode) {
+                ACHCaseTwo.update(vm.model);
+            } else {
+                ACHCaseTwo.create(vm.model);
+            }
 
 
         }
@@ -59,45 +66,7 @@ This controller is used for both /create-case and /edit-case
         This is the model object that we reference
         on the <formly-form> element in caseForm.html
         */
-        vm.model = {
-            "totalAmount": null,
-            "id": null,
-            "status": "OPEN",
-            "lastPaymentOn": null,
-            "slaDeadline": null,
-            "sla": null,
-            "daysOpen": 0,
-            "type": null,
-            "beneficiary": {
-                "customerID": null,
-                "name": null,
-                "ssn": null,
-                "accountNum": null,
-                "dateOfDeath": null,
-                "dateCBAware": null,
-                "otherGovBenefits": false,
-                "govBenefitsComment": null
-            },
-            "assignedTo": null,
-            "caseDetail": {
-                "@class": "com.commercebank.www.domain.GovRec",
-                "claimNumber": null,
-                "completedOn": null,
-                "verifiedOn": null,
-                "fullRecovery": false,
-                "paymentTotal": 0.0,
-                "paymentCount": 0,
-                "verifiedBy": null,
-                "recoveryInfo": {
-                    "method": null,
-                    "detailType": null,
-                    "detailValue": null,
-                    "detailString": null,
-                },
-                "notes": null,
-                "payments": null
-            }
-        }
+        vm.model = entity;
 
         /*
         specify form options
@@ -170,8 +139,8 @@ This controller is used for both /create-case and /edit-case
                     defaultValue: 'open',
                     templateOptions: {
                         options: FormDataService.status(),
-                        "label": "Field Type",
-                        "required": true
+                        label: "Case Status",
+                        required: true,
                     }
                 }, {
                     className: 'row',
@@ -225,7 +194,7 @@ This controller is used for both /create-case and /edit-case
                         }
                     ]
                 }, {
-                    
+
                     template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
                 }, {
                     className: 'row',
