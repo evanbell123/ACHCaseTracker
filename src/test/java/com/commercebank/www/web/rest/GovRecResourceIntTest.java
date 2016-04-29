@@ -122,7 +122,6 @@ public class GovRecResourceIntTest {
         govRecRepository.deleteAll();
         govRec = new GovRec();
         govRec.setClaimNumber(DEFAULT_CLAIM_NUMBER);
-        govRec.setCompletedOn(DEFAULT_COMPLETED_ON);
         govRec.setVerifiedOn(DEFAULT_VERIFIED_ON);
         govRec.setPaymentTotal(DEFAULT_PAYMENT_TOTAL);
         govRec.setPaymentCount(DEFAULT_PAYMENT_COUNT);
@@ -154,7 +153,6 @@ public class GovRecResourceIntTest {
         assertThat(govRecs).hasSize(databaseSizeBeforeCreate + 1);
         GovRec testGovRec = govRecs.get(govRecs.size() - 1);
         assertThat(testGovRec.getClaimNumber()).isEqualTo(DEFAULT_CLAIM_NUMBER);
-        assertThat(testGovRec.getCompletedOn()).isEqualTo(DEFAULT_COMPLETED_ON);
         assertThat(testGovRec.getVerifiedOn()).isEqualTo(DEFAULT_VERIFIED_ON);
         assertThat(testGovRec.getPaymentTotal()).isEqualTo(DEFAULT_PAYMENT_TOTAL);
         assertThat(testGovRec.getPaymentCount()).isEqualTo(DEFAULT_PAYMENT_COUNT);
@@ -241,7 +239,6 @@ public class GovRecResourceIntTest {
         GovRec updatedGovRec = new GovRec();
         updatedGovRec.setId(govRec.getId());
         updatedGovRec.setClaimNumber(UPDATED_CLAIM_NUMBER);
-        updatedGovRec.setCompletedOn(UPDATED_COMPLETED_ON);
         updatedGovRec.setVerifiedOn(UPDATED_VERIFIED_ON);
         updatedGovRec.setPaymentTotal(UPDATED_PAYMENT_TOTAL);
         updatedGovRec.setPaymentCount(UPDATED_PAYMENT_COUNT);
@@ -268,7 +265,6 @@ public class GovRecResourceIntTest {
         assertThat(govRecs).hasSize(databaseSizeBeforeUpdate);
         GovRec testGovRec = govRecs.get(govRecs.size() - 1);
         assertThat(testGovRec.getClaimNumber()).isEqualTo(UPDATED_CLAIM_NUMBER);
-        assertThat(testGovRec.getCompletedOn()).isEqualTo(UPDATED_COMPLETED_ON);
         assertThat(testGovRec.getVerifiedOn()).isEqualTo(UPDATED_VERIFIED_ON);
         assertThat(testGovRec.getPaymentTotal()).isEqualTo(UPDATED_PAYMENT_TOTAL);
         assertThat(testGovRec.getPaymentCount()).isEqualTo(UPDATED_PAYMENT_COUNT);
@@ -301,7 +297,6 @@ public class GovRecResourceIntTest {
     {
         GovRec govRec = new GovRec();
         govRec.setClaimNumber(DEFAULT_CLAIM_NUMBER);
-        govRec.setCompletedOn(DEFAULT_COMPLETED_ON);
         govRec.setVerifiedOn(DEFAULT_VERIFIED_ON);
         govRec.setPaymentTotal(DEFAULT_PAYMENT_TOTAL);
         govRec.setPaymentCount(DEFAULT_PAYMENT_COUNT);
@@ -323,7 +318,6 @@ public class GovRecResourceIntTest {
         GovRec updatedGovRec = new GovRec();
         updatedGovRec.setId(govRec.getId());
         updatedGovRec.setClaimNumber(UPDATED_CLAIM_NUMBER);
-        updatedGovRec.setCompletedOn(UPDATED_COMPLETED_ON);
         updatedGovRec.setVerifiedOn(UPDATED_VERIFIED_ON);
         updatedGovRec.setPaymentTotal(UPDATED_PAYMENT_TOTAL);
         updatedGovRec.setPaymentCount(UPDATED_PAYMENT_COUNT);

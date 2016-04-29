@@ -95,7 +95,7 @@ public class Nacha
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
                 achCase.setStatus(Status.OPEN);
-                achCase = achCaseService.updateSLA(achCase);
+                achCase = achCaseService.initializeSLA(achCase);
                 achCaseRepository.save(achCase);
 
                 //achCaseService.cascadeSave(achCase);
