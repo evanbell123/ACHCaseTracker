@@ -69,10 +69,7 @@
                                 slaDeadline: null,
                                 daysOpen: null,
                                 type: null,
-                                id: null,
-                                beneficiary: {
-                                    
-                                }
+                                id: null
                             };
                         }
                     }
@@ -133,5 +130,4 @@
             }]
         });
     }
-
 })();

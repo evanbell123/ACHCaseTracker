@@ -60,7 +60,7 @@ public class ACHCaseService {
             if (achCase.getBeneficiary() != null)
                 beneficiaryRepository.save(achCase.getBeneficiary());
             if (achCase.getSla() != null)
-                slaRepository.save(achCase.getSla());
+                slaRepository.save(updateSLA(achCase).getSla());
 
             achCase = achCaseRepository.save(achCase);
             log.debug("Saved Information for ACH Case: {}", achCase);
@@ -110,17 +110,32 @@ public class ACHCaseService {
 
     public ACHCase updateSLA(ACHCase achCase)
     {
+        //User has selected to watch the item
+        if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty()) {
             if (achCase.getType() == GOV_REC) {
                 //Cases of treasury types do not update their SLAs
                 if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
-                    achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
-                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
-                }
-                else {
-                    achCase.setSla(slaRepository.findOneById("treasury-standard").get());
+                    achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
                 }
             }
+        }
+        return achCase;
+    }
+
+    public ACHCase initializeSLA(ACHCase achCase)
+    {
+        if (achCase.getType() == GOV_REC) {
+            //Cases of treasury types do not update their SLAs
+            if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
+                achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
+                achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+            }
+            else {
+                achCase.setSla(slaRepository.findOneById("treasury-standard").get());
+                achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+            }
+        }
         return achCase;
     }
 }
