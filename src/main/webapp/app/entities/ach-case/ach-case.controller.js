@@ -61,7 +61,7 @@
         });
 
         $scope.availableSearchParams = [
-            { key: "status", name: "Status", placeholder: "Status...", restrictToSuggestedValues: true, suggestedValues: ['Open', 'In_Progress', 'Closed']},
+            { key: "status", name: "Status", placeholder: "Status...", restrictToSuggestedValues: true, suggestedValues: ['Open', 'In Progress', 'Closed']},
             { key: "daysOpen", name: "Days Open", placeholder: "Days Open..." },
             { key: "type", name: "Type", placeholder: "Case Type..." },
             { key: "totalAmount", name: "Total Amount", placeholder: "Total Amount..." },
