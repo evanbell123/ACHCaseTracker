@@ -387,7 +387,6 @@ ul#strengthBar {
 .jh-table > tbody > tr > td {
     /* Align text in td verifically (top aligned by Bootstrap) */
     vertical-align: middle;
-    text-align: left;
 }
 
 .jh-table > thead > tr > th > .glyphicon-sort, .jh-table > thead > tr > th > .glyphicon-sort-by-attributes, .jh-table > thead > tr > th > .glyphicon-sort-by-attributes-alt {
