@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
 
     List<ACHCase> findByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1, Pageable pageable);
 
-    Long countByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
+    Long countByCreatedDateBetween(LocalDate localDateTime, LocalDate localDateTime1);
+
+    Long countByCompletedOnBetween(LocalDate localDateTime, LocalDate localDateTime1);
+
+    Long countByTotalAmountBetween(LocalDate fromDate, LocalDate toDate);
 }
 

@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
     angular
         .module('achCaseTrackingApp')
@@ -12,7 +12,7 @@
             'all': {
                 method: 'GET',
                 isArray: true,
-                transformResponse: function (data) {
+                transformResponse: function(data) {
                     return transformManyAchCases(angular.fromJson(data));
                 }
             },
@@ -20,25 +20,25 @@
                 url: 'api/my-cases',
                 method: 'GET',
                 isArray: true,
-                transformResponse: function (data) {
+                transformResponse: function(data) {
                     return transformManyAchCases(angular.fromJson(data));
                 }
             },
             'one': {
                 method: 'GET',
-                transformResponse: function (data) {
+                transformResponse: function(data) {
                     return transformSingleAchCase(angular.fromJson(data));
                 }
             },
             'create': {
                 method: 'POST',
-                transformRequest: function (data) {
+                transformRequest: function(data) {
                     return transformCaseRequest(data);
                 }
             },
             'update': {
                 method: 'PUT',
-                transformRequest: function (data) {
+                transformRequest: function(data) {
                     return transformCaseRequest(data);
                 }
             }
@@ -97,9 +97,12 @@
             caseData.payments = caseData.caseDetail.payments;
             caseData.notes = caseData.caseDetail.notes;
 
-            for (var i = 0; i < caseData.payments.length; i++) {
-                caseData.payments[i].effectiveOn = DateUtils.convertDateTimeFromServer(caseData.payments[i].effectiveOn);
+            if (caseData.payment !== null) {
+                for (var i = 0; i < caseData.payments.length; i++) {
+                    caseData.payments[i].effectiveOn = DateUtils.convertDateTimeFromServer(caseData.payments[i].effectiveOn);
+                }
             }
+
 
             caseData.caseDetail.payments = null;
             caseData.caseDetail.notes = null;

@@ -15,7 +15,7 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.lastPaymentOn = DateUtils.convertDateTimeFromServer(data.lastPaymentOn);
+                    data.lastPaymentOn = DateUtils.convertLocalDateFromServer(data.lastPaymentOn);
                     data.slaDeadline = DateUtils.convertLocalDateFromServer(data.slaDeadline);
                     return data;
                 }

@@ -164,6 +164,9 @@
                     }
                 }
             }])
+        },
+        function config(mdThemingProvider) {
+            mdThemingProvider.theme('defaultTheme').primaryPalette('green');
         })
         .run(run);
 

@@ -72,9 +72,6 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("assigned_to")
     private String assignedTo;
 
-    @Field("closed_on")
-    private ZonedDateTime closedOn;
-
     //@DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;

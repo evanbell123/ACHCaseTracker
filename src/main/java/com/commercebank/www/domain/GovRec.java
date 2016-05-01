@@ -63,7 +63,7 @@ public class GovRec implements Serializable, CaseDetail {
 
     public GovRec() {}
 
-    public GovRec(String claimNumber, ZonedDateTime completedOn, BigDecimal paymentTotal, CaseSubtype subtype)
+    public GovRec(String claimNumber, BigDecimal paymentTotal, CaseSubtype subtype)
     {
         this.claimNumber = claimNumber;
         this.paymentTotal = paymentTotal;

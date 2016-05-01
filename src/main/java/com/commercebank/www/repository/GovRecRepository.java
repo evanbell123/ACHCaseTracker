@@ -15,7 +15,5 @@ import java.util.List;
 @JaversSpringDataAuditable
 public interface GovRecRepository extends MongoRepository<GovRec,String> {
 
-    //Long countByCompletedOnBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
-
    // List<ACHCase> findByCompletedOnBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }

@@ -70,9 +70,11 @@
                                 daysOpen: null,
                                 type: null,
                                 id: null,
-                                beneficiary: {
-                                    name: null
-                                }
+                                beneficiary: {},
+                                caseDetail: {
+                                    recoveryInfo: null
+                                },
+                                sla: {}
                             };
                         }
                     }

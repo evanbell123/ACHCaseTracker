@@ -40,7 +40,7 @@
         </div>
     </div>
     <div ng-show="!vm.loading" >
-        <div class="table-responsive" ng-if="vm.audits.length > 0">
+        <div class=" table table-responsive" ng-if="vm.audits.length > 0">
             <p ng-if="vm.qualifiedName">Last <strong>{{vm.limit}}</strong> Changes for <strong>{{vm.getEntityName(vm.qualifiedName)}}</strong></p>
             <form class="form-inline">
               <div class="form-group">
@@ -60,7 +60,8 @@
                         <th>Value</th>
                         <th>Modified Date</th>
                         <th>Modified By</th>
-                        <th><i class="glyphicon glyphicon-eye-open"></i></th>
+                        <th>View Details</th>
+                        <!--<th><i class="glyphicon glyphicon-eye-open" align="middle"></i></th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -68,10 +69,10 @@
                     <td>{{audit.entityId}}</td>
                     <td>{{audit.action}}</td>
                     <td>{{audit.commitVersion}}</td>
-                    <td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>
+                    <!--<td><pre class="audit-obj" ng-bind-html="vm.format(audit.entityValue)"></pre></td>-->
                     <!-- comment above line and uncomment below to have Table view of value -->
-                    <!--<td class="no-pad">
-                        <div class="audit-obj">
+                    <td class="no-pad">
+                        <div class="container-fluid">
                             <table class="table table-bordered table-hover no-margin">
                                 <tr>
                                     <th>Field</th>
@@ -85,7 +86,7 @@
                                     </td>
                                 </tr>
                             </table>
-                      </div>-->
+                      </div>
                     </td>
                     <td>{{audit.modifiedDate | date:'medium'}}</td>
                     <td>{{audit.modifiedBy}}</td>
