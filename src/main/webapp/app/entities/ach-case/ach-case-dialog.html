@@ -1,122 +1,24 @@
-
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myACHCaseLabel">Create or edit an ACH Case</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.ACHCase.id" readonly />
-        </div>
-
-        <div class="form-group">
-            <label class="control-label" for="field_totalAmount">Total Amount</label>
-            <input type="number" class="form-control" name="totalAmount" id="field_totalAmount"
-                    ng-model="vm.ACHCase.totalAmount"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_status">Status</label>
-            <select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" required>
-                <option value="OPEN">Open</option>
-                <option value="IN_PROGRESS" translate="achCaseTrackingApp.Status.IN_PROGRESS">In Progress</option>
-                <option value="CLOSED">Closed</option>
-            </select>
-            <div ng-show="editForm.status.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.status.$error.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_lastPaymentOn">Last Payment On</label>
-                <div class="input-group">
-                    <input id="field_lastPaymentOn" type="text" class="form-control" name="lastPaymentOn" uib-datepicker-popup="{{dateformat}}" ng-model="vm.ACHCase.lastPaymentOn" is-open="vm.datePickerOpenStatus.lastPaymentOn"
-                      />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('lastPaymentOn')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_slaDeadline">SLA Deadline</label>
-                <div class="input-group">
-                    <input id="field_slaDeadline" type="text" class="form-control" name="slaDeadline" uib-datepicker-popup="{{dateformat}}" ng-model="vm.ACHCase.slaDeadline" is-open="vm.datePickerOpenStatus.slaDeadline"
-                      />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('slaDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_daysOpen">Days Open</label>
-            <input type="number" class="form-control" name="daysOpen" id="field_daysOpen"
-                    ng-model="vm.ACHCase.daysOpen"
-                    min="0" />
-            <div ng-show="editForm.daysOpen.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.daysOpen.$error.min" translate-value-min="0">
-                    This field should be more than 0.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.daysOpen.$error.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <!-- Take out when done -->
-        <div class="form-group">
-            <label class="control-label" for="field_assigned_to">Assigned To</label>
-            <input type="text" class="form-control" name="totalAmount" id="field_assigned_to"
-                   ng-model="vm.ACHCase.assignedTo"
-            />
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="field_type">Type</label>
-            <select class="form-control" name="type" ng-model="vm.ACHCase.type" id="field_type" required>
-                <option value="GOV_REC">Government Reclamation</option>
-                <option value="POA">POA</option>
-                <option value="REV_DEL">Reversal/Deletion</option>
-                <option value="RETURN">Return</option>
-                <option value="UNRESOLVED">Unresolved/Dishonored Return</option>
-            </select>
-            <div ng-show="editForm.type.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.type.$error.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.clear()">&times;</button>
+    <h4 class="modal-title" id="myACHCaseLabel">Create or edit an ACH Case</h4>
+</div>
+<div class="modal-body">
+    <form ng-submit="vm.save()" name="vm.form" novalidate>
+        <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+            <button type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+            <button type="button" class="btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
+        </formly-form>
+    </form>
+    <h2>Form Data</h2>
+    <pre>{{vm.model | json}}</pre>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+    </button>
+    <!--
+        <button type="submit" ng-disabled="vm.form.$invalid || isSaving" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
         </button>
-    </div>
-</form>
-<div>
-    <div class="container" style="max-width: 1000px; margin:0">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
-                    <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
-                        <button type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
-                        <button type="button" class="btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
-                    </formly-form>
-                </form>
-                <h2>Form Data</h2>
-                <pre>{{vm.model | json}}</pre>
-            </div>
-        </div>
-    </div>
+      -->
 </div>
