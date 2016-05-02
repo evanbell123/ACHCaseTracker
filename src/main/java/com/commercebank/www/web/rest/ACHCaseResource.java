@@ -111,13 +111,20 @@ public class ACHCaseResource {
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/ach-case",
-        method = RequestMethod.GET,
+        method = RequestMethod.GET, params = {"status", "fromDate, toDate"},
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
+    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable, @RequestParam(value = "status") Status status,
+                                                                            @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                                             @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = achCaseRepository.findAllByStatusNotOrderBySlaDeadlineAsc(Status.CLOSED, pageable);
+        Page<ACHCase> page;
+        if (status == null)
+            page = achCaseRepository.findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
+        else
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(status, toDate, fromDate, pageable);
+
         page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

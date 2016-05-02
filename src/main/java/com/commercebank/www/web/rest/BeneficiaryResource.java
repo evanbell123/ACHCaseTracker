@@ -29,10 +29,10 @@ import java.util.Optional;
 public class BeneficiaryResource {
 
     private final Logger log = LoggerFactory.getLogger(BeneficiaryResource.class);
-        
+
     @Inject
     private BeneficiaryRepository beneficiaryRepository;
-    
+
     /**
      * POST  /beneficiaries : Create a new beneficiary.
      *
@@ -93,7 +93,7 @@ public class BeneficiaryResource {
     public ResponseEntity<List<Beneficiary>> getAllBeneficiaries(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Beneficiaries");
-        Page<Beneficiary> page = beneficiaryRepository.findAll(pageable); 
+        Page<Beneficiary> page = beneficiaryRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/beneficiaries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

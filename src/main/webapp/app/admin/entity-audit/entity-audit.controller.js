@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('EntityAuditController', EntityAuditController);
 
-    EntityAuditController.$inject = ['$scope', '$filter', '$uibModal', 'EntityAuditService', 'AlertService', 'ObjectDiff'];
+    EntityAuditController.$inject = ['$scope', '$filter', '$uibModal', 'EntityAuditService', 'AlertService', 'ObjectDiff', 'DTOptionsBuilder'];
 
-    function EntityAuditController ($scope, $filter, $uibModal, EntityAuditService, AlertService, ObjectDiff) {
+    function EntityAuditController ($scope, $filter, $uibModal, EntityAuditService, AlertService, ObjectDiff, DTOptionsBuilder) {
         var vm = this;
 
         vm.entities = [];
@@ -23,8 +23,16 @@
         vm.isDate = isDate;
         vm.openChange = openChange;
         vm.exportPDF = exportPDF;
+        vm.dtOptions = DTOptionsBuilder.newOptions()
+            .withOptions('autoWidth', fnThatReturnsAPromise);
 
-        //vm.findAllAudited();
+        function fnThatReturnsAPromise() {
+            var defer = $q.defer();
+            defer.resolve(false);
+            return defer.promise;
+        }
+
+        vm.findAllAudited();
         vm.loadChanges();
 
         function findAllAudited() {
@@ -35,8 +43,8 @@
 
         function loadChanges() {
             vm.loading = true;
-            //var entityType = vm.qualifiedName;
-            EntityAuditService.findByEntity("ACHCase", vm.limit).then(function (data) {
+            var entityType = vm.qualifiedName;
+            EntityAuditService.findByEntity(entityType, vm.limit).then(function (data) {
                 vm.audits = data.map(function(it){
                     it.entityValue = JSON.parse(it.entityValue);
                     return it;

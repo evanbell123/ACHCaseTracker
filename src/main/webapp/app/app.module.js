@@ -15,6 +15,7 @@
             'ds.objectDiff',
             'angular-advanced-searchbox',
             'ngMaterial',
+            'datatables',
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar',
             'ui.grid',
