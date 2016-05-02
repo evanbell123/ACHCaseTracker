@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 
@@ -40,5 +39,7 @@ public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
     Page<ACHCase> findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status closed, LocalDate fromDate, LocalDate toDate, Pageable pageable);
 
     Page<ACHCase> findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status status, LocalDate toDate, LocalDate fromDate, Pageable pageable);
+
+    Page<ACHCase> findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(LocalDate toDate, LocalDate fromDate, Pageable pageable);
 }
 

@@ -33,10 +33,7 @@
     "bootstrap-material-design": "^0.5.9",
     "moment": "^2.13.0",
     "angular-advanced-searchbox": "^2.2.0",
-    "angular-material": "^1.0.7",
-    "datatables.net": "^1.10.11",
-    "datatables.net-buttons": "^1.1.2",
-    "angular-datatables": "^0.5.4"
+    "angular-material": "^1.0.7"
   },
   "devDependencies": {
     "angular-mocks": "1.5.2",

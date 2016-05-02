@@ -88,10 +88,10 @@
         <tr ng-repeat="ACHCase in vm.cases | filter:filterParams track by ACHCase.id ">
             <td>{{ACHCase.type}}</td>
             <td>{{ACHCase.caseDetail.subtype}}</td>
-            <td>{{ACHCase.createdDate}}</td>
+            <td>{{ACHCase.createdDate | date:'medium'}}</td>
             <td>{{ACHCase.daysOpen}}</td>
             <td>{{ACHCase.missedSLACount}}</td>
-            <td>{{ACHCase.completedOn | date:'mediumDate'}}</td>
+            <td>{{ACHCase.completedOn | date:'medium'}}</td>
             <td>{{ACHCase.completedBy}}</td>
         </tr>
         </tbody>

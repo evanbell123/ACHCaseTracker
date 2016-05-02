@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
+import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import java.io.File;
 import java.net.URI;
@@ -111,19 +112,27 @@ public class ACHCaseResource {
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/ach-case",
-        method = RequestMethod.GET, params = {"status", "fromDate, toDate"},
+        method = RequestMethod.GET,
+        params = {"status", "fromDate, toDate"},
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable, @RequestParam(value = "status") Status status,
+    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable, @RequestParam(value = "status") int status,
                                                                             @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                              @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate)
         throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
         Page<ACHCase> page;
-        if (status == null)
+
+        if (status == 0)
             page = achCaseRepository.findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
+        else if (status == 1)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.OPEN, toDate, fromDate, pageable);
+        else if (status == 2)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.IN_PROGRESS, toDate, fromDate, pageable);
+        else if (status == 3)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, toDate, fromDate, pageable);
         else
-            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(status, toDate, fromDate, pageable);
+            page = achCaseRepository.findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(toDate, fromDate, pageable);
 
         page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");

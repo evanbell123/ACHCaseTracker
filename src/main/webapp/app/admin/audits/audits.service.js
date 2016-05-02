@@ -18,7 +18,6 @@
                 params: {fromDate: null, toDate: null}
             }
         });
-
         return service;
     }
 })();

@@ -13,6 +13,7 @@
              'all': {
                  method: 'GET',
                  isArray: true,
+                 params: {status: null, fromDate: null, toDate: null},
                  transformResponse: function(data) {
 
                      if (data !== undefined || data.length !== 0) {

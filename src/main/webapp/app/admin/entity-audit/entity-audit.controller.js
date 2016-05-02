@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('EntityAuditController', EntityAuditController);
 
-    EntityAuditController.$inject = ['$scope', '$filter', '$uibModal', 'EntityAuditService', 'AlertService', 'ObjectDiff', 'DTOptionsBuilder'];
+    EntityAuditController.$inject = ['$scope', '$filter', '$uibModal', 'EntityAuditService', 'AlertService', 'ObjectDiff'];
 
-    function EntityAuditController ($scope, $filter, $uibModal, EntityAuditService, AlertService, ObjectDiff, DTOptionsBuilder) {
+    function EntityAuditController ($scope, $filter, $uibModal, EntityAuditService, AlertService, ObjectDiff) {
         var vm = this;
 
         vm.entities = [];
@@ -23,14 +23,6 @@
         vm.isDate = isDate;
         vm.openChange = openChange;
         vm.exportPDF = exportPDF;
-        vm.dtOptions = DTOptionsBuilder.newOptions()
-            .withOptions('autoWidth', fnThatReturnsAPromise);
-
-        function fnThatReturnsAPromise() {
-            var defer = $q.defer();
-            defer.resolve(false);
-            return defer.promise;
-        }
 
         vm.findAllAudited();
         vm.loadChanges();

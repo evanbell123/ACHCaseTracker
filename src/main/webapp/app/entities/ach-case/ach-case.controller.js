@@ -5,22 +5,36 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseController', ACHCaseController);
 
-    ACHCaseController.$inject = ['$scope', '$state', 'ACHCase', 'ParseLinks', 'AlertService', 'Principal'];
+    ACHCaseController.$inject = ['$scope', '$state', '$filter', 'ACHCase', 'ParseLinks', 'AlertService', 'Principal'];
 
-    function ACHCaseController($scope, $state, ACHCase, ParseLinks, AlertService, Principal) {
+    function ACHCaseController($scope, $state, $filter, ACHCase, ParseLinks, AlertService, Principal) {
         var vm = this;
         $scope.filterParams = {};
         vm.ACHCases = [];
         vm.predicate = 'id';
         vm.reverse = true;
         vm.page = 0;
+        vm.previousMonth = previousMonth;
+        vm.toDate = null;
+        vm.today = today;
+
+        vm.today();
+        vm.previousMonth();
+
         vm.slaPast = function(deadline){
            return Date.parse(deadline) < new Date();
         }
+
         vm.loadAll = function() {
+            var dateFormat = 'yyyy-MM-dd';
+            var fromDate = $filter('date')(vm.fromDate, dateFormat);
+            var toDate = $filter('date')(vm.toDate, dateFormat);
             ACHCase.all({
                 page: vm.page,
                 size: 20,
+                status: 0,
+                fromDate: fromDate,
+                toDate: toDate,
                 sort: sort()
             }, onSuccess, onError);
 
@@ -55,6 +69,24 @@
         };
 
         vm.loadAll();
+
+        // Date picker configuration
+        function today () {
+            // Today + 1 day - needed if the current day must be included
+            var today = new Date();
+            vm.toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        }
+
+        function previousMonth () {
+            var fromDate = new Date();
+            if (fromDate.getMonth() === 0) {
+                fromDate = new Date(fromDate.getFullYear() - 1, 11, fromDate.getDate());
+            } else {
+                fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth() - 1, fromDate.getDate());
+            }
+
+            vm.fromDate = fromDate;
+        }
 
         $scope.watch = function(caseData) {
             console.log(caseData.isWatched);
