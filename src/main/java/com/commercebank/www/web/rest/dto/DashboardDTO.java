@@ -1,6 +1,10 @@
 package com.commercebank.www.web.rest.dto;
 
 
+import com.commercebank.www.domain.ACHCase;
+
+import java.util.Set;
+
 public class DashboardDTO {
 
     private Long createdCount;
@@ -9,7 +13,9 @@ public class DashboardDTO {
 
     private Long closedCount;
 
-    private Long slaAverage;
+    private Long slaPassed;
+
+    private Set<ACHCase> cases;
 
     public Long getPaymentsReturned() {
         return paymentsReturned;
@@ -35,13 +41,17 @@ public class DashboardDTO {
         this.closedCount = closedCount;
     }
 
-    public Long getSlaAverage() {
-        return slaAverage;
+    public Long getSlaPassed() {
+        return slaPassed;
     }
 
-    public void setSlaAverage(Long slaAverage) {
-        this.slaAverage = slaAverage;
+    public void setSlaPassed(Long slaPassed) {
+        this.slaPassed = slaPassed;
     }
+
+    public Set<ACHCase> getCases() { return cases; }
+
+    public void setCases(Set<ACHCase> cases) { this.cases = cases; }
 
     @Override
     public String toString() {
@@ -49,7 +59,7 @@ public class DashboardDTO {
             "createdCount = " + createdCount + "" +
             "closedCount = " + closedCount + "" +
             "paymentsReturned = " + paymentsReturned + "" +
-            "slaAverage = " + "" +
+            "slaPassed = " + "" +
             "}";
     }
 }

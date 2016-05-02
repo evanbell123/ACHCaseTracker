@@ -9,8 +9,8 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('entity-audit', {
-            parent: 'admin',
-            url: '/entity-audits',
+            parent: 'home',
+            url: 'audit-log',
             data: {
                 authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                 pageTitle: 'Audits'

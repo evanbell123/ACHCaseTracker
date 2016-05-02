@@ -17,8 +17,8 @@ import com.commercebank.www.domain.enumeration.RecoveryDetail;
 /**
  * A Recovery.
  */
-@Entity
-@TypeName("Recovery")
+//@Entity
+//@TypeName("Recovery")
 @Document(collection = "recovery")
 public class Recovery implements Serializable {
 

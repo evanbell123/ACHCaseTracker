@@ -43,7 +43,6 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox-tpls.js',
             'src/main/webapp/bower_components/angular-messages/angular-messages.js',
             'src/main/webapp/bower_components/angular-material/angular-material.js',
-            'src/main/webapp/bower_components/angular-filter/dist/angular-filter.min.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

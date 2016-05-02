@@ -84,7 +84,7 @@
                     ngModelAttrs: ngModelAttrs,
                     templateOptions: {
                         datepickerOptions: {
-                            format: 'MM.dd.yyyy',
+                            format: 'mm/dd/yyyy',
                             initDate: new Date()
                         }
                     }
@@ -164,9 +164,6 @@
                     }
                 }
             }])
-        },
-        function config(mdThemingProvider) {
-            mdThemingProvider.theme('defaultTheme').primaryPalette('green');
         })
         .run(run);
 

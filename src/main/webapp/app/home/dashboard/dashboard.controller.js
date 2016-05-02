@@ -11,8 +11,11 @@
         var vm = this;
 
         vm.totals = null;
+        vm.cases = [];
         vm.fromDate = null;
         vm.toDate = null;
+        vm.predicate = 'id';
+        vm.reverse = true;
         vm.page = 0;
         vm.onChangeDate = onChangeDate;
         vm.loadPage = loadPage;
@@ -30,6 +33,7 @@
 
             Dashboard.query({fromDate: fromDate, toDate: toDate}, function(result){
                 vm.totals = result;
+                vm.cases = vm.totals.cases;
             });
         }
 
@@ -46,7 +50,6 @@
                 fromDate = new Date(fromDate.getFullYear() - 1, 11, fromDate.getDate());
             } else {
                 fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth() - 1, fromDate.getDate());
-                console.log("Previous Month");
             }
             vm.fromDate = fromDate;
         }

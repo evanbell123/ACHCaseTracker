@@ -1,8 +1,8 @@
 package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.commercebank.www.domain.ACHCase;
 import com.commercebank.www.repository.ACHCaseRepository;
-import com.commercebank.www.repository.GovRecRepository;
 import com.commercebank.www.web.rest.dto.DashboardDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,11 +47,18 @@ public class DashboardResource {
         log.debug("REST request to get dashboard totals. ");
 
         DashboardDTO totals = new DashboardDTO();
-        totals.setCreatedCount(achCaseRepository.countByCreatedDateBetween(fromDate, toDate));
-        totals.setClosedCount(achCaseRepository.countByCompletedOnBetween(fromDate, toDate));
-        totals.setPaymentsReturned(achCaseRepository.countByTotalAmountBetween(fromDate, toDate));
-        totals.setSlaAverage(new Long(0));
+        totals.setCreatedCount(achCaseRepository.countByCreatedDateBetween(LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
+        totals.setClosedCount(achCaseRepository.countByCompletedOnBetween(LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
 
-        return new ResponseEntity<DashboardDTO>(totals, HttpStatus.OK);
+        totals.setCases(achCaseRepository.findByCreatedDateBetweenOrCompletedOnBetween(LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX),
+                                                                                        LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
+
+        totals.setPaymentsReturned(achCaseRepository.countByTotalAmountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(0.00, LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX),
+                                                                                                                                    LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
+
+        totals.setSlaPassed(achCaseRepository.countByMissedSLACountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(0, LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX),
+                                                                                                                            LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
+
+        return new ResponseEntity<>(totals, HttpStatus.OK);
     }
 }

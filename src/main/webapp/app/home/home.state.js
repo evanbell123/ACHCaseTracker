@@ -34,7 +34,7 @@
             })
             .state('dashboard', {
                 parent: 'home',
-                url: '/dashboard',
+                url: 'dashboard',
                 templateUrl: 'app/home/dashboard/dashboard.html',
                 controller: 'DashboardController',
                 controllerAs: 'vm',
@@ -43,7 +43,7 @@
                     pageTitle: 'Dashboard'
                 }
             })
-
+            /*.
             .state('cases', {
                 parent: 'home',
                 url: 'ach-case',
@@ -54,7 +54,7 @@
                     authorities: []
                 }
             })
-            .state('my-cases', {
+            state('my-cases', {
                 parent: 'home',
                 url: 'my-cases',
                 templateUrl: 'app/home/cases/cases.html',
@@ -63,8 +63,8 @@
                 data: {
                     authorities: []
                 }
-            })
-            .state('create-case', {
+            })*/
+            /*.state('create-case', {
                 parent: 'home',
                 url: 'create-case',
                 templateUrl: 'app/home/form/caseForm.html',
@@ -83,7 +83,7 @@
                 data: {
                     authorities: []
                 },
-            })
+            })*/
             .state('import', {
                 parent: 'home',
                 url: "import",

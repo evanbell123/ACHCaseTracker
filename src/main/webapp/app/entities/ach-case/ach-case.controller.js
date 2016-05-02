@@ -56,6 +56,28 @@
 
         vm.loadAll();
 
+        $scope.watch = function(caseData) {
+            console.log(caseData.isWatched);
+
+            /*
+             If the user checks 'watch item'
+             assign that user to the case
+             */
+            if (caseData.isWatched == true) {
+                var copyAccount;
+                Principal.identity().then(function(account) {
+                    copyAccount = account;
+                    caseData.assignedTo = copyAccount.login;
+                });
+            } else { //If the user unchecks 'watch item', unassign the currently assigned user
+                caseData.assignedTo = null;
+            }
+            /*
+             notify the server of this change of assignment
+             */
+            ACHCase.update(caseData);
+        }
+
         // Allow filtering of nested objects - will need to update once more case types are added (better yet, probably a rewrite)
         $scope.$on('advanced-searchbox:modelUpdated', function (event, model) {
             if (model === undefined) { return; }
@@ -132,28 +154,6 @@
             { key: "sla.id", name: "SLA Type", placeholder: "SLA Type" },
             { key: "sla.businessDays", name: "SLA Duration", placeholder: "# Days" },
         ];
-
-        $scope.watch = function(caseData) {
-            console.log(caseData.isWatched);
-
-            /*
-             If the user checks 'watch item'
-             assign that user to the case
-             */
-            if (caseData.isWatched == true) {
-                var copyAccount;
-                Principal.identity().then(function(account) {
-                    copyAccount = account;
-                    caseData.assignedTo = copyAccount.login;
-                });
-            } else { //If the user unchecks 'watch item', unassign the currently assigned user
-                caseData.assignedTo = null;
-            }
-            /*
-             notify the server of this change of assignment
-             */
-            ACHCase.update(caseData);
-        }
     }
 })();
 

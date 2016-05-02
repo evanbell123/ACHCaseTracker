@@ -15,8 +15,8 @@ import java.util.Objects;
 /**
  * A Payment.
  */
-@Entity
-@TypeName("Payment")
+//@Entity
+//@TypeName("Payment")
 @Document(collection = "payment")
 public class Payment implements Serializable {
 

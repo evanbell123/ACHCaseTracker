@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Spring Data MongoDB repository for the GovRec entity.
  */
-@JaversSpringDataAuditable
+//@JaversSpringDataAuditable
 public interface GovRecRepository extends MongoRepository<GovRec,String> {
 
    // List<ACHCase> findByCompletedOnBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
