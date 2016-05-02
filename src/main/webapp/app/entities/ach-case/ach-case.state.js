@@ -9,7 +9,7 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('ach-case', {
+        .state('ach-case-two', {
             parent: 'entity',
             url: '/ach-case/',
             data: {
@@ -26,7 +26,7 @@
             resolve: {
             }
         })
-        .state('my-cases', {
+        .state('my-cases-two', {
             parent: 'entity',
             url: '/my-cases/',
             data: {
@@ -43,7 +43,7 @@
             resolve: {
             }
          })
-        .state('ach-case-detail', {
+        .state('ach-case-detail-two', {
             parent: 'entity',
             url: '/ach-case/{id}',
             data: {
@@ -63,7 +63,7 @@
                 }]
             }
         })
-        .state('ach-case.new', {
+        .state('ach-case-two.new', {
             parent: 'ach-case',
             url: '/new',
             data: {
@@ -100,7 +100,7 @@
                 });
             }]
         })
-        .state('ach-case.edit', {
+        .state('ach-case-two.edit', {
             parent: 'ach-case',
             url: '/{id}/edit',
             data: {
@@ -125,7 +125,7 @@
                 });
             }]
         })
-        .state('ach-case.delete', {
+        .state('ach-case-two.delete', {
             parent: 'ach-case',
             url: '/{id}/delete',
             data: {
