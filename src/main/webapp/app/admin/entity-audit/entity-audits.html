@@ -5,11 +5,10 @@
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-md-12 pad">
-            <h4>Filter</h4>
             <form name="auditForm" role="form" novalidate show-validation>
                 <div class="row">
                     <div class="col-md-8 form-group">
-                        <label>Entity</label>
+                        <label>Select Entity</label>
                         <select class="form-control" name="qualifiedName" id="qualifiedName" required
                                 ng-options="vm.getEntityName(entity) for entity in vm.entities"
                                 ng-model="vm.qualifiedName"></select>
@@ -28,11 +27,11 @@
                 </div>
                 <div class="row pad">
                     <button ng-disabled="auditForm.$invalid"
-                            class="btn btn-primary btn-raised pull-left" ng-click="vm.loadChanges()"><i
+                            class="btn btn-primary btn-raised pull-right" ng-click="vm.loadChanges()"><i
                         class="glyphicon glyphicon-import"></i>&nbsp;Load Change List
                     </button>
                     <button ng-disabled="auditForm.$invalid"
-                            class="btn btn-info btn-raised pull-right" ng-click="vm.exportPDF()"><i
+                            class="btn btn-info btn-raised pull-left" ><!--ng-click="vm.exportPDF()">--><i
                         class="glyphicon glyphicon-import"></i>&nbsp;Create PDF
                     </button>
                 </div>
