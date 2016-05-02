@@ -2,25 +2,20 @@
     'use strict';
     angular
         .module('achCaseTrackingApp')
-        .factory('ACHCase', ACHCase);
+        .factory('Dashboard', Dashboard);
 
-    ACHCase.$inject = ['$resource', 'DateUtils'];
+    Dashboard.$inject = ['$resource'];
 
-    function ACHCase ($resource, DateUtils) {
-        var resourceUrl =  'api/dashboard/';
+    function Dashboard ($resource) {
 
-        return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': {
+        var service = $resource('/api/dashboard', {}, {
+            'query': {
                 method: 'GET',
-                transformResponse: function (data) {
-                    data = angular.fromJson(data);
-                    data.lastPaymentOn = DateUtils.convertDateTimeFromServer(data.lastPaymentOn);
-                    data.slaDeadline = DateUtils.convertLocalDateFromServer(data.slaDeadline);
-                    return data;
-                }
-            },
-            'update': { method:'PUT' }
+                isArray: false,
+                params: {fromDate: null, toDate: null},
+            }
         });
+
+        return service;
     }
 })();

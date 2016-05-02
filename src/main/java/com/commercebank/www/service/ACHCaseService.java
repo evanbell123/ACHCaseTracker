@@ -60,7 +60,7 @@ public class ACHCaseService {
             if (achCase.getBeneficiary() != null)
                 beneficiaryRepository.save(achCase.getBeneficiary());
             if (achCase.getSla() != null)
-                slaRepository.save(achCase.getSla());
+                slaRepository.save(updateSLA(achCase).getSla());
 
             achCase = achCaseRepository.save(achCase);
             log.debug("Saved Information for ACH Case: {}", achCase);
@@ -108,7 +108,7 @@ public class ACHCaseService {
         return achCase;
     }
 
-    private ACHCase updateSLA(ACHCase achCase)
+    public ACHCase updateSLA(ACHCase achCase)
     {
         //User has selected to watch the item
         if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty()) {
@@ -120,6 +120,22 @@ public class ACHCaseService {
                 }
             }
         }
-        return null;
+        return achCase;
+    }
+
+    public ACHCase initializeSLA(ACHCase achCase)
+    {
+        if (achCase.getType() == GOV_REC) {
+            //Cases of treasury types do not update their SLAs
+            if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
+                achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
+                achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+            }
+            else {
+                achCase.setSla(slaRepository.findOneById("treasury-standard").get());
+                achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+            }
+        }
+        return achCase;
     }
 }

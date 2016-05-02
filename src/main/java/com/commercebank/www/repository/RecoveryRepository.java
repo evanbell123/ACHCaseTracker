@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 /**
  * Spring Data MongoDB repository for the Recovery entity.
  */
-@JaversSpringDataAuditable
+//@JaversSpringDataAuditable
 public interface RecoveryRepository extends MongoRepository<Recovery,String> {
 
 }

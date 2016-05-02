@@ -19,8 +19,8 @@ import com.commercebank.www.domain.enumeration.CaseSubtype;
 /**
  * A GovRec.
  */
-@Entity
-@Document(collection = "gov_rec")
+//@Entity
+//@Document(collection = "gov_rec")
 public class GovRec implements Serializable, CaseDetail {
 
     private static final long serialVersionUID = 1L;
@@ -63,7 +63,7 @@ public class GovRec implements Serializable, CaseDetail {
 
     public GovRec() {}
 
-    public GovRec(String claimNumber, ZonedDateTime completedOn, BigDecimal paymentTotal, CaseSubtype subtype)
+    public GovRec(String claimNumber, BigDecimal paymentTotal, CaseSubtype subtype)
     {
         this.claimNumber = claimNumber;
         this.paymentTotal = paymentTotal;

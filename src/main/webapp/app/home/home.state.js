@@ -30,7 +30,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('dashboard', {
                 parent: 'home',
@@ -39,10 +39,11 @@
                 controller: 'DashboardController',
                 controllerAs: 'vm',
                 data: {
-                    authorities: []
-                },
+                    authorities: ['ROLE_ADMIN'],
+                    pageTitle: 'Dashboard'
+                }
             })
-
+            /*.
             .state('cases', {
                 parent: 'home',
                 url: 'ach-case',
@@ -51,9 +52,9 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
-            .state('my-cases', {
+            state('my-cases', {
                 parent: 'home',
                 url: 'my-cases',
                 templateUrl: 'app/home/cases/cases.html',
@@ -61,19 +62,9 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
-            })
-            .state('sla_passed_cases', {
-                parent: 'home',
-                url: 'sla_passed_cases',
-                templateUrl: 'app/home/cases/cases.html',
-                controller: 'CasesController',
-                controllerAs: 'vm',
-                data: {
-                    authorities: []
-                },
-            })
-            .state('create-case', {
+                }
+            })*/
+            /*.state('create-case', {
                 parent: 'home',
                 url: 'create-case',
                 templateUrl: 'app/home/form/caseForm.html',
@@ -81,7 +72,7 @@
                 controllerAs: 'vm',
                 data: {
                     authorities: []
-                },
+                }
             })
             .state('edit-case', {
                 parent: 'home',
@@ -92,7 +83,7 @@
                 data: {
                     authorities: []
                 },
-            })
+            })*/
             .state('import', {
                 parent: 'home',
                 url: "import",

@@ -4,6 +4,7 @@ import com.commercebank.www.config.Constants;
 import com.commercebank.www.config.JHipsterProperties;
 
 import com.commercebank.www.repository.*;
+import com.commercebank.www.service.ACHCaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -38,11 +39,11 @@ public class AchCaseTrackingApp {
 
     @Bean
     CommandLineRunner init(ACHCaseRepository achCaseRepository, BeneficiaryRepository beneficiaryRepository,
-                           PaymentRepository paymentRepository, GovRecRepository govRecRepository, SLARepository slaRepository)
+                           PaymentRepository paymentRepository, GovRecRepository govRecRepository, ACHCaseService achCaseService)
     {
         return (evt) ->
         {
-            Nacha.setRepos(achCaseRepository, beneficiaryRepository, paymentRepository, govRecRepository, slaRepository);
+            Nacha.setRepos(achCaseRepository, beneficiaryRepository, paymentRepository, govRecRepository, achCaseService);
             WatchDirectory.setDirectory(NACHA_DIR_NAME);
             try
             {

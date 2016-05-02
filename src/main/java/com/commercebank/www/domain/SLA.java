@@ -13,8 +13,8 @@ import java.util.Objects;
 /**
  * An SLA.
  */
-@Entity
-@TypeName("SLA")
+//@Entity
+//@TypeName("SLA")
 @Document(collection = "sla")
 public class SLA extends AbstractAuditingEntity implements Serializable {
 

@@ -11,7 +11,7 @@
         var vm = this;
         vm.ACHCase = entity;
         vm.load = function(id) {
-            ACHCase.get({id : id}, function(result) {
+            ACHCase.one({id : id}, function(result) {
                 vm.ACHCase = result;
             });
         };

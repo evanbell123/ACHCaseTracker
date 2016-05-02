@@ -21,10 +21,10 @@ describe('SLA e2e test', function () {
         element(by.css('button[type=submit]')).click();
     });
 
-    it('should load SLAS', function () {
+    it('should load SLAs', function () {
         entityMenu.click();
         element(by.css('[ui-sref="sla"]')).click().then(function() {
-            expect(element.all(by.css('h2')).first().getText()).toMatch(/SLAS/);
+            expect(element.all(by.css('h2')).first().getText()).toMatch(/SLAs/);
         });
     });
 
