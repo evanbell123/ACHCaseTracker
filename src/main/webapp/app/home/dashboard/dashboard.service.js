@@ -12,7 +12,7 @@
             'query': {
                 method: 'GET',
                 isArray: false,
-                params: {fromDate: null, toDate: null}
+                params: {fromDate: null, toDate: null},
             }
         });
 

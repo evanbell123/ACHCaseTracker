@@ -387,7 +387,7 @@ ul#strengthBar {
 .jh-table > tbody > tr > td {
     /* Align text in td verifically (top aligned by Bootstrap) */
     vertical-align: middle;
-    text-align: left;
+    text-align: center;
 }
 
 .jh-table > thead > tr > th > .glyphicon-sort, .jh-table > thead > tr > th > .glyphicon-sort-by-attributes, .jh-table > thead > tr > th > .glyphicon-sort-by-attributes-alt {
@@ -401,7 +401,11 @@ ul#strengthBar {
     cursor: pointer;
 }
 
-/* end of entity tables helpers */
+.jh-table > thead > tr > th {
+    text-align:center;
+}
+
+    /* end of entity tables helpers */
 
 /* ui bootstrap tweaks */
 .nav, .pagination, .carousel, .panel-title a {

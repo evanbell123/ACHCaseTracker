@@ -14,7 +14,7 @@
             url: '/sla',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'SLAS'
+                pageTitle: 'SLAs'
             },
             views: {
                 'content@': {

@@ -24,7 +24,8 @@
         vm.openChange = openChange;
         vm.exportPDF = exportPDF;
 
-        vm.findAllAudited();
+        //vm.findAllAudited();
+        vm.loadChanges();
 
         function findAllAudited() {
             EntityAuditService.findAllAudited().then(function (data) {
@@ -34,8 +35,8 @@
 
         function loadChanges() {
             vm.loading = true;
-            var entityType = vm.qualifiedName;
-            EntityAuditService.findByEntity(entityType, vm.limit).then(function (data) {
+            //var entityType = vm.qualifiedName;
+            EntityAuditService.findByEntity("ACHCase", vm.limit).then(function (data) {
                 vm.audits = data.map(function(it){
                     it.entityValue = JSON.parse(it.entityValue);
                     return it;
@@ -167,7 +168,7 @@
                     'modifiedDate', 'modifiedBy'];
                 var row = [];
                 for (var i = 0; i < properties.length; i++) {
-                    if (properties[i] == 'entityValue')
+                    if (properties[i] == 'entityValue' || properties[i] == 'commitVersion')
                         row.push(JSON.stringify(auditRecord[properties[i]], null, 2));
                     else
                         row.push(auditRecord[properties[i]]);

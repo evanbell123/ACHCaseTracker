@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -20,20 +21,18 @@ import java.util.List;
 @JaversSpringDataAuditable
 public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
 {
-    Page<ACHCase> findByAssignedTo(String assignedTo, Pageable pageable);
-
-    Page<ACHCase> findAllByStatusNot(Status closed, Pageable pageable);
-
     Page<ACHCase> findByAssignedToAndStatusNot(String currentUserLogin, Status closed, Pageable pageable);
 
     Page<ACHCase> findAllByStatusNotOrderBySlaDeadlineAsc(Status closed, Pageable pageable);
 
-    List<ACHCase> findByCreatedDateBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1, Pageable pageable);
+    Set<ACHCase> findByCreatedDateBetweenOrCompletedOnBetween(LocalDateTime from1, LocalDateTime to1, LocalDateTime from2, LocalDateTime to2);
 
-    Long countByCreatedDateBetween(LocalDate localDateTime, LocalDate localDateTime1);
+    Long countByTotalAmountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(double v, LocalDateTime from1, LocalDateTime to1, LocalDateTime from2, LocalDateTime to2);
 
-    Long countByCompletedOnBetween(LocalDate localDateTime, LocalDate localDateTime1);
+    Long countByMissedSLACountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(int i, LocalDateTime from1, LocalDateTime to1, LocalDateTime from2, LocalDateTime to2);
 
-    Long countByTotalAmountBetween(LocalDate fromDate, LocalDate toDate);
+    Long countByCreatedDateBetween(LocalDateTime from, LocalDateTime to);
+
+    Long countByCompletedOnBetween(LocalDateTime from, LocalDateTime to);
 }
 

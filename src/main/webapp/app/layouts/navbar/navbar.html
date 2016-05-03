@@ -1,7 +1,7 @@
 <div ng-cloak ng-switch="vm.isAuthenticated()">
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="col-lg-10 col-lg-offset-1 container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" ng-click="vm.navCollapsed = !vm.navCollapsed">
                 <span class="sr-only">Toggle navigation</span>
@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <img src="../content/images/logo.svg" height="45px" vertical-align="middle">
+            <img src="../content/images/logo.svg" height="60px" layout-padding="10px">
         <!--<img src="../content/images/commerce-bank-1.jpg" alt="Commerce-Bank" width="200px" height="auto" style = "margin:10px 0 0 0">-->
         </div>
         <div class="row" ng-switch-when="true">
@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ui-sref="cases" ng-click="vm.navCollapsed = true">
+                    <a ui-sref="ach-case" ng-click="vm.navCollapsed = true">
                         <i class="material-icons">&#xE85D;</i>
                         <span class="hidden-sm">Cases</span>
                     </a>
@@ -39,12 +39,12 @@
                         <span class="hidden-sm">My Cases</span>
                     </a>
                 </li>
-                <li ui-sref-active="active">
-                    <a ui-sref="create-case" ng-click="vm.navCollapsed = true">
-                        <i class="material-icons">&#xE89C;</i>
-                        <span class="hidden-sm">Create Case</span>
-                    </a>
-                </li>
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref="create-case" ng-click="vm.navCollapsed = true">-->
+                        <!--<i class="material-icons">&#xE89C;</i>-->
+                        <!--<span class="hidden-sm">Create Case</span>-->
+                    <!--</a>-->
+                <!--</li>-->
                 <li ui-sref-active="active">
                     <a ui-sref="import" ng-click="vm.navCollapsed = true">
                         <i class="material-icons">&#xE2C6;</i>
@@ -52,43 +52,46 @@
                     </a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ui-sref="audit-log" ng-click="vm.navCollapsed = true">
+                    <a ui-sref="entity-audit" ng-click="vm.navCollapsed = true">
                         <i class="material-icons">&#xE889;</i>
                         <span class="hidden-sm">Audit Log</span>
                     </a>
                 </li>
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-                <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" uib-dropdown class="dropdown pointer">
-                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="entity-menu">
-                        <span>
-                            <i class="material-icons">&#xE8EF;</i></span>
-                            <span class="hidden-sm">
-                                Entities
-                            </span>
-                            <b class="caret"></b>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu" uib-dropdown-menu>
+                <!--  <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" uib-dropdown class="dropdown pointer">
+                   <a class="dropdown-toggle" uib-dropdown-toggle href="" id="entity-menu">
+                       <span>
+                           <i class="material-icons">&#xE8EF;</i></span>
+                           <span class="hidden-sm">
+                               Entities
+                           </span>
+                           <b class="caret"></b>
+                       </span>
+                   </a>
+                <ul class="dropdown-menu" uib-dropdown-menu>
+                       <li ui-sref-active="active" ><a ui-sref="ach-case" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >ACH Case</span></a></li>
+                       <li ui-sref-active="active" ><a ui-sref="case-note" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >Case Note</span></a></li>
+                       <li ui-sref-active="active" ><a ui-sref="beneficiary" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >Beneficiary</span></a></li>
+                       <li ui-sref-active="active" ><a ui-sref="gov-rec" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >Government Reclamation</span></a></li>
+                       <li ui-sref-active="active" ><a ui-sref="payment" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >Payment</span></a></li>
+                       <li ui-sref-active="active" ><a ui-sref="recovery" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                       &#xA0;<span >Recovery</span></a></li>
 
-                        <li ui-sref-active="active" ><a ui-sref="ach-case" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >ACH Case</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="case-note" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Case Note</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="beneficiary" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Beneficiary</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="gov-rec" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Government Reclamation</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="payment" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Payment</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="recovery" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span >Recovery</span></a></li>
                         <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                    <!--
                     </ul>
                 </li>
+                -->
+
                 <li ng-class="{active: vm.$state.includes('account')}" uib-dropdown class="dropdown pointer">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" id="account-menu">
                         <span>
-                            <span class="glyphicon glyphicon-user"></span>
+                            <i class="material-icons">&#xE853;</i>
                             <span class="hidden-sm">
                                 Account
                             </span>
@@ -109,7 +112,8 @@
                     </ul>
                 </li>
                 <li ng-class="{active: vm.vm.$state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" uib-dropdown class="dropdown pointer">
-                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="admin-menu">
+                    <a class="dropdown-toggle" layout-padding="5px" uib-dropdown-toggle href="" id="admin-menu">
+                        <!--TODO: Padding on right of Administration menu -->
                         <span>
                             <i class="material-icons">&#xE8B8;</i>
                             <span class="hidden-sm">Administration</span>
@@ -117,8 +121,9 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu" uib-dropdown-menu>
+                        <!-- Moved to main navbar, under Audit Log
                         <li ui-sref-active="active" ><a ui-sref="entity-audit" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE889;</i></span>
-                            &#xA0;<span >Entity Audit</span></a></li>
+                            &#xA0;<span >Entity Audit</span></a></li> -->
                         <li ui-sref-active="active"><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE8F9;</i></span>
                             &#xA0;<span>SLA Configuration</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>

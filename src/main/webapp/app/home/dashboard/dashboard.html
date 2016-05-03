@@ -2,7 +2,7 @@
     <div class="row">
         <div class="container-fluid">
         <h1>Dashboard
-                <div class="col-md-5 pull-right input-group">
+                <div class="col-xs-5 pull-right input-group">
                     <span class="input-group-addon">From:</span>
                     <input type="date" class="input-sm form-control" name="start" ng-model="vm.fromDate" ng-change="vm.onChangeDate()" required/>
                     <span class="input-group-addon">To:</span>
@@ -14,7 +14,7 @@
     </div>
 <div class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-xs-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-success pull-right">Monthly</span>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-xs-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-primary pull-right">Today</span>
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-    <div class="col-lg-3">
+    <div class="col-xs-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <span class="label label-info pull-right">Annual</span>
@@ -53,14 +53,18 @@
             </div>
         </div>
     </div>
-        <div class="col-lg-3">
+        <div class="col-xs-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">Low value</span>
-                    <h5>Average SLA Cycles</h5>
+                    <h5>Overdue SLA</h5>
                 </div>
                 <div class="ibox-content">
+<<<<<<< HEAD
                     <h1 class="no-margins">{{vm.totals.slaAverage}}</h1>
+=======
+                    <h1 class="no-margins">{{vm.totals.slaPassed}}</h1>
+>>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
 
                     <div class="stat-percent font-bold text-danger">38% <i class="material-icons">&#xE8E3;</i></div>
                     <small>In first month</small>
@@ -68,5 +72,37 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+</div>
+</div>
+<br/>
+<div class="table-responsive">
+    <table class="jh-table table table-striped">
+        <thead>
+        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+            <th jh-sort-by="type"><span>Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="subtype"><span>Subtype</span> <span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="createdDate"><span>Opened On</span><span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="daysOpen"><span>Days Open</span><span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="missedSLACount"><span>SLA Count</span><span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="completedOn"><span>Closed On</span> <span class="glyphicon glyphicon-sort"></span></th>
+            <th jh-sort-by="completedBy"><span>Closed By</span> <span class="glyphicon glyphicon-sort"></span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="ACHCase in vm.cases | filter:filterParams track by ACHCase.id ">
+            <td>{{ACHCase.type}}</td>
+            <td>{{ACHCase.caseDetail.subtype}}</td>
+            <td>{{ACHCase.createdDate | date:'mediumDate'}}</td>
+            <td>{{ACHCase.daysOpen}}</td>
+            <td>{{ACHCase.missedSLACount}}</td>
+            <td>{{ACHCase.completedOn | date:'mediumDate'}}</td>
+            <td>{{ACHCase.completedBy}}</td>
+        </tr>
+        </tbody>
+    </table>
+>>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
     </div>
 </div>

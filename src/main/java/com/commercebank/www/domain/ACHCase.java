@@ -3,7 +3,6 @@ package com.commercebank.www.domain;
 import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -44,7 +43,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     private LocalDate slaDeadline;
 
     @Field("sla_count")
-    private Long slaCount;
+    private Long missedSLACount;
 
     //@DBRef
     @Field("sla")
@@ -71,9 +70,6 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     @Field("assigned_to")
     private String assignedTo;
-
-    @Field("closed_on")
-    private ZonedDateTime closedOn;
 
     //@DBRef
     @Field("case_detail")
@@ -151,9 +147,9 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     public void setSla(SLA sla) { this.sla = sla; }
 
-    public Long getSlaCount() { return slaCount; }
+    public Long getMissedSLACount() { return missedSLACount; }
 
-    public void setSlaCount(Long slaCount) { this.slaCount = slaCount; }
+    public void setMissedSLACount(Long missedSLACount) { this.missedSLACount = missedSLACount; }
 
     public ZonedDateTime getCompletedOn() {
         return completedOn;

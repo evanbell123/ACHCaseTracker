@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 /**
  * Spring Data MongoDB repository for the Beneficiary entity.
  */
-@JaversSpringDataAuditable
+//@JaversSpringDataAuditable
 public interface BeneficiaryRepository extends MongoRepository<Beneficiary,String> {
 
 }

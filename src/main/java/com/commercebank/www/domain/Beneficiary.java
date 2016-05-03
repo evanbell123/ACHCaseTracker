@@ -15,8 +15,8 @@ import java.util.Objects;
 /**
  * A Beneficiary.
  */
-@Entity
-@TypeName("Beneficiary")
+//@Entity
+//@TypeName("Beneficiary")
 @Document(collection = "beneficiary")
 public class Beneficiary implements Serializable {
 

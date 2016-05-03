@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="col-md-6 col-md-offset-2">
-                <nit-advanced-searchbox ng-model="searchParams" parameters="availableSearchParams" placeholder="Filter"></nit-advanced-searchbox>
+                <nit-advanced-searchbox ng-model="searchParams" parameters="availableSearchParams" parametersDisplayLimit=30 parametersLabel="Fields" placeholder="Filter Cases"></nit-advanced-searchbox>
             </div>
         </div>
     </div>
@@ -22,24 +22,32 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <!--<th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <th jh-sort-by=""><span>Watch Item</span><i class="fa fa-sort" aria-hidden="true"></i></th>
-                    <th jh-sort-by="assignedTo"><span>Assigned To</span><i class="fa fa-sort" aria-hidden="true"></i></th>
-                    <th jh-sort-by="totalAmount"><span>Total Amount</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by=""><span>Watch Item</span></span></th>
+                    <th jh-sort-by="assignedTo"><span>Assigned To</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="totalAmount"><span>Total Amount</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="lastPaymentOn"><span>Last Payment On</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="slaDeadline"><span>SLA Deadline</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
+<<<<<<< HEAD
                     <th jh-sort-by="type"><span>Type</span><i class="fa fa-sort" aria-hidden="true"></i></th>
                     <th jh-sort-by="completedOn"><span>Completed On</span></th>
                     <th jh-sort-by="completedBy"><span>Completed By</span></th>
+=======
+                    <th jh-sort-by="type"><span>Type</span><span class="glyphicon glyphicon-sort"></span></th></th>
+>>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
                     <th></th>
                 </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+<<<<<<< HEAD
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:searchParams track by ACHCase.id ">
+=======
+                <tr ng-repeat="ACHCase in vm.ACHCases | filter:filterParams track by ACHCase.id ">
+>>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
                     <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
                     <td>
-                        <md-checkbox aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)">
+                        <md-checkbox aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
@@ -48,7 +56,10 @@
                     <td><span ng-class="{'red':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.daysOpen}}</td>
                     <td>{{ACHCase.type}}</td>
+<<<<<<< HEAD
                     <td>{{ACHCase.completedOn}}</td>
+=======
+>>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">
