@@ -4,17 +4,17 @@
          .module('achCaseTrackingApp')
          .factory('ACHCase', ACHCase);
 
-     ACHCase.$inject = ['$resource', 'DateUtils', 'Enums', 'EnumsService'];
+     ACHCase.$inject = ['$resource', 'DateUtils'];
 
-     function ACHCase($resource, DateUtils, Enums, EnumsService) {
+     function ACHCase($resource, DateUtils) {
          var resourceUrl = 'api/ach-case/:id';
 
          return $resource(resourceUrl, {}, {
              'all': {
                  method: 'GET',
                  isArray: true,
+                 params: {status: null, fromDate: null, toDate: null},
                  transformResponse: function(data) {
-
                      if (data !== undefined || data.length !== 0) {
                          return transformManyAchCases(angular.fromJson(data));
                      } else {

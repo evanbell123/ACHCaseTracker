@@ -24,7 +24,7 @@
         vm.openChange = openChange;
         vm.exportPDF = exportPDF;
 
-        //vm.findAllAudited();
+        vm.findAllAudited();
         vm.loadChanges();
 
         function findAllAudited() {
@@ -35,8 +35,8 @@
 
         function loadChanges() {
             vm.loading = true;
-            //var entityType = vm.qualifiedName;
-            EntityAuditService.findByEntity("ACHCase", vm.limit).then(function (data) {
+            var entityType = vm.qualifiedName;
+            EntityAuditService.findByEntity(entityType, vm.limit).then(function (data) {
                 vm.audits = data.map(function(it){
                     it.entityValue = JSON.parse(it.entityValue);
                     return it;
@@ -154,7 +154,7 @@
 
             function addHeader() {
                 var headers = ['Entity Id', 'Action', 'Version', 'Value',
-                    'Modified Date', 'Modified By', 'View Details'];
+                    'Modified Date', 'Modified By'];
                 var tableHeader = [];
                 for (var i = 0; i < headers.length; i++) {
                     var object = { text: headers[i], style: 'tableHeader' };
@@ -174,7 +174,6 @@
                         row.push(auditRecord[properties[i]]);
 
                 }
-                row.push('eye');
                 docDefinition.content.table.body.push(row);
             }
 

@@ -42,7 +42,7 @@ public class DashboardResource {
     @RequestMapping(method = RequestMethod.GET, params = {"fromDate", "toDate"})
     @Timed
     public ResponseEntity<DashboardDTO> getTotals(@RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                      @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) throws URISyntaxException
+                                                  @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) throws URISyntaxException
     {
         log.debug("REST request to get dashboard totals. ");
 

@@ -59,6 +59,9 @@ public class ACHCaseService {
 
             if (achCase.getBeneficiary() != null)
                 beneficiaryRepository.save(achCase.getBeneficiary());
+
+            if (achCase.getSlaDeadline().compareTo(LocalDate.now()) < 0)
+                achCase.setMissedSLACount(achCase.getMissedSLACount() + 1);
             if (achCase.getSla() != null)
                 slaRepository.save(updateSLA(achCase).getSla());
 
@@ -100,12 +103,6 @@ public class ACHCaseService {
         achCase.setStatus(Status.CLOSED);
         achCaseRepository.save(achCase);
         return true;
-    }
-
-    public ACHCase updateDaysOpen(ACHCase achCase)
-    {
-        achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS));
-        return achCase;
     }
 
     public ACHCase updateSLA(ACHCase achCase)

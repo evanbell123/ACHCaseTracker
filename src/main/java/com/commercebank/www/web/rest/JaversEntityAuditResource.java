@@ -96,7 +96,6 @@ public class JaversEntityAuditResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/audits/entity/changes");
 
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-
     }
 
     /**

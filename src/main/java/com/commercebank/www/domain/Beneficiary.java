@@ -2,6 +2,7 @@ package com.commercebank.www.domain;
 
 import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
+import org.javers.core.metamodel.annotation.ValueObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,8 +16,8 @@ import java.util.Objects;
 /**
  * A Beneficiary.
  */
-//@Entity
-//@TypeName("Beneficiary")
+@Entity
+@TypeName("Beneficiary")
 @Document(collection = "beneficiary")
 public class Beneficiary implements Serializable {
 

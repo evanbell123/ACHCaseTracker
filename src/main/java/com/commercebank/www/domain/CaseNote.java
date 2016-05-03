@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * A CaseNote.
  */
-//@Entity
-//@TypeName("CaseNote")
+@Entity
+@TypeName("CaseNote")
 @Document(collection = "case_note")
 public class CaseNote implements Serializable {
 

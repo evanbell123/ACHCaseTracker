@@ -30,6 +30,7 @@ public class EntityAuditEvent implements Serializable{
 
     private ZonedDateTime modifiedDate;
 
+
     public String getId() {
         return id;
     }
@@ -45,8 +46,6 @@ public class EntityAuditEvent implements Serializable{
     public void setEntityId(String entityId) {
         this.entityId = entityId;
     }
-
-
 
     public String getEntityType() {
         return entityType;
