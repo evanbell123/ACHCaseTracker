@@ -113,7 +113,7 @@ public class ACHCaseResource {
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.GET,
-        params = {"status", "fromDate, toDate"},
+        params = { "status", "fromDate", "toDate" },
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable, @RequestParam(value = "status") int status,
@@ -126,13 +126,13 @@ public class ACHCaseResource {
         if (status == 0)
             page = achCaseRepository.findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
         else if (status == 1)
-            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.OPEN, toDate, fromDate, pageable);
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.OPEN, fromDate, toDate, pageable);
         else if (status == 2)
-            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.IN_PROGRESS, toDate, fromDate, pageable);
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.IN_PROGRESS, fromDate, toDate, pageable);
         else if (status == 3)
-            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, toDate, fromDate, pageable);
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
         else
-            page = achCaseRepository.findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(toDate, fromDate, pageable);
+            page = achCaseRepository.findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(fromDate, toDate, pageable);
 
         page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
