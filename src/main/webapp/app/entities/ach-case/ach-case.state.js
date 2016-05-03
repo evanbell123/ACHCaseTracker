@@ -61,28 +61,6 @@
                 entity: ['$stateParams', 'ACHCase', function($stateParams, ACHCase) {
                     return ACHCase.get({id : $stateParams.id});
                 }]
-<<<<<<< HEAD
-            })
-            .state('ach-case.edit', {
-                parent: 'ach-case',
-                url: '/{id}/edit',
-                data: {
-                    authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/ach-case/ach-case-dialog.html',
-                        controller: 'ACHCaseDialogController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['ACHCase', function(ACHCase) {
-                                return ACHCase.one({
-                                    id: $stateParams.id
-                                });
-                            }]
-=======
             }
         })
         .state('ach-case-two.new', {
@@ -113,7 +91,6 @@
                                     name: null
                                 }
                             };
->>>>>>> e796f8ab5be5a250b00d983798059d48054747ce
                         }
                     }
                 }).result.then(function() {

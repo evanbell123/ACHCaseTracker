@@ -154,7 +154,7 @@
 
             function addHeader() {
                 var headers = ['Entity Id', 'Action', 'Version', 'Value',
-                    'Modified Date', 'Modified By', 'View Details'];
+                    'Modified Date', 'Modified By'];
                 var tableHeader = [];
                 for (var i = 0; i < headers.length; i++) {
                     var object = { text: headers[i], style: 'tableHeader' };
@@ -174,7 +174,6 @@
                         row.push(auditRecord[properties[i]]);
 
                 }
-                row.push('eye');
                 docDefinition.content.table.body.push(row);
             }
 
