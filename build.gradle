@@ -139,7 +139,9 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-loader-tools'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+    compile (group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'){
+        exclude module: 'mongo-java-driver'
+    }
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
