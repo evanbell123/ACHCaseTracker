@@ -193,7 +193,7 @@ public class ACHCaseResource {
      * POST  /import : Import a NACHA file to be processed
      *
      * @param request the file to be added
-     * @return the ResponseEntity with status 201 (Created), or with status 400 (Bad Request) if the achCase has already an ID
+     * @return the ResponseEntity with status 201 (Created) and with body the new achCase, or with status 400 (Bad Request) if the achCase has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/import",
