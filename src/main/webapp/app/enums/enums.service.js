@@ -10,6 +10,7 @@
     function EnumsService() {
         return {
           getEnumIdFromName: function(CaseEnum, name) {
+              console.log(CaseEnum, name);
               var enumId = CaseEnum.filter(function(value) {
                   return value.name === name;
               })[0].id;

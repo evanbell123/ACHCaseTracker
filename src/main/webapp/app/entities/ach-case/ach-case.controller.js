@@ -18,11 +18,20 @@
            return Date.parse(deadline) < new Date();
         }
         vm.loadAll = function() {
-            ACHCase.all({
-                page: vm.page,
-                size: 20,
-                sort: sort()
-            }, onSuccess, onError);
+            if ($state.is("ach-case-assigned")) {
+                ACHCase.assigned({
+                    page: vm.page,
+                    size: 20,
+                    sort: sort()
+                }, onSuccess, onError);
+            } else {
+                ACHCase.all({
+                    page: vm.page,
+                    size: 20,
+                    sort: sort()
+                }, onSuccess, onError);
+            }
+
 
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -57,7 +66,6 @@
         vm.loadAll();
 
         $scope.watch = function(caseData) {
-            console.log(caseData.isWatched);
 
             /*
              If the user checks 'watch item'

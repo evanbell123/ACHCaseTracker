@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseDialogController', ACHCaseDialogController);
 
-    ACHCaseDialogController.$inject = ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'ACHCase'];
+    ACHCaseDialogController.$inject = ['$scope', '$uibModalInstance', 'entity', 'ACHCase'];
 
-    function ACHCaseDialogController ($scope, $stateParams, $uibModalInstance, entity, ACHCase) {
+    function ACHCaseDialogController ($scope, $uibModalInstance, entity, ACHCase) {
         var vm = this;
         vm.ACHCase = entity;
         vm.load = function(id) {
@@ -31,7 +31,7 @@
             if (vm.ACHCase.id !== null) {
                 ACHCase.update(vm.ACHCase, onSaveSuccess, onSaveError);
             } else {
-                ACHCase.save(vm.ACHCase, onSaveSuccess, onSaveError);
+                ACHCase.create(vm.ACHCase, onSaveSuccess, onSaveError);
             }
         };
 

@@ -4,9 +4,9 @@
          .module('achCaseTrackingApp')
          .factory('ACHCase', ACHCase);
 
-     ACHCase.$inject = ['$resource', 'DateUtils', 'Enums', 'EnumsService'];
+     ACHCase.$inject = ['$state', '$resource', 'DateUtils', 'Enums', 'EnumsService'];
 
-     function ACHCase($resource, DateUtils, Enums, EnumsService) {
+     function ACHCase($state, $resource, DateUtils, Enums, EnumsService) {
          var resourceUrl = 'api/ach-case/:id';
 
          return $resource(resourceUrl, {}, {
@@ -54,14 +54,15 @@
              /*
               make a copy
               */
+             console.log("transform case request");
              var copyData = caseData;
 
              /*
               Copy the payments and notes JSON,
               into the proper spot
               */
-             copyData.caseDetail.payments = caseData.payments;
-             copyData.caseDetail.notes = caseData.notes;
+             copyData.caseDetail.payments = copyData.payments;
+             copyData.caseDetail.notes = copyData.notes;
 
              /*
               Then get rid the copied payments and notes
@@ -76,13 +77,16 @@
              /*
               convert enums to integers
               */
-             //caseData.status = EnumsService.getEnumIdFromName(Enums.CaseStatus, caseData.status);
-             //caseData.type = EnumsService.getEnumIdFromName(Enums.CaseType, caseData.type);
-             //caseData.caseDetail.subtype = EnumsService.getEnumIdFromName(Enums.CaseSubtype, caseData.caseDetail.subtype);
+             if ($state.is("ach-case.edit")) {
+                 caseData.status = EnumsService.getEnumIdFromName(Enums.CaseStatus, caseData.status);
+                 caseData.type = EnumsService.getEnumIdFromName(Enums.CaseType, caseData.type);
+                 caseData.caseDetail.subtype = EnumsService.getEnumIdFromName(Enums.CaseSubtype, caseData.caseDetail.subtype);
 
-             if (caseData.caseDetail.recoveryInfo !== null) {
-                 //caseData.caseDetail.recoveryInfo.method = EnumsService.getEnumIdFromName(Enums.RecoveryMethod, caseData.caseDetail.recoveryInfo.method);
+                 if (caseData.caseDetail.recoveryInfo !== null) {
+                     caseData.caseDetail.recoveryInfo.method = EnumsService.getEnumIdFromName(Enums.RecoveryMethod, caseData.caseDetail.recoveryInfo.method);
+                 }
              }
+
 
              //data.lastPaymentOn = new Date(data.lastPaymentOn);
              //data.slaDeadline = new Date(data.slaDeadline);
@@ -94,7 +98,7 @@
              }
 
              caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
-             caseData.slaDeadline = DateUtils.convertDateTimeFromServer(caseData.slaDeadline);
+             //caseData.slaDeadline = DateUtils.convertDateTimeFromServer(caseData.slaDeadline);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);
