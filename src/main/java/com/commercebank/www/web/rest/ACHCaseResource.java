@@ -2,10 +2,8 @@ package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
-import com.commercebank.www.domain.GovRec;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
-import com.commercebank.www.repository.GovRecRepository;
 import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
@@ -24,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
-import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import java.io.File;
 import java.net.URI;
@@ -51,9 +48,6 @@ public class ACHCaseResource {
     private ACHCaseRepository achCaseRepository;
 
     @Inject
-    private GovRecRepository govRecRepository;
-
-    @Inject
     private ACHCaseService achCaseService;
 
     /**
@@ -72,9 +66,7 @@ public class ACHCaseResource {
         if (achCase.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("achCase", "idexists", "A new achCase cannot already have an ID")).body(null);
         }
-        //achCase result = achCaseRepository.save(achCase);
-        achCase.setStatus(Status.OPEN);
-        ACHCase result = achCaseService.cascadeSave(achCase);
+        ACHCase result = achCaseService.createCase(achCase);
         return ResponseEntity.created(new URI("/api/ach-case/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("achCase", result.getId().toString()))
             .body(result);
@@ -96,9 +88,7 @@ public class ACHCaseResource {
     public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
         if (achCase.getId() == null) { return createACHCase(achCase); }
-        //achCase.setStatus(Status.IN_PROGRESS);
-        ACHCase result = achCaseService.cascadeSave(achCase);
-        //achCase result = achCaseRepository.save(achCase);
+        ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId().toString()))
             .body(result);
@@ -134,7 +124,7 @@ public class ACHCaseResource {
         else
             page = achCaseRepository.findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(fromDate, toDate, pageable);
 
-        page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
+        page.forEach(achCase ->  achCaseService.updateOnRetrieve(achCase));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -171,11 +161,12 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<Void> deleteACHCase(@PathVariable String id) {
         log.debug("REST request to delete ACHCase : {}", id);
-        //achCaseRepository.delete(id);
+
         ACHCase achCase = achCaseRepository.findOne(id);
-        if (!achCaseService.closeCase(achCase)) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACH Case", "invalid", "Required fields are missing or have invalid values.")).body(null);
-        }
+        String errorDetail = achCaseService.closeCase(achCase);
+        if (errorDetail != null)
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACH Case", "invalid", errorDetail)).body(null);
+
         return ResponseEntity.ok().headers(HeaderUtil.createEntityClosedAlert("ACH Case", id.toString())).build();
     }
 
@@ -202,7 +193,7 @@ public class ACHCaseResource {
      * POST  /import : Import a NACHA file to be processed
      *
      * @param request the file to be added
-     * @return the ResponseEntity with status 201 (Created) and with body the new achCase, or with status 400 (Bad Request) if the achCase has already an ID
+     * @return the ResponseEntity with status 201 (Created), or with status 400 (Bad Request) if the achCase has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/import",

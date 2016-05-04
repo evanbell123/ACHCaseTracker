@@ -22,8 +22,6 @@ public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
 {
     Page<ACHCase> findByAssignedToAndStatusNot(String currentUserLogin, Status closed, Pageable pageable);
 
-    Page<ACHCase> findAllByStatusNotOrderBySlaDeadlineAsc(Status closed, Pageable pageable);
-
     Set<ACHCase> findByCreatedDateBetweenOrCompletedOnBetween(LocalDateTime from1, LocalDateTime to1, LocalDateTime from2, LocalDateTime to2);
 
     Long countByTotalAmountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(double v, LocalDateTime from1, LocalDateTime to1, LocalDateTime from2, LocalDateTime to2);
@@ -33,8 +31,6 @@ public interface ACHCaseRepository extends MongoRepository<ACHCase,String>
     Long countByCreatedDateBetween(LocalDateTime from, LocalDateTime to);
 
     Long countByCompletedOnBetween(LocalDateTime from, LocalDateTime to);
-
-    Page<ACHCase> findAllByStatusOrderBySlaDeadlineAsc(Status status, Pageable pageable);
 
     Page<ACHCase> findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status closed, LocalDate fromDate, LocalDate toDate, Pageable pageable);
 

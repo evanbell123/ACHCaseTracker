@@ -15,8 +15,6 @@ This controller is used for both /ach-case and /my-cases
 
     function CasesController($scope, $state, $http, $timeout, uiGridConstants, ACHCaseTwo, Enums, EnumsService, Principal) {
 
-
-
         /*
         Listen for when the user checks or unchecks the watch item check box
         */
