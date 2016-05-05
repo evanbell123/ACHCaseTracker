@@ -54,8 +54,12 @@
              /*
               make a copy
               */
-             console.log("transform case request");
              var copyData = caseData;
+
+             /*
+             Assign the @class property base on the case type
+             */
+             caseData.caseDetail['@class'] = EnumsService.getDomainFromEnumId(Enums.CaseType, caseData.type);
 
              /*
               Copy the payments and notes JSON,

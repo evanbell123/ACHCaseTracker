@@ -279,7 +279,7 @@
                             type: 'checkbox',
                             key: 'beneficiary.otherGovBenefits',
                             templateOptions: {
-                                label: 'Other Government Benfits',
+                                label: 'Other Government Benefits',
                             }
 
                         }]
@@ -444,7 +444,7 @@
                             key: 'amount',
                             type: 'input',
                             templateOptions: {
-                                type: 'number',
+                                type: 'currency',
                                 label: 'Payment Amount',
                                 addonLeft: {
                                     class: 'glyphicon glyphicon-usd'

@@ -34,7 +34,7 @@
             })
             .state('dashboard', {
                 parent: 'home',
-                url: '',
+                url: 'dashboard',
                 templateUrl: 'app/home/dashboard/dashboard.html',
                 controller: 'DashboardController',
                 controllerAs: 'vm',
@@ -46,7 +46,7 @@
 
             .state('ach-case', {
                 parent: 'home',
-                url: '/ach-case/',
+                url: 'ach-case',
                 data: {
                     authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                     pageTitle: 'ACHCases'
@@ -81,7 +81,7 @@
              */
             .state('ach-case-detail', {
                 parent: 'home',
-                url: '/ach-case/{id}',
+                url: 'ach-case/{id}',
                 data: {
                     authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                     pageTitle: 'ACHCase'
@@ -141,7 +141,8 @@
                                     },
                                     "assignedTo": null,
                                     "caseDetail": {
-                                        "@class": "com.commercebank.www.domain.GovRec",
+                                        //"@class": "com.commercebank.www.domain.GovRec",
+                                        "@class": null,
                                         "id": null,
                                         "claimNumber": null,
                                         "verifiedOn": null,
@@ -177,7 +178,7 @@
             })
             .state('ach-case.edit', {
                 parent: 'ach-case',
-                url: '/{id}/edit',
+                url: '{id}/edit',
                 data: {
                     authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
                 },
@@ -208,7 +209,7 @@
             })
             .state('ach-case.delete', {
                 parent: 'ach-case',
-                url: '/{id}/delete',
+                url: '{id}/delete',
                 data: {
                     authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
                 },
