@@ -111,7 +111,7 @@ public class ACHCaseService {
     public ACHCase updateOnSave(ACHCase achCase)
     {
         updateSLA(achCase);
-        if (achCase.getAssignedTo() == null || !achCase.getAssignedTo().isEmpty()) {
+        if (achCase.getAssignedTo() != null || !achCase.getAssignedTo().isEmpty()) {
             achCase.setStatus(Status.IN_PROGRESS);
         }
         else {

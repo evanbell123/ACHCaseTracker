@@ -99,17 +99,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
         this.status = status;
     }
 
-    /*public ZonedDateTime getLastPaymentOn() {
-        return lastPaymentOn;
-    }
-
-    public void setLastPaymentOn(ZonedDateTime lastPaymentOn) {
-        this.lastPaymentOn = lastPaymentOn;
-    }*/
-
-    public LocalDate getSlaDeadline() {
-        return slaDeadline;
-    }
+    public LocalDate getSlaDeadline() { return slaDeadline; }
 
     public void setSlaDeadline(LocalDate slaDeadline) {
         this.slaDeadline = slaDeadline;
