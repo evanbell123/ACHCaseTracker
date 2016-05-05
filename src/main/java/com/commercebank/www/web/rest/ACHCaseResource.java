@@ -106,10 +106,10 @@ public class ACHCaseResource {
         params = { "status", "fromDate", "toDate" },
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable, @RequestParam(value = "status") int status,
-                                                                            @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                                             @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate)
-        throws URISyntaxException {
+    public ResponseEntity<List<ACHCase>> getAllACHCases(@RequestParam(value = "status") int status,
+                                                        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                                        Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
         Page<ACHCase> page;
 

@@ -137,7 +137,7 @@ public class ACHCaseService {
                 achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                 //Case is being watched for the first time
                 if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty() && achCase.getSla() == slaRepository.findOneById("non-treasury-initial").get())
-                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec)achCase.getCaseDetail()).getLatestPayment().getEffectiveOn(), achCase.getSla().getBusinessDays()));
+                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec)achCase.getCaseDetail()).latestPaymentDate(), achCase.getSla().getBusinessDays()));
                 //Other cases get reset starting from today's date
                 else
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));

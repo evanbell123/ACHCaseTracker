@@ -1,7 +1,6 @@
 package com.commercebank.www.domain;
 
 import org.javers.core.metamodel.annotation.Entity;
-import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -126,12 +125,15 @@ public class GovRec implements Serializable, CaseDetail {
 
     public List<Payment> getPayments() { return payments; }
 
-    public Payment getLatestPayment() {
-        Payment latest = payments.get(0);
-        for (Payment payment : payments)
-            if (payment.getEffectiveOn().isAfter(latest.getEffectiveOn()))
-                latest = payment;
-        return latest;
+    public LocalDate latestPaymentDate() {
+        if (payments != null) {
+            LocalDate latest = payments.get(0).getEffectiveOn();
+            for (Payment payment : payments)
+                if (payment.getEffectiveOn().isAfter(latest))
+                    latest = payment.getEffectiveOn();
+            return latest;
+        }
+        return LocalDate.now();
     }
 
     public void setPayments(List<Payment> payments) { this.payments = payments; }
