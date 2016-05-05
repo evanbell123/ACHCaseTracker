@@ -3,6 +3,7 @@ package com.commercebank.www.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
 import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.service.ACHCaseService;
 import com.commercebank.www.web.rest.dto.DashboardDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,9 @@ public class DashboardResource {
     @Inject
     private ACHCaseRepository achCaseRepository;
 
+    @Inject
+    ACHCaseService achCaseService;
+
     /**
      * GET  /dashboard : get an object with totals for the dashboard.
      *
@@ -52,6 +56,7 @@ public class DashboardResource {
 
         totals.setCases(achCaseRepository.findByCreatedDateBetweenOrCompletedOnBetween(LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX),
                                                                                         LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
+        totals.getCases().forEach(achCase ->  achCaseService.updateOnRetrieve(achCase));
 
         totals.setPaymentsReturned(achCaseRepository.countByTotalAmountGreaterThanAndCreatedDateBetweenOrCompletedOnBetween(0.00, LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX),
                                                                                                                                     LocalDateTime.of(fromDate, LocalTime.MIN), LocalDateTime.of(toDate, LocalTime.MAX)));
