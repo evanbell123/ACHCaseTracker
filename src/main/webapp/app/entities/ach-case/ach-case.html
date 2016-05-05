@@ -24,6 +24,7 @@
                     <!--<th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
                     <th jh-sort-by=""><span>Watch Item</span></span></th>
                     <th jh-sort-by="assignedTo"><span>Assigned To</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="totalAmount"><span>Total Amount</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="lastPaymentOn"><span>Last Payment On</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -40,6 +41,7 @@
                         <md-checkbox aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
+
                     <td>{{ACHCase.totalAmount}}</td>
                     <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-warning': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
                     <td>{{ACHCase.lastPaymentOn | date:'mediumDate'}}</td>

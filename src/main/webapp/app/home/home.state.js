@@ -39,7 +39,7 @@
                 controller: 'DashboardController',
                 controllerAs: 'vm',
                 data: {
-                    authorities: ['ROLE_ADMIN'],
+                    authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                     pageTitle: 'Dashboard'
                 }
             })
