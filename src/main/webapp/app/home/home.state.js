@@ -43,13 +43,12 @@
                     pageTitle: 'Dashboard'
                 }
             })
-
             .state('ach-case', {
                 parent: 'home',
-                url: '/ach-case/',
+                url: 'ach-case',
                 data: {
                     authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
-                    pageTitle: 'ACHCases'
+                    pageTitle: 'ACH Cases'
                 },
                 views: {
                     'content@': {
@@ -62,7 +61,7 @@
             })
             .state('ach-case-detail', {
                 parent: 'home',
-                url: '/ach-case/{id}',
+                url: 'ach-case/{id}',
                 data: {
                     authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
                     pageTitle: 'ACHCase'
@@ -150,7 +149,7 @@
             })
             .state('ach-case.edit', {
                 parent: 'ach-case',
-                url: '/{id}/edit',
+                url: '{id}/edit',
                 data: {
                     authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
                 },
@@ -179,7 +178,7 @@
             })
             .state('ach-case.delete', {
                 parent: 'ach-case',
-                url: '/{id}/delete',
+                url: '{id}/delete',
                 data: {
                     authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
                 },

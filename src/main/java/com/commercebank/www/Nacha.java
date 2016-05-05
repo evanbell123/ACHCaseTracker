@@ -83,19 +83,14 @@ public class Nacha
                 GovRec govRec = new GovRec();
                 govRec.setPayments(payments);
                 govRec.setSubtype(CaseSubtype.DNE);
-                govRec.setPaymentCount(1L);
+                govRec.setPaymentCount((long)govRec.getPayments().size());
                 govRecRepository.save(govRec);
 
                 ACHCase achCase = new ACHCase();
-                achCase.setDaysOpen(0L);
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
-                achCase.setStatus(Status.OPEN);
-                achCase.setMissedSLACount(0L);
-                achCase = achCaseService.initializeSLA(achCase);
-                achCaseRepository.save(achCase);
-
+                achCaseService.createCase(achCase);
             }
         }
     }

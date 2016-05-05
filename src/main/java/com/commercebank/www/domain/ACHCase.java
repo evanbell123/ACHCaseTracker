@@ -30,21 +30,21 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Id
     private String id;
 
-    @Field("total_amount")
-    private BigDecimal totalAmount;
-
     @NotNull
     @Field("status")
     private Status status;
 
-    @Field("last_payment_on")
-    private ZonedDateTime lastPaymentOn;
+    @Field("total_amount")
+    private BigDecimal totalAmount;
+
+    //@Field("last_payment_on")
+    //private ZonedDateTime lastPaymentOn;
 
     @Field("sla_deadline")
     private LocalDate slaDeadline;
 
     @Field("sla_count")
-    private Long missedSLACount;
+    private Long missedSLACount = new Long(0);
 
     @DBRef
     @Field("sla")
@@ -52,13 +52,16 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
 
     @Min(value = 0)
     @Field("days_open")
-    private Long daysOpen;
+    private Long daysOpen = new Long(0);
 
     @Field("completed_on")
     private ZonedDateTime completedOn;
 
     @Field("completed_by")
     private String completedBy;
+
+    @Field("assigned_to")
+    private String assignedTo;
 
     @NotNull
     @Field("type")
@@ -67,10 +70,6 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
-
-    @Field("assigned_to")
-    private String assignedTo;
-
 
     @DBRef
     @Field("case_detail")
@@ -100,13 +99,13 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getLastPaymentOn() {
+    /*public ZonedDateTime getLastPaymentOn() {
         return lastPaymentOn;
     }
 
     public void setLastPaymentOn(ZonedDateTime lastPaymentOn) {
         this.lastPaymentOn = lastPaymentOn;
-    }
+    }*/
 
     public LocalDate getSlaDeadline() {
         return slaDeadline;
@@ -190,14 +189,14 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
             "id=" + id +
             ", totalAmount='" + totalAmount + "'" +
             ", status='" + status + "'" +
-            ", lastPaymentOn='" + lastPaymentOn + "'" +
+           // ", lastPaymentOn='" + lastPaymentOn + "'" +
             ", slaDeadline='" + slaDeadline + "'" +
-          //  ", slaType='" + sla.getTypeName() + "'" +
+            ", slaType='" + sla.getId() + "'" +
             ", daysOpen='" + daysOpen + "'" +
             ", type='" + type + "'" +
             ", completedOn='" + completedOn + "'" +
-          //  ", beneficiary='" + beneficiary.getName() + "'" +
-          //  ", assigned to'" + assignedTo.getLogin() + "'" +
+            ", beneficiary='" + beneficiary.getName() + "'" +
+            ", assigned to'" + assignedTo + "'" +
             '}';
     }
 }

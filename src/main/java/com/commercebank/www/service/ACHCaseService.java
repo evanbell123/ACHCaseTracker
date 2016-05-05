@@ -8,7 +8,6 @@ import com.commercebank.www.repository.*;
 import com.commercebank.www.service.util.BusinessDayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -60,70 +59,96 @@ public class ACHCaseService {
             if (achCase.getBeneficiary() != null)
                 beneficiaryRepository.save(achCase.getBeneficiary());
 
-            if (achCase.getSlaDeadline().compareTo(LocalDate.now()) < 0)
-                achCase.setMissedSLACount(achCase.getMissedSLACount() + 1);
-            if (achCase.getSla() != null)
-                slaRepository.save(updateSLA(achCase).getSla());
-
             achCase = achCaseRepository.save(achCase);
             log.debug("Saved Information for ACH Case: {}", achCase);
         }
         return achCase;
     }
-
-    public boolean closeCase(ACHCase achCase)
+    //TODO: return string with message about specific fields that need to have values
+    public String closeCase(ACHCase achCase)
     {
+        if (achCase.getCompletedOn() == null) { return "Completion date is empty."; }
+        if (achCase.getCompletedBy() == null) { return "Completed by is empty."; }
+
         Beneficiary beneficiary = achCase.getBeneficiary();
-        if (beneficiary == null) { return false; }
-        if (beneficiary.getName() == null || beneficiary.getName().isEmpty()) { return false; }
-        if (beneficiary.getAccountNum() == null) { return false; }
-        if (beneficiary.getDateOfDeath() == null) { return false; }
-        if (beneficiary.getDateCBAware() == null) { return false; }
-        if (beneficiary.isOtherGovBenefits() ==  null) { return false; }
+        if (beneficiary == null) { return "There is no beneficiary assigned to this case."; }
+        if (beneficiary.getName() == null || beneficiary.getName().isEmpty()) { return "The beneficiary doesn't have a name."; }
+        if (beneficiary.getAccountNum() == null) { return "The beneficiary's account number is not set."; }
+        if (beneficiary.getDateOfDeath() == null) { return "The beneficiary's date of death is not set."; }
+        if (beneficiary.getDateCBAware() == null) { return "The date Commerce Bank became aware of beneficiary's death is not set."; }
+        if (beneficiary.isOtherGovBenefits() ==  null) { return "It is not specified whether the beneficiary has any other government benefits."; }
 
         GovRec govRec = (GovRec) achCase.getCaseDetail();
-        if (govRec == null) { return false; }
-        //if (govRec.getCompletedOn() == null) { return false; }
+        if (govRec == null) { return "There are no details regarding the case subtype."; }
         if (govRec.getSubtype() == CaseSubtype.TREAS_REFUND || govRec.getSubtype() == CaseSubtype.TREAS_REFERRAL)
-            if (govRec.getClaimNumber() == null || govRec.getClaimNumber().isEmpty()) { return false; }
-
-        Recovery recovery = govRec.getRecoveryInfo();
-        if (recovery == null) { return false; }
-        if (recovery.getMethod() == null) { return false; }
-        RecoveryDetail detail = recovery.getDetailType();
-        if (detail == RecoveryDetail.GL_COST || detail == RecoveryDetail.IN_ACCT || detail == RecoveryDetail.DESC)
-            if (recovery.getDetailValue() == null || recovery.getDetailValue().isEmpty()) { return false; }
-
+            if (govRec.getClaimNumber() == null || govRec.getClaimNumber().isEmpty()) { return "There is no claim number for this case."; }
         if (govRec.getPayments() != null) {
             for (Payment p : govRec.getPayments()) {
-                if (p.getAmount() == null || p.getEffectiveOn() == null) { return false; }
+                if (p.getAmount() == null || p.getEffectiveOn() == null) { return "There is missing payment information for this case."; }
             }
         }
 
+        Recovery recovery = govRec.getRecoveryInfo();
+        if (recovery == null) { return "There is no recovery info set for this case."; }
+        if (recovery.getMethod() == null) { return "There is no recovery method for this case."; }
+        RecoveryDetail detail = recovery.getDetailType();
+        if (detail == RecoveryDetail.GL_COST || detail == RecoveryDetail.IN_ACCT || detail == RecoveryDetail.DESC)
+            if (recovery.getDetailValue() == null || recovery.getDetailValue().isEmpty()) { return "The recovery method is missing details."; }
+
         achCase.setStatus(Status.CLOSED);
         achCaseRepository.save(achCase);
-        return true;
+        log.debug("ACHCase with ID: {}, has been closed.");
+        return null;
     }
 
-    public ACHCase updateSLA(ACHCase achCase)
+    public ACHCase createCase(ACHCase achCase)
     {
-        //User has selected to watch the item
-        if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty()) {
-            if (achCase.getType() == GOV_REC) {
-                //Cases of treasury types do not update their SLAs
-                if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
-                    achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
+        achCase.setStatus(Status.OPEN);
+        initializeSLA(achCase);
+        return cascadeSave(achCase);
+    }
+
+    public ACHCase updateOnSave(ACHCase achCase)
+    {
+        updateSLA(achCase);
+        if (achCase.getAssignedTo() == null || !achCase.getAssignedTo().isEmpty()) {
+            achCase.setStatus(Status.IN_PROGRESS);
+        }
+        else {
+            achCase.setStatus(Status.OPEN);
+        }
+        return cascadeSave(achCase);
+    }
+
+    public ACHCase updateOnRetrieve(ACHCase achCase)
+    {
+        achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS));
+        if (achCase.getSlaDeadline().compareTo(LocalDate.now()) < 0)
+            achCase.setMissedSLACount(achCase.getMissedSLACount() + 1);
+        return achCase;
+    }
+
+    private ACHCase updateSLA(ACHCase achCase)
+    {
+        //Only concerned with government reclamation type cases
+        if (achCase.getType() == GOV_REC) {
+            //Cases of treasury subtypes do not update their SLAs
+            if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
+                achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
+                //Case is being watched for the first time
+                if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty() && achCase.getSla() == slaRepository.findOneById("non-treasury-initial").get())
+                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec)achCase.getCaseDetail()).latestPaymentDate(), achCase.getSla().getBusinessDays()));
+                //Other cases get reset starting from today's date
+                else
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
-                }
             }
         }
         return achCase;
     }
 
-    public ACHCase initializeSLA(ACHCase achCase)
+    private ACHCase initializeSLA(ACHCase achCase)
     {
         if (achCase.getType() == GOV_REC) {
-            //Cases of treasury types do not update their SLAs
             if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
                 achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
                 achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));

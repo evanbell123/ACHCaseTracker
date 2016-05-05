@@ -1,7 +1,6 @@
 package com.commercebank.www.domain;
 
 import org.javers.core.metamodel.annotation.Entity;
-import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -38,11 +38,11 @@ public class GovRec implements Serializable, CaseDetail {
     private Boolean fullRecovery;
 
     @Field("payment_total")
-    private BigDecimal paymentTotal;
+    private BigDecimal paymentTotal = new BigDecimal(0);
 
     @Min(value = 0)
     @Field("payment_count")
-    private Long paymentCount;
+    private Long paymentCount = new Long(0);
 
     @NotNull
     @Field("subtype")
@@ -51,7 +51,7 @@ public class GovRec implements Serializable, CaseDetail {
     @Field("verified_by")
     private String verifiedBy;
 
-    //@DBRef
+    @DBRef
     @Field("recovery_info")
     private Recovery recoveryInfo;
 
@@ -62,13 +62,6 @@ public class GovRec implements Serializable, CaseDetail {
     private List<Payment> payments;
 
     public GovRec() {}
-
-    public GovRec(String claimNumber, BigDecimal paymentTotal, CaseSubtype subtype)
-    {
-        this.claimNumber = claimNumber;
-        this.paymentTotal = paymentTotal;
-        this.subtype = subtype;
-    }
 
     public String getId() {
         return id;
@@ -131,6 +124,17 @@ public class GovRec implements Serializable, CaseDetail {
     public void setNotes(List<CaseNote> notes) { this.notes = notes; }
 
     public List<Payment> getPayments() { return payments; }
+
+    public LocalDate latestPaymentDate() {
+        if (payments != null) {
+            LocalDate latest = payments.get(0).getEffectiveOn();
+            for (Payment payment : payments)
+                if (payment.getEffectiveOn().isAfter(latest))
+                    latest = payment.getEffectiveOn();
+            return latest;
+        }
+        return LocalDate.now();
+    }
 
     public void setPayments(List<Payment> payments) { this.payments = payments; }
 

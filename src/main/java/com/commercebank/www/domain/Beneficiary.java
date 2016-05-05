@@ -54,18 +54,6 @@ public class Beneficiary implements Serializable {
 
     public Beneficiary() {}
 
-    public Beneficiary(String customerID, String name, String ssn, String accountNum, LocalDate dateOfDeath,
-                       ZonedDateTime dateCBAware, Boolean otherGovBenefits, String govBenefitsComment) {
-        this.customerID = customerID;
-        this.name = name;
-        this.ssn = ssn;
-        this.accountNum = accountNum;
-        this.dateOfDeath = dateOfDeath;
-        this.dateCBAware = dateCBAware;
-        this.otherGovBenefits = otherGovBenefits;
-        this.govBenefitsComment = govBenefitsComment;
-    }
-
     public String getId() {
         return id;
     }

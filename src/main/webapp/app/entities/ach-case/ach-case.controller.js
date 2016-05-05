@@ -32,7 +32,7 @@
             ACHCase.all({
                 page: vm.page,
                 size: 20,
-                status: 0,  //Here for when status picker added
+                status: 0,           //Here for when status picker added
                 fromDate: fromDate,  //Here for when date range picker added
                 toDate: toDate,
                 sort: sort()
