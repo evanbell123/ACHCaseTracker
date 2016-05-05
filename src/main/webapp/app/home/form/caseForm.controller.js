@@ -1,5 +1,7 @@
 /*
  This controller is used for both /create-case and /edit-case
+ For more information about angular-formly go here
+ http://angular-formly.com/#/
  */
 
 (function () {
@@ -9,11 +11,10 @@
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$rootScope', '$uibModalInstance', 'entity', 'Enums', 'ACHCase', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$rootScope', '$uibModalInstance', 'entity', 'Enums', 'ACHCase'];
 
-    function CaseFormController($scope, $rootScope, $uibModalInstance, entity, Enums, ACHCase, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $rootScope, $uibModalInstance, entity, Enums, ACHCase, formlyVersion) {
         var vm = this;
-
 
 
         //console.log(vm.model);
@@ -74,11 +75,11 @@
         /*
          specify form options
          */
-        vm.options = {
-            formState: {
-                awesomeIsForced: true
-            }
-        };
+        //vm.options = {
+        //    formState: {
+        //        awesomeIsForced: true
+        //    }
+        //};
 
         init();
 
@@ -121,168 +122,169 @@
         }
 
 
-
         function init() {
 
             // An array of our form fields with configuration
             // and options set. We make reference to this in
             // the 'fields' attribute on the <formly-form> element
-            vm.fields = [{
-                type: "radio",
-                key: "status",
-                defaultValue: 'open',
-                templateOptions: {
-                    options: FormDataService.status(),
-                    label: "Case Status",
-                    required: true,
-                }
-            }, {
-                className: 'row',
-                //key:'random',
-                fieldGroup: [
+            vm.fields = [
+                //{
+                //    type: "radio",
+                //    key: "status",
+                //    defaultValue: 'open',
+                //    templateOptions: {
+                //        options: FormDataService.status(),
+                //        label: "Case Status",
+                //        required: true,
+                //    }
+                //},
+                {
+                    className: 'row',
+                    //key:'random',
+                    fieldGroup: [
 
-                    {
-                        className: 'col-xs-6',
-                        key: 'type',
-                        type: 'select',
-                        templateOptions: {
-                            label: 'Case Type',
-                            options: [],
-                            valueProp: 'id',
-                            labelProp: 'name'
-                        },
-                        controller: /* @ngInject */ function ($scope, FormDataService) {
-                            $scope.to.loading = FormDataService.type().then(function (response) {
-                                $scope.to.options = response;
-                                return response;
-                            });
-                        },
-                        watcher: {
-                            listener: function(field, newValue, oldValue, scope, stopWatching) {
-                                /*
-                                If the user changes case type, the model must be reset
-                                */
-                                //if (oldValue !== null) {
-                                //    vm.options.resetModel();
-                                //}
+                        {
+                            className: 'col-xs-6',
+                            key: 'type',
+                            type: 'select',
+                            templateOptions: {
+                                label: 'Case Type',
+                                options: [],
+                                valueProp: 'id',
+                                labelProp: 'name'
+                            },
+                            controller: /* @ngInject */ function ($scope, FormDataService) {
+                                $scope.to.loading = FormDataService.type().then(function (response) {
+                                    $scope.to.options = response;
+                                    return response;
+                                });
+                            },
+                            watcher: {
+                                listener: function (field, newValue, oldValue, scope, stopWatching) {
+                                    /*
+                                     If the user changes case type, the model must be reset
+                                     */
+                                    //if (oldValue !== null) {
+                                    //    vm.options.resetModel();
+                                    //}
+
+                                }
+                            }
+                        }, {
+                            className: 'col-xs-6',
+                            key: 'caseDetail.subtype',
+                            type: 'select',
+                            templateOptions: {
+                                label: 'Case Subtype',
+                                options: [],
+                                valueProp: 'id',
+                                labelProp: 'name'
+                            },
+                            controller: /* @ngInject */ function ($scope, FormDataService) {
+                                $scope.$watch('model.type', function (newValue, oldValue, theScope) {
+                                    if (newValue !== oldValue) {
+                                        // logic to reload this select's options asynchronusly based on state's value (newValue)
+                                        //console.log('new value is different from old value');
+                                        if ($scope.model[$scope.options.key] && oldValue) {
+                                            // reset this select
+                                            $scope.model[$scope.options.key] = '';
+                                        }
+                                        // Reload options
+                                        $scope.to.loading = FormDataService.subtype(newValue).then(function (res) {
+                                            $scope.to.options = res;
+                                        });
+                                    }
+                                });
 
                             }
                         }
+                    ]
+                }, {
+
+                    template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
+                }, {
+                    className: 'row',
+                    fieldGroup: [{
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'beneficiary.name',
+                        templateOptions: {
+                            label: 'Name'
+                        }
+
                     }, {
                         className: 'col-xs-6',
-                        key: 'caseDetail.subtype',
-                        type: 'select',
+                        type: 'input',
+                        key: 'beneficiary.customerID',
                         templateOptions: {
-                            label: 'Case Subtype',
-                            options: [],
-                            valueProp: 'id',
-                            labelProp: 'name'
+                            label: 'Customer ID'
+                        }
+
+                    }]
+                }, {
+                    className: 'row',
+                    fieldGroup: [{
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'beneficiary.accountNum',
+                        templateOptions: {
+                            label: 'Account Number'
+                        }
+
+                    }, {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'beneficiary.ssn',
+                        templateOptions: {
+                            label: 'Social Security Number'
                         },
-                        controller: /* @ngInject */ function ($scope, FormDataService) {
-                            $scope.$watch('model.type', function (newValue, oldValue, theScope) {
-                                if (newValue !== oldValue) {
-                                    // logic to reload this select's options asynchronusly based on state's value (newValue)
-                                    //console.log('new value is different from old value');
-                                    if ($scope.model[$scope.options.key] && oldValue) {
-                                        // reset this select
-                                        $scope.model[$scope.options.key] = '';
-                                    }
-                                    // Reload options
-                                    $scope.to.loading = FormDataService.subtype(newValue).then(function (res) {
-                                        $scope.to.options = res;
-                                    });
-                                }
-                            });
-
-                        }
-                    }
-                ]
-            }, {
-
-                template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
-            }, {
-                className: 'row',
-                fieldGroup: [{
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'beneficiary.name',
-                    templateOptions: {
-                        label: 'Name'
-                    }
-
-                }, {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'beneficiary.customerID',
-                    templateOptions: {
-                        label: 'Customer ID'
-                    }
-
-                }]
-            }, {
-                className: 'row',
-                fieldGroup: [{
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'beneficiary.accountNum',
-                    templateOptions: {
-                        label: 'Account Number'
-                    }
-
-                }, {
-                    className: 'col-xs-6',
-                    type: 'input',
-                    key: 'beneficiary.ssn',
-                    templateOptions: {
-                        label: 'Social Security Number'
-                    },
-                    validators: {
-                        ssn: {
-                            expression: function (viewValue, modelValue) {
-                                var value = modelValue || viewValue;
-                                var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
-                                return pattern.test(value);
-                            },
-                            message: '$viewValue + " is not a valid ssn"'
-                        }
-                    },
-                }, {
-                    className: 'row',
-                    fieldGroup: [{
-                        className: 'col-xs-6',
-                        type: 'datepicker',
-                        key: 'beneficiary.dateOfDeath',
-                        templateOptions: {
-                            type: 'text',
-                            label: 'Date of Death',
-                            placeholder: 'Enter date of death',
-                            datepickerPopup: 'dd-MMMM-yyyy'
-                        }
-
+                        validators: {
+                            ssn: {
+                                expression: function (viewValue, modelValue) {
+                                    var value = modelValue || viewValue;
+                                    var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
+                                    return pattern.test(value);
+                                },
+                                message: '$viewValue + " is not a valid ssn"'
+                            }
+                        },
                     }, {
-                        className: 'col-xs-6',
-                        type: 'datepicker',
-                        key: 'beneficiary.dateCBAware',
-                        templateOptions: {
-                            type: 'text',
-                            label: 'Awareness Date',
-                            placeholder: 'Enter date CB became aware',
-                            datepickerPopup: 'dd-MMMM-yyyy'
-                        }
-                    }]
-                }, {
-                    className: 'row',
-                    fieldGroup: [{
-                        className: 'col-xs-6',
-                        type: 'checkbox',
-                        key: 'beneficiary.otherGovBenefits',
-                        templateOptions: {
-                            label: 'Other Government Benfits',
-                        }
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.dateOfDeath',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Date of Death',
+                                placeholder: 'Enter date of death',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
 
+                        }, {
+                            className: 'col-xs-6',
+                            type: 'datepicker',
+                            key: 'beneficiary.dateCBAware',
+                            templateOptions: {
+                                type: 'text',
+                                label: 'Awareness Date',
+                                placeholder: 'Enter date CB became aware',
+                                datepickerPopup: 'dd-MMMM-yyyy'
+                            }
+                        }]
+                    }, {
+                        className: 'row',
+                        fieldGroup: [{
+                            className: 'col-xs-6',
+                            type: 'checkbox',
+                            key: 'beneficiary.otherGovBenefits',
+                            templateOptions: {
+                                label: 'Other Government Benfits',
+                            }
+
+                        }]
                     }]
-                }]
-            },
+                },
 
                 {
                     className: 'section-label',

@@ -76,6 +76,9 @@
                 },
                 resolve: {}
             })
+            /*
+            Not working yet
+             */
             .state('ach-case-detail', {
                 parent: 'home',
                 url: '/ach-case/{id}',
@@ -92,7 +95,7 @@
                 },
                 resolve: {
                     entity: ['$stateParams', 'ACHCase', function ($stateParams, ACHCase) {
-                        return ACHCase.get({
+                        return ACHCase.one({
                             id: $stateParams.id
                         });
                     }]
