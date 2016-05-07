@@ -38,8 +38,12 @@
              },
              'create': {
                  method: 'POST',
-                 transformRequest: function(data) {
-                     return transformCaseRequest(data);
+                 transformRequest: function(caseData) {
+                     /*
+                      Assign the @class property base on the case type
+                      */
+                     caseData.caseDetail['@class'] = EnumsService.getDomainFromEnumId(Enums.CaseType, caseData.type);
+                     return transformCaseRequest(caseData);
                  }
              },
              'update': {
@@ -56,10 +60,7 @@
               */
              var copyData = caseData;
 
-             /*
-             Assign the @class property base on the case type
-             */
-             caseData.caseDetail['@class'] = EnumsService.getDomainFromEnumId(Enums.CaseType, caseData.type);
+
 
              /*
               Copy the payments and notes JSON,
