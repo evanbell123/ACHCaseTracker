@@ -60,9 +60,6 @@
               make a copy
               */
              var copyData = caseData;
-
-
-
              /*
               Copy the payments and notes JSON,
               into the proper spot
@@ -103,8 +100,8 @@
                  caseData.isWatched = true;
              }
 
+             caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
              caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
-             //caseData.slaDeadline = DateUtils.convertDateTimeFromServer(caseData.slaDeadline);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);
