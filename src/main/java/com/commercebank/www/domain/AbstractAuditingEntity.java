@@ -27,7 +27,7 @@ public abstract class AbstractAuditingEntity implements Serializable
 
     @CreatedDate
     @Field("created_date")
-    @JsonIgnore
+    //@JsonIgnore
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @LastModifiedBy

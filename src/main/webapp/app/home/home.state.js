@@ -43,13 +43,12 @@
                     pageTitle: 'Dashboard'
                 }
             })
-
             .state('ach-case', {
                 parent: 'home',
                 url: 'ach-case',
                 data: {
                     authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
-                    pageTitle: 'ACHCases'
+                    pageTitle: 'ACH Cases'
                 },
                 views: {
                     'content@': {

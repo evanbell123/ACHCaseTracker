@@ -26,11 +26,12 @@
                     <th jh-sort-by="assignedTo"><span>Assigned To</span><span class="glyphicon glyphicon-sort"></span></th>
                     <!--<th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>-->
                     <th jh-sort-by="totalAmount"><span>Total Amount</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="lastPaymentOn"><span>Last Payment On</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="slaDeadline"><span>SLA Deadline</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span>Type</span><span class="glyphicon glyphicon-sort"></span></th></th>
+                    <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="createdDate"><span>Opened On</span><span class="glyphicon glyphicon-sort"></span></th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,16 +39,17 @@
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:filterParams track by ACHCase.id ">
                     <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
                     <td>
-                        <md-checkbox aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
+                        <md-checkbox class="md-warn" aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
 
                     <td>{{ACHCase.totalAmount}}</td>
-                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-warning': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
-                    <td>{{ACHCase.lastPaymentOn | date:'mediumDate'}}</td>
-                    <td><span ng-class="{'red':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
-                    <td>{{ACHCase.daysOpen}}</td>
+                    <td>{{ACHCase.beneficiary.name}}</td>
+                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-inverse': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
+                    <td><span ng-class="{'text-danger':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.type}}</td>
+                    <td>{{ACHCase.daysOpen}}</td>
+                    <td>{{ACHCase.createdDate | date:'medium' }}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <!--<button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">-->

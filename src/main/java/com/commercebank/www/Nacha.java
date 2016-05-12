@@ -4,15 +4,18 @@ import com.commercebank.www.ach.ACHBatch;
 import com.commercebank.www.ach.ACHEntry;
 import com.commercebank.www.ach.ACHFile;
 import com.commercebank.www.ach.ACHRecordAddenda;
-import com.commercebank.www.domain.*;
+import com.commercebank.www.domain.ACHCase;
+import com.commercebank.www.domain.Beneficiary;
+import com.commercebank.www.domain.GovRec;
+import com.commercebank.www.domain.Payment;
 import com.commercebank.www.domain.enumeration.CaseSubtype;
 import com.commercebank.www.domain.enumeration.CaseType;
-import com.commercebank.www.domain.enumeration.Status;
-import com.commercebank.www.repository.*;
+import com.commercebank.www.repository.ACHCaseRepository;
+import com.commercebank.www.repository.BeneficiaryRepository;
+import com.commercebank.www.repository.GovRecRepository;
+import com.commercebank.www.repository.PaymentRepository;
 import com.commercebank.www.service.ACHCaseService;
 
-import javax.inject.Inject;
-import java.util.Optional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -83,22 +86,14 @@ public class Nacha
                 GovRec govRec = new GovRec();
                 govRec.setPayments(payments);
                 govRec.setSubtype(CaseSubtype.DNE);
-                govRec.setPaymentCount(new Long(1));
+                govRec.setPaymentCount((long)govRec.getPayments().size());
                 govRecRepository.save(govRec);
 
                 ACHCase achCase = new ACHCase();
-                achCase.setDaysOpen(new Long(0));
-               // Optional<SLA> sla = slaRepository.findOneById("non-treasury-standard");
-               // achCase.setSla(sla.get());
-               // achCase.setSlaDeadline(LocalDate.now().plusDays(3));
                 achCase.setBeneficiary(beneficiary);
                 achCase.setCaseDetail(govRec);
                 achCase.setType(CaseType.GOV_REC);
-                achCase.setStatus(Status.OPEN);
-                achCase = achCaseService.initializeSLA(achCase);
-                achCaseRepository.save(achCase);
-
-                //achCaseService.cascadeSave(achCase);
+                achCaseService.createCase(achCase);
             }
         }
     }

@@ -82,20 +82,19 @@
             <th jh-sort-by="missedSLACount"><span>SLA Count</span><span class="glyphicon glyphicon-sort"></span></th>
             <th jh-sort-by="completedOn"><span>Closed On</span> <span class="glyphicon glyphicon-sort"></span></th>
             <th jh-sort-by="completedBy"><span>Closed By</span> <span class="glyphicon glyphicon-sort"></span></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="ACHCase in vm.cases | filter:filterParams track by ACHCase.id ">
             <td>{{ACHCase.type}}</td>
             <td>{{ACHCase.caseDetail.subtype}}</td>
-            <td>{{ACHCase.createdDate | date:'mediumDate'}}</td>
+            <td>{{ACHCase.createdDate | date:'medium'}}</td>
             <td>{{ACHCase.daysOpen}}</td>
             <td>{{ACHCase.missedSLACount}}</td>
-            <td>{{ACHCase.completedOn | date:'mediumDate'}}</td>
+            <td>{{ACHCase.completedOn | date:'medium'}}</td>
             <td>{{ACHCase.completedBy}}</td>
         </tr>
         </tbody>
     </table>
-    </div>
-</div>
+ </div>
+

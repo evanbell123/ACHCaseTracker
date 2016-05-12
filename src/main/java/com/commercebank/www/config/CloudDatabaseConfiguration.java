@@ -6,7 +6,6 @@ import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.context.annotation.*;
 import org.springframework.data.mongodb.MongoDbFactory;
 
-
 @Configuration
 @Profile(Constants.SPRING_PROFILE_CLOUD)
 public class CloudDatabaseConfiguration extends AbstractCloudConfig {

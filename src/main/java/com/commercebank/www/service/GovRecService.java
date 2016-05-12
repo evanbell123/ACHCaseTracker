@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Optional;
 
 /**
  * Created by Steven on 4/23/2016.
@@ -39,6 +38,7 @@ public class GovRecService
         if (govRec != null) {
             if (govRec.getPayments() != null) {
                 for (Payment p : govRec.getPayments()) {
+                    govRec.setPaymentTotal(govRec.getPaymentTotal().add(p.getAmount()));
                     paymentRepository.save(p);
                 }
                 govRec.setPaymentCount((long)govRec.getPayments().size());

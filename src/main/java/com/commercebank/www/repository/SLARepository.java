@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * Spring Data MongoDB repository for the SLA entity.
  */
-//@JaversSpringDataAuditable
+@JaversSpringDataAuditable
 public interface SLARepository extends MongoRepository<SLA,String>
 {
     Optional<SLA> findOneById(String userId);

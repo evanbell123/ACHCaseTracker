@@ -2,10 +2,8 @@ package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.commercebank.www.domain.ACHCase;
-import com.commercebank.www.domain.GovRec;
 import com.commercebank.www.domain.enumeration.Status;
 import com.commercebank.www.repository.ACHCaseRepository;
-import com.commercebank.www.repository.GovRecRepository;
 import com.commercebank.www.security.SecurityUtils;
 import com.commercebank.www.service.ACHCaseService;
 import com.commercebank.www.web.rest.util.HeaderUtil;
@@ -50,9 +48,6 @@ public class ACHCaseResource {
     private ACHCaseRepository achCaseRepository;
 
     @Inject
-    private GovRecRepository govRecRepository;
-
-    @Inject
     private ACHCaseService achCaseService;
 
     /**
@@ -71,9 +66,7 @@ public class ACHCaseResource {
         if (achCase.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("achCase", "idexists", "A new achCase cannot already have an ID")).body(null);
         }
-        //achCase result = achCaseRepository.save(achCase);
-        achCase.setStatus(Status.OPEN);
-        ACHCase result = achCaseService.cascadeSave(achCase);
+        ACHCase result = achCaseService.createCase(achCase);
         return ResponseEntity.created(new URI("/api/ach-case/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("achCase", result.getId().toString()))
             .body(result);
@@ -95,9 +88,7 @@ public class ACHCaseResource {
     public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
         if (achCase.getId() == null) { return createACHCase(achCase); }
-        //achCase.setStatus(Status.IN_PROGRESS);
-        ACHCase result = achCaseService.cascadeSave(achCase);
-        //achCase result = achCaseRepository.save(achCase);
+        ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId().toString()))
             .body(result);
@@ -112,13 +103,28 @@ public class ACHCaseResource {
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.GET,
+        params = { "status", "fromDate", "toDate" },
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ACHCase>> getAllACHCases(Pageable pageable)
-        throws URISyntaxException {
+    public ResponseEntity<List<ACHCase>> getAllACHCases(@RequestParam(value = "status") int status,
+                                                        @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                        @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                                        Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of ACHCases");
-        Page<ACHCase> page = achCaseRepository.findAllByStatusNotOrderBySlaDeadlineAsc(Status.CLOSED, pageable);
-        page.forEach(achCase ->  achCase.setDaysOpen(achCase.getCreatedDate().until(ZonedDateTime.now(), ChronoUnit.DAYS)));
+        Page<ACHCase> page;
+
+        if (status == 0)
+            page = achCaseRepository.findAllByStatusNotAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
+        else if (status == 1)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.OPEN, fromDate, toDate, pageable);
+        else if (status == 2)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.IN_PROGRESS, fromDate, toDate, pageable);
+        else if (status == 3)
+            page = achCaseRepository.findAllByStatusAndCreatedDateBetweenOrderBySlaDeadlineAsc(Status.CLOSED, fromDate, toDate, pageable);
+        else
+            page = achCaseRepository.findAllByCreatedDateBetweenOrderBySlaDeadlineAsc(fromDate, toDate, pageable);
+
+        page.forEach(achCase ->  achCaseService.updateOnRetrieve(achCase));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ach-case");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -155,11 +161,12 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<Void> deleteACHCase(@PathVariable String id) {
         log.debug("REST request to delete ACHCase : {}", id);
-        //achCaseRepository.delete(id);
+
         ACHCase achCase = achCaseRepository.findOne(id);
-        if (!achCaseService.closeCase(achCase)) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACH Case", "invalid", "Required fields are missing or have invalid values.")).body(null);
-        }
+        String errorDetail = achCaseService.closeCase(achCase);
+        if (errorDetail != null)
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ACH Case", "invalid", errorDetail)).body(null);
+
         return ResponseEntity.ok().headers(HeaderUtil.createEntityClosedAlert("ACH Case", id.toString())).build();
     }
 

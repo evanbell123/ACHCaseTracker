@@ -3,6 +3,7 @@ package com.commercebank.www.domain;
 import org.javers.core.metamodel.annotation.Entity;
 import org.javers.core.metamodel.annotation.TypeName;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -29,30 +30,29 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Id
     private String id;
 
-    @Field("total_amount")
-    private BigDecimal totalAmount;
-
     @NotNull
     @Field("status")
     private Status status;
 
-    @Field("last_payment_on")
-    private ZonedDateTime lastPaymentOn;
+    @Field("total_amount")
+    private BigDecimal totalAmount;
+
+    //@Field("last_payment_on")
+    //private ZonedDateTime lastPaymentOn;
 
     @Field("sla_deadline")
     private LocalDate slaDeadline;
 
     @Field("sla_count")
-    private Long missedSLACount;
+    private Long missedSLACount = new Long(0);
 
-    //@DBRef
+    @DBRef
     @Field("sla")
     private SLA sla;
 
-    //@Transient
     @Min(value = 0)
     @Field("days_open")
-    private Long daysOpen;
+    private Long daysOpen = new Long(0);
 
     @Field("completed_on")
     private ZonedDateTime completedOn;
@@ -60,18 +60,18 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("completed_by")
     private String completedBy;
 
+    @Field("assigned_to")
+    private String assignedTo;
+
     @NotNull
     @Field("type")
     private CaseType type;
 
-    //@DBRef
+    @DBRef
     @Field("beneficiary")
     private Beneficiary beneficiary;
 
-    @Field("assigned_to")
-    private String assignedTo;
-
-    //@DBRef
+    @DBRef
     @Field("case_detail")
     private CaseDetail caseDetail;
 
@@ -99,17 +99,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getLastPaymentOn() {
-        return lastPaymentOn;
-    }
-
-    public void setLastPaymentOn(ZonedDateTime lastPaymentOn) {
-        this.lastPaymentOn = lastPaymentOn;
-    }
-
-    public LocalDate getSlaDeadline() {
-        return slaDeadline;
-    }
+    public LocalDate getSlaDeadline() { return slaDeadline; }
 
     public void setSlaDeadline(LocalDate slaDeadline) {
         this.slaDeadline = slaDeadline;
@@ -189,14 +179,14 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
             "id=" + id +
             ", totalAmount='" + totalAmount + "'" +
             ", status='" + status + "'" +
-            ", lastPaymentOn='" + lastPaymentOn + "'" +
+           // ", lastPaymentOn='" + lastPaymentOn + "'" +
             ", slaDeadline='" + slaDeadline + "'" +
-          //  ", slaType='" + sla.getTypeName() + "'" +
+            ", slaType='" + sla.getId() + "'" +
             ", daysOpen='" + daysOpen + "'" +
             ", type='" + type + "'" +
             ", completedOn='" + completedOn + "'" +
-          //  ", beneficiary='" + beneficiary.getName() + "'" +
-          //  ", assigned to'" + assignedTo.getLogin() + "'" +
+            ", beneficiary='" + beneficiary.getName() + "'" +
+            ", assigned to'" + assignedTo + "'" +
             '}';
     }
 }
