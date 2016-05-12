@@ -159,57 +159,6 @@
                                     }
                                 }
                             }
-                            //{
-                            //    "id": null,
-                            //    "createdDate": null,
-                            //    "totalAmount": null,
-                            //    "status": 0,
-                            //    "lastPaymentOn": null,
-                            //    "slaDeadline": null,
-                            //    "missedSLACount": null,
-                            //    "sla": null,
-                            //    "daysOpen": 0,
-                            //    "completedOn": null,
-                            //    "completedBy": null,
-                            //    "type": null,
-                            //    "beneficiary": {
-                            //        "id": null,
-                            //        "customerID": null,
-                            //        "name": null,
-                            //        "ssn": null,
-                            //        "accountNum": null,
-                            //        "dateOfDeath": null,
-                            //        "dateCBAware": null,
-                            //        "otherGovBenefits": false,
-                            //        "govBenefitsComment": null
-                            //    },
-                            //    "assignedTo": null,
-                            //    "caseDetail": {
-                            //        //"@class": "com.commercebank.www.domain.GovRec",
-                            //        "@class": null,
-                            //        "id": null,
-                            //        "claimNumber": null,
-                            //        "verifiedOn": null,
-                            //        "fullRecovery": false,
-                            //        "paymentTotal": 0,
-                            //        "paymentCount": 0,
-                            //        "subtype": null,
-                            //        "verifiedBy": null,
-                            //        "recoveryInfo": {
-                            //            "id": null,
-                            //            "method": null,
-                            //            "detailType": null,
-                            //            "detailValue": null,
-                            //            "comment": null
-                            //        },
-                            //        "notes": null,
-                            //        "payments": null
-                            //    },
-                            //    //"isWatched": false,
-                            //    "payments": null,
-                            //    "notes": null
-                            //};
-
                     }
                 }).result.then(function () {
             $state.go('ach-case', null, {
@@ -281,16 +230,6 @@
             });
         }]
     })
-    //.state('my-cases', {
-    //    parent: 'home',
-    //    url: 'my-cases',
-    //    templateUrl: 'app/home/cases/cases.html',
-    //    controller: 'CasesController',
-    //    controllerAs: 'vm',
-    //    data: {
-    //        authorities: []
-    //    }
-    //})
 
     .state('import', {
         parent: 'home',

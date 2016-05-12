@@ -15,11 +15,11 @@
                  method: 'GET',
                  isArray: true,
                  params: {status: null, fromDate: null, toDate: null},
-                 transformResponse: function(data) {
-                     if (data !== undefined || data.length !== 0) {
-                         return transformManyAchCases(angular.fromJson(data));
+                 transformResponse: function(caseData) {
+                     if (caseData !== undefined || caseData.length !== 0) {
+                         return transformManyAchCases(angular.fromJson(caseData));
                      } else {
-                         return data;
+                         return caseData;
                      }
                  }
              },
@@ -27,14 +27,14 @@
                  url: 'api/my-cases',
                  method: 'GET',
                  isArray: true,
-                 transformResponse: function(data) {
-                     return transformManyAchCases(angular.fromJson(data));
+                 transformResponse: function(caseData) {
+                     return transformManyAchCases(angular.fromJson(caseData));
                  }
              },
              'one': {
                  method: 'GET',
-                 transformResponse: function(data) {
-                     return transformSingleAchCase(angular.fromJson(data));
+                 transformResponse: function(caseData) {
+                     return transformSingleAchCase(angular.fromJson(caseData));
                  }
              },
              'create': {
@@ -45,12 +45,18 @@
                       */
                      caseData.caseDetail['@class'] = EnumsService.getDomainFromEnumId(Enums.CaseType, caseData.type);
                      return transformCaseRequest(caseData);
+                 },
+                 transformResponse: function(caseData) {
+                     return transformSingleAchCase(angular.fromJson(caseData));
                  }
              },
              'update': {
                  method: 'PUT',
-                 transformRequest: function(data) {
-                     return transformCaseRequest(data);
+                 transformRequest: function(caseData) {
+                     return transformCaseRequest(caseData);
+                 },
+                 transformResponse: function(caseData) {
+                     return transformSingleAchCase(angular.fromJson(caseData));
                  }
              }
          });
@@ -73,6 +79,9 @@
              delete copyData.payments;
              delete copyData.notes;
 
+
+             delete caseData.isWatched;
+
              return angular.toJson(copyData);
          }
 
@@ -94,17 +103,18 @@
              //data.lastPaymentOn = new Date(data.lastPaymentOn);
              //data.slaDeadline = new Date(data.slaDeadline);
 
-             if (caseData.assignedTo === null) {
-                 caseData.isWatched = false;
-             } else {
-                 caseData.isWatched = true;
-             }
+
+
+
 
              caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
              caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);
+
+
+             //console.log(caseData.caseDetail.payments);
 
              caseData.payments = caseData.caseDetail.payments;
              caseData.notes = caseData.caseDetail.notes;
@@ -119,15 +129,19 @@
              caseData.caseDetail.payments = null;
              caseData.caseDetail.notes = null;
 
-             //console.log(caseData.isWatched);
+             caseData.isWatched = true;
+             if (caseData.assignedTo === "N/A") {
+                 caseData.isWatched = false;
+             }
+             console.log("intially watched = " + caseData.isWatched);
 
              return caseData;
          }
 
          function transformManyAchCases(caseArray) {
-           console.log("transformManyAchCases");
              for (var i = 0; i < caseArray.length; i++) {
                  caseArray[i] = transformSingleAchCase(caseArray[i]);
+
              }
              return caseArray
          }
