@@ -1,35 +1,38 @@
 /*
-This controller is used for both /create-case and /edit-case
-*/
+ This controller is used for both /create-case and /edit-case
+ For more information about angular-formly go here
+ http://angular-formly.com/#/
+ */
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('achCaseTrackingApp')
         .controller('CaseFormController', CaseFormController)
 
-    CaseFormController.$inject = ['$scope', '$rootScope', '$stateParams', '$uibModalInstance', 'entity', 'Enums', 'ACHCase', 'FormDataService'];
+    CaseFormController.$inject = ['$scope', '$rootScope', '$uibModalInstance', 'entity', 'Enums', 'ACHCase'];
 
-    function CaseFormController($scope, $rootScope, $stateParams, $uibModalInstance, entity, Enums, ACHCase, FormDataService, formlyVersion) {
+    function CaseFormController($scope, $rootScope, $uibModalInstance, entity, Enums, ACHCase, formlyVersion) {
         var vm = this;
 
-        vm.model = entity;
 
-        var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function(event, result) {
+        //console.log(vm.model);
+
+        var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function (event, result) {
             vm.model = result;
         });
         $scope.$on('$destroy', unsubscribe);
 
-        vm.load = function(id) {
-            ACHCase.get({
+        vm.load = function (id) {
+            ACHCase.one({
                 id: id
-            }, function(result) {
+            }, function (result) {
                 vm.model = result;
             });
         };
 
-        var onSaveSuccess = function(result) {
+        var onSaveSuccess = function (result) {
             $scope.$emit('achCaseTrackingApp:ACHCaseUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
@@ -39,18 +42,17 @@ This controller is used for both /create-case and /edit-case
             vm.isSaving = false;
         };
 
-        vm.save = function() {
+        vm.save = function () {
             vm.isSaving = true;
             if (vm.model.id !== null) {
                 ACHCase.update(vm.model, onSaveSuccess, onSaveError);
             } else {
-                ACHCase.save(vm.model, onSaveSuccess, onSaveError);
+                ACHCase.create(vm.model, onSaveSuccess, onSaveError);
             }
         };
 
 
-
-        vm.clear = function() {
+        vm.clear = function () {
             $uibModalInstance.dismiss('cancel');
         };
 
@@ -59,43 +61,45 @@ This controller is used for both /create-case and /edit-case
             formlyVersion: formlyVersion
         };
 
+        vm.model = entity;
+
         vm.formData = {};
 
         /*
-        Specify the JSON model
-        This is the model object that we reference
-        on the <formly-form> element in caseForm.html
-        */
+         Specify the JSON model
+         This is the model object that we reference
+         on the <formly-form> element in caseForm.html
+         */
 
 
         /*
-        specify form options
-        */
-        vm.options = {
-            formState: {
-                awesomeIsForced: true
-            }
-        };
+         specify form options
+         */
+        //vm.options = {
+        //    formState: {
+        //        awesomeIsForced: true
+        //    }
+        //};
 
         init();
 
         vm.originalFields = angular.copy(vm.fields);
 
         /*
-        Input: An element from the the RecoveryDetailEnum defined in enums.constants.js
-        that should be displayed if a certain recovery method has been selected by the user
-        Output: a boolean conditional expression
-        that will return true if the field should be hidden
-        and false if it should be displayed
+         Input: An element from the the RecoveryDetailEnum defined in enums.constants.js
+         that should be displayed if a certain recovery method has been selected by the user
+         Output: a boolean conditional expression
+         that will return true if the field should be hidden
+         and false if it should be displayed
 
-        Example Input: { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]}
-        Example Output: !model.caseDetail.recoveryInfo.method||model.caseDetail.recoveryInfo.method != 3
-        */
+         Example Input: { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]}
+         Example Output: !model.caseDetail.recoveryInfo.method||model.caseDetail.recoveryInfo.method != 3
+         */
         function generateHideExpression(RecoveryDetailEnum) {
             /*
-            Here is an example of what a genereted expression may look like
-            */
-            var hideExpression = "!model.caseDetail.recoveryInfo.method";
+             Here is an example of what a genereted expression may look like
+             */
+            var hideExpression = "model.caseDetail.recoveryInfo.method === null";
 
             if (RecoveryDetailEnum.fk.length === 0) {
                 return hideExpression;
@@ -111,40 +115,30 @@ This controller is used for both /create-case and /edit-case
                 }
             }
 
-            console.log(hideExpression);
+            //console.log(hideExpression);
 
             return hideExpression;
 
         }
 
 
-
         function init() {
-
-            /*
-            if the current state is edit-case
-            initialize the form fields with case values
-
-            if (vm.editMode) {
-                vm.model = ACHCase.one({
-                    id: $stateParams.caseId
-                });
-            }
-            */
 
             // An array of our form fields with configuration
             // and options set. We make reference to this in
             // the 'fields' attribute on the <formly-form> element
-            vm.fields = [{
-                    type: "radio",
-                    key: "status",
-                    defaultValue: 'open',
-                    templateOptions: {
-                        options: FormDataService.status(),
-                        label: "Case Status",
-                        required: true,
-                    }
-                }, {
+            vm.fields = [
+                //{
+                //    type: "radio",
+                //    key: "status",
+                //    defaultValue: 'open',
+                //    templateOptions: {
+                //        options: FormDataService.status(),
+                //        label: "Case Status",
+                //        required: true,
+                //    }
+                //},
+                {
                     className: 'row',
                     //key:'random',
                     fieldGroup: [
@@ -159,12 +153,22 @@ This controller is used for both /create-case and /edit-case
                                 valueProp: 'id',
                                 labelProp: 'name'
                             },
-                            controller: /* @ngInject */ function($scope, FormDataService) {
-                                $scope.to.loading = FormDataService.type().then(function(response) {
+                            controller: /* @ngInject */ function ($scope, FormDataService) {
+                                $scope.to.loading = FormDataService.type().then(function (response) {
                                     $scope.to.options = response;
                                     return response;
                                 });
+                            },
+                            watcher: {
+                                listener: function (field, newValue, oldValue, scope, stopWatching) {
+                                    /*
+                                     If the user changes case type, the model must be reset
+                                     */
+                                    //if (oldValue !== null) {
+                                    //    vm.options.resetModel();
+                                    //}
 
+                                }
                             }
                         }, {
                             className: 'col-xs-6',
@@ -176,8 +180,8 @@ This controller is used for both /create-case and /edit-case
                                 valueProp: 'id',
                                 labelProp: 'name'
                             },
-                            controller: /* @ngInject */ function($scope, FormDataService) {
-                                $scope.$watch('model.type', function(newValue, oldValue, theScope) {
+                            controller: /* @ngInject */ function ($scope, FormDataService) {
+                                $scope.$watch('model.type', function (newValue, oldValue, theScope) {
                                     if (newValue !== oldValue) {
                                         // logic to reload this select's options asynchronusly based on state's value (newValue)
                                         //console.log('new value is different from old value');
@@ -186,7 +190,7 @@ This controller is used for both /create-case and /edit-case
                                             $scope.model[$scope.options.key] = '';
                                         }
                                         // Reload options
-                                        $scope.to.loading = FormDataService.subtype(newValue).then(function(res) {
+                                        $scope.to.loading = FormDataService.subtype(newValue).then(function (res) {
                                             $scope.to.options = res;
                                         });
                                     }
@@ -236,7 +240,7 @@ This controller is used for both /create-case and /edit-case
                         },
                         validators: {
                             ssn: {
-                                expression: function(viewValue, modelValue) {
+                                expression: function (viewValue, modelValue) {
                                     var value = modelValue || viewValue;
                                     var pattern = /^((?!000|666)[0-8][0-9]{2}-?(?!00)[0-9]{2}-?(?!0000)[0-9]{4}|null|)$/;
                                     return pattern.test(value);
@@ -275,7 +279,7 @@ This controller is used for both /create-case and /edit-case
                             type: 'checkbox',
                             key: 'beneficiary.otherGovBenefits',
                             templateOptions: {
-                                label: 'Other Government Benfits',
+                                label: 'Other Government Benefits',
                             }
 
                         }]
@@ -300,8 +304,8 @@ This controller is used for both /create-case and /edit-case
                             valueProp: 'id',
                             labelProp: 'name'
                         },
-                        controller: /* @ngInject */ function($scope, FormDataService) {
-                            $scope.$watch('model.caseDetail.subtype', function(newValue, oldValue, theScope) {
+                        controller: /* @ngInject */ function ($scope, FormDataService) {
+                            $scope.$watch('model.caseDetail.subtype', function (newValue, oldValue, theScope) {
                                 if (newValue !== oldValue) {
                                     // logic to reload this select's options asynchronusly based on state's value (newValue)
                                     //console.log('new value is different from old value');
@@ -310,7 +314,7 @@ This controller is used for both /create-case and /edit-case
                                         $scope.model[$scope.options.key] = '';
                                     }
                                     // Reload options
-                                    $scope.to.loading = FormDataService.recovery(newValue).then(function(res) {
+                                    $scope.to.loading = FormDataService.recovery(newValue).then(function (res) {
                                         $scope.to.options = res;
                                     });
                                 }
@@ -318,7 +322,7 @@ This controller is used for both /create-case and /edit-case
                         }
                     }, {
                         className: 'col-xs-6',
-                        key: 'caseDetail.completedOn',
+                        key: 'completedOn',
                         type: 'datepicker',
                         templateOptions: {
                             type: 'text',
@@ -347,7 +351,7 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function(viewValue, modelValue) {
+                                expression: function (viewValue, modelValue) {
                                     var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
@@ -377,7 +381,7 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function(viewValue, modelValue) {
+                                expression: function (viewValue, modelValue) {
                                     var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
@@ -399,7 +403,7 @@ This controller is used for both /create-case and /edit-case
                         type: 'input',
                         validators: {
                             detailString: {
-                                expression: function(viewValue, modelValue) {
+                                expression: function (viewValue, modelValue) {
                                     var value = modelValue || viewValue;
                                     var pattern = /^([0-9]+|)$/;
                                     return pattern.test(value);
@@ -436,18 +440,18 @@ This controller is used for both /create-case and /edit-case
                     key: 'payments',
                     templateOptions: {
                         fields: [{
-                                className: 'col-xs-4',
-                                key: 'amount',
-                                type: 'input',
-                                templateOptions: {
-                                    type: 'number',
-                                    label: 'Payment Amount',
-                                    addonLeft: {
-                                        class: 'glyphicon glyphicon-usd'
-                                    },
-                                    placeholder: 'Enter payment amount'
-                                }
-                            },
+                            className: 'col-xs-4',
+                            key: 'amount',
+                            type: 'input',
+                            templateOptions: {
+                                type: 'currency',
+                                label: 'Payment Amount',
+                                addonLeft: {
+                                    class: 'glyphicon glyphicon-usd'
+                                },
+                                placeholder: 'Enter payment amount'
+                            }
+                        },
 
                             {
                                 className: 'row',
@@ -468,8 +472,6 @@ This controller is used for both /create-case and /edit-case
                         btnText: 'Add another payment'
                     },
                 },
-
-
                 {
                     className: 'section-label',
                     template: '<hr /><div><strong><font size ="6px">Notes</font></strong></div>'

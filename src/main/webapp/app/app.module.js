@@ -68,13 +68,16 @@
             });
 
             angular.forEach(bindings, function(binding) {
-              //console.log(binding, camelize(binding));
                 ngModelAttrs[camelize(binding)] = {
                     bound: binding
                 };
             });
 
-            //console.log(ngModelAttrs);
+            formlyConfigProvider.setType({
+                name: 'checkbox',
+                template: '<md-checkbox ng-model="model[options.key]">{{to.label}}</md-checkbox>',
+                overwriteOk: true
+            });
 
             formlyConfigProvider.setType({
                 name: 'datepicker',
@@ -84,7 +87,7 @@
                     ngModelAttrs: ngModelAttrs,
                     templateOptions: {
                         datepickerOptions: {
-                            format: 'mm/dd/yyyy',
+                            format: 'MM/dd/yyyy',
                             initDate: new Date()
                         }
                     }

@@ -15,9 +15,7 @@
         };
 
         function status() {
-
             var data = [];
-
             for (var i = 0; i < Enums.CaseStatus.length; i++) {
               var status = {
                 name: Enums.CaseStatus[i].displayName,
@@ -25,14 +23,10 @@
               }
               data.push(status);
             }
-
-            //console.log(data);
-
             return data;
         }
 
         function getFilteredFormData(data, fk, deferred) {
-
             if (fk !== null) {
                 var tmp = [];
                 angular.forEach(data, function(val) {
@@ -54,13 +48,11 @@
                 };
                 simpleFormData.push(data);
             }
-            //console.log(simpleFormData);
             return simpleFormData;
         }
 
         function type() {
             var deferred = $q.defer();
-
             var data = generateSimpleFormData(Enums.CaseType);
             deferred.resolve(data);
             return deferred.promise;
@@ -70,21 +62,15 @@
         function generateDependencyFormData(CaseEnum) {
             var denpendencyFormData = [];
             for (var i = 0; i < CaseEnum.length; i++) {
-                //console.log(CaseEnum[i].fk, "Size="+CaseEnum[i].fk.length);
                 for (var j = 0; j < CaseEnum[i].fk.length; j++) {
-                    //console.log(CaseEnum[i].fk[j]);
                     var data = {
                         id: CaseEnum[i].id,
-                        //id: uniqueId,
                         fk: CaseEnum[i].fk[j],
                         name: CaseEnum[i].displayName
                     };
-                    //console.log(data);
                     denpendencyFormData.push(data);
                 }
-
             }
-            //console.log(denpendencyFormData.length);
             return denpendencyFormData;
         }
 
@@ -92,22 +78,13 @@
             var deferred = $q.defer();
             var data = generateDependencyFormData(Enums.CaseSubtype);
             getFilteredFormData(data, type_id, deferred);
-
             return deferred.promise;
         }
 
         function recovery(subtype_id) {
-
-            //console.log(subtype_id);
-
             var deferred = $q.defer();
-
             var data = generateDependencyFormData(Enums.RecoveryMethod);
-
-            //console.log("data Length = " + data.length);
-
             getFilteredFormData(data, subtype_id, deferred);
-
             return deferred.promise;
         }
     }

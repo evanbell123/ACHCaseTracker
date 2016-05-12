@@ -29,14 +29,25 @@
             var dateFormat = 'yyyy-MM-dd';
             var fromDate = $filter('date')(vm.fromDate, dateFormat);
             var toDate = $filter('date')(vm.toDate, dateFormat);
-            ACHCase.all({
-                page: vm.page,
-                size: 20,
-                status: 0,           //Here for when status picker added
-                fromDate: fromDate,  //Here for when date range picker added
-                toDate: toDate,
-                sort: sort()
-            }, onSuccess, onError);
+            if ($state.is("ach-case-assigned")) {
+                ACHCase.assigned({
+                    page: vm.page,
+                    size: 20,
+                    status: 0,           //Here for when status picker added
+                    fromDate: fromDate,  //Here for when date range picker added
+                    toDate: toDate,
+                    sort: sort()
+                }, onSuccess, onError);
+            } else {
+                ACHCase.all({
+                    page: vm.page,
+                    size: 20,
+                    status: 0,           //Here for when status picker added
+                    fromDate: fromDate,  //Here for when date range picker added
+                    toDate: toDate,
+                    sort: sort()
+                }, onSuccess, onError);
+            }
 
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -102,24 +113,29 @@
         */
         $scope.watch = function(caseData) {
             console.log(caseData.isWatched);
-
             /*
              If the user checks 'watch item'
              assign that user to the case
              */
-            if (caseData.isWatched == true) {
+            if (caseData.assignedTo === "N/A") {
+                console.log("assign case");
                 var copyAccount;
                 Principal.identity().then(function(account) {
                     copyAccount = account;
                     caseData.assignedTo = copyAccount.login;
+                    //caseData.isWatched = true;
                 });
             } else { //If the user unchecks 'watch item', unassign the currently assigned user
-                caseData.assignedTo = null;
+                console.log("unassign case");
+                caseData.assignedTo = "N/A";
+                //caseData.isWatched = true;
             }
             /*
              notify the server of this change of assignment
              */
             ACHCase.update(caseData);
+            console.log(caseData.isWatched);
+
         }
 
         // Allow filtering of nested objects - will need to update once more case types are added (better yet, probably a rewrite)

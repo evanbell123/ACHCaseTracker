@@ -1,10 +1,11 @@
 <div ng-cloak class="pad">
     <div class="row">
-        <h3 class="col-sm-12">Entity Audits</h3>
+        <h3 class="col-sm-12">Audit Log</h3>
     </div>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-md-12 pad">
+            <!--<h4>Filter</h4>-->
             <form name="auditForm" role="form" novalidate show-validation>
                 <div class="row">
                     <div class="row pad">
@@ -14,62 +15,51 @@
                         </button>-->
                         <!--<button class="btn btn-info pull-right btn-raised" ng-click="vm.exportPDF()"><i class="material-icons">&#xE895;</i></i>&nbsp;Create PDF</button>-->
                     </div>
-                </div>
-                <!--<div class="col-md-8 form-group">
-                    <label>Entity</label>
-                    <select class="form-control" name="qualifiedName" id="qualifiedName" required
-                            ng-options="vm.getEntityName(entity) for entity in vm.entities"
-                            ng-model="vm.qualifiedName"></select>
-                    <div ng-show="auditForm.qualifiedName.$invalid">
-                        <p class="help-block" ng-show="auditForm.qualifiedName.$error.required">
-                            This field is required
-                        </p>
+                    <!--<div class="col-md-8 form-group">
+                        <label>Entity</label>
+                        <select class="form-control" name="qualifiedName" id="qualifiedName" required
+                                ng-options="vm.getEntityName(entity) for entity in vm.entities"
+                                ng-model="vm.qualifiedName"></select>
+                        <div ng-show="auditForm.qualifiedName.$invalid">
+                            <p class="help-block" ng-show="auditForm.qualifiedName.$error.required">
+                                This field is required
+                            </p>
+                        </div>
+                    </div>-->
+                    <div class="col-md-4 col-md-offset-8 form-group">
+                        <label>Limit to</label>
+                        <select class="form-control" name="limit" id="limit" required
+                                ng-options="option for option in vm.limits"
+                                ng-model="vm.limit"></select>
                     </div>
                 </div>
-                <div class="col-md-4 form-group">
-                    <label>Limit to</label>
-                    <select class="form-control" name="limit" id="limit" required
-                            ng-options="option for option in vm.limits"
-                            ng-model="vm.limit"></select>
-                </div>
-            </div>
-            <div class="row pad">
-                <button ng-disabled="auditForm.$invalid"
-                        class="btn btn-primary btn-raised pull-right" ng-click="vm.loadChanges()"><i
-                    class="glyphicon glyphicon-import"></i>&nbsp;Load Change List
-                </button>
-                <button ng-disabled="auditForm.$invalid"
-                        class="btn btn-info btn-raised pull-left" ng-click="vm.exportPDF()"><i
-                    class="glyphicon glyphicon-import"></i>&nbsp;Create PDF
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-<div ng-show="!vm.loading" >
-    <div class=" table table-responsive" ng-if="vm.audits.length > 0">
-        <p ng-if="vm.qualifiedName">Last <strong>{{vm.limit}}</strong> Changes for <strong>{{vm.getEntityName(vm.qualifiedName)}}</strong></p>
-        <form class="form-inline">
-          <div class="form-group">
-            <label for="searchField">Filter:</label>
-            <input type="text" class="form-control" id="searchField" ng-model="filter.$" placeholder="global filter">
-          </div>
-          <!--<div class="form-group">-->
-                <!--<input type="text" class="form-control" id="searchFieldEntityId" ng-model="filter.entityId" placeholder="entity id filter">-->
-                <!--</div>-->
             </form>
-            <table id="table_id" class="table table-bordered table-hover table-striped">
+        </div>
+    </div>
+    <div ng-show="!vm.loading" >
+        <div class=" table table-responsive" ng-if="vm.audits.length > 0">
+            <p ng-if="vm.qualifiedName">Last <strong>{{vm.limit}}</strong> Changes for <strong>{{vm.getEntityName(vm.qualifiedName)}}</strong></p>
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="searchField">Filter:</label>
+                <input type="text" class="form-control" id="searchField" ng-model="filter.$" placeholder="global filter">
+              </div>
+              <!--<div class="form-group">-->
+                <!--<input type="text" class="form-control" id="searchFieldEntityId" ng-model="filter.entityId" placeholder="entity id filter">-->
+              <!--</div>-->
+            </form>
+            <table class="table table-bordered table-hover table-striped" >
                 <thead>
-                <tr>
-                    <th>Entity Id</th>
-                    <th>Action</th>
-                    <th>Version</th>
-                    <th>Value</th>
-                    <th>Modified Date</th>
-                    <th>Modified By</th>
-                    <th>View Details</th>
-                    <!--<th><i class="glyphicon glyphicon-eye-open" align="middle"></i></th>-->
-                </tr>
+                    <tr>
+                        <th>Entity Id</th>
+                        <th>Action</th>
+                        <th>Version</th>
+                        <th>Value</th>
+                        <th>Modified Date</th>
+                        <th>Modified By</th>
+                        <th>View Details</th>
+                        <!--<th><i class="glyphicon glyphicon-eye-open" align="middle"></i></th>-->
+                    </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="audit in vm.audits | filter:filter">
@@ -93,7 +83,7 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
+                      </div>
                     </td>
                     <td>{{audit.modifiedDate | date:'medium'}}</td>
                     <td>{{audit.modifiedBy}}</td>

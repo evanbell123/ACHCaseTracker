@@ -24,6 +24,7 @@
                     <!--<th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
                     <th jh-sort-by=""><span>Watch Item</span></span></th>
                     <th jh-sort-by="assignedTo"><span>Assigned To</span><span class="glyphicon glyphicon-sort"></span></th>
+                    <!--<th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>-->
                     <th jh-sort-by="totalAmount"><span>Total Amount</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -41,6 +42,7 @@
                         <md-checkbox class="md-warn" aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
+
                     <td>{{ACHCase.totalAmount}}</td>
                     <td>{{ACHCase.beneficiary.name}}</td>
                     <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-inverse': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
@@ -50,10 +52,10 @@
                     <td>{{ACHCase.createdDate | date:'medium' }}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
-                            <button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm"></span>
-                            </button>
+                            <!--<button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
+                                <!--<span class="hidden-xs hidden-sm"></span>-->
+                            <!--</button>-->
                             <button type="submit" ui-sref="ach-case.edit({id:ACHCase.id})" class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm"></span>
