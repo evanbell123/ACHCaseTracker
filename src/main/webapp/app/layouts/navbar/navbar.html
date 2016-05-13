@@ -10,7 +10,6 @@
                 <span class="icon-bar"></span>
             </button>
             <img src="../content/images/logo.svg" height="60px" layout-padding="10px">
-        <!--<img src="../content/images/commerce-bank-1.jpg" alt="Commerce-Bank" width="200px" height="auto" style = "margin:10px 0 0 0">-->
         </div>
         <div class="row" ng-switch-when="true">
         <div class="collapse navbar-collapse" id="navbar-collapse" uib-collapse="vm.navCollapsed" ng-switch="vm.isAuthenticated()">
@@ -124,22 +123,22 @@
                         <!-- Moved to main navbar, under Audit Log
                         <li ui-sref-active="active" ><a ui-sref="entity-audit" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE889;</i></span>
                             &#xA0;<span >Entity Audit</span></a></li> -->
-                        <li ui-sref-active="active"><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE8F9;</i></span>
+                        <li ui-sref-active="active"><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE8F9;</i>
                             &#xA0;<span>SLA Configuration</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
                             &#xA0;<span>User Management</span></a></li>
-                        <!--<li ui-sref-active="active"><a ui-sref="jhi-metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>-->
-                            <!--&#xA0;<span>Metrics</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="jhi-health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>-->
-                            <!--&#xA0;<span>Health</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="jhi-configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>-->
-                            <!--&#xA0;<span>Configuration</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>-->
-                            <!--&#xA0;<span>Audits</span></a></li>-->
-                        <!--<li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>-->
-                            <!--&#xA0;<span>Logs</span></a></li>-->
-                        <!--<li ng-hide="vm.inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>-->
-                            <!--&#xA0;<span>API</span></a></li>-->
+                        <li ui-sref-active="active"><a ui-sref="jhi-metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>
+                            &#xA0;<span>Metrics</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="jhi-health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>
+                            &#xA0;<span>Health</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="jhi-configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>
+                            &#xA0;<span>Configuration</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>
+                            &#xA0;<span>Audits</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>
+                            &#xA0;<span>Logs</span></a></li>
+                        <li ng-hide="vm.inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>
+                            &#xA0;<span>API</span></a></li>
                         <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                     </ul>
                 </li>

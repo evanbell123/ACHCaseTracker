@@ -78,7 +78,7 @@ public class ACHCaseResource {
      * @param achCase the achCase to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated achCase,
      * or with status 400 (Bad Request) if the achCase is not valid,
-     * or with status 500 (Internal Server Error) if the achCase couldnt be updated
+     * or with status 500 (Internal Server Error) if the achCase couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/ach-case",
@@ -90,7 +90,7 @@ public class ACHCaseResource {
         if (achCase.getId() == null) { return createACHCase(achCase); }
         ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId()))
             .body(result);
     }
 

@@ -79,9 +79,6 @@
              delete copyData.payments;
              delete copyData.notes;
 
-
-             delete caseData.isWatched;
-
              return angular.toJson(copyData);
          }
 
@@ -99,22 +96,11 @@
                  }
              }
 
-
-             //data.lastPaymentOn = new Date(data.lastPaymentOn);
-             //data.slaDeadline = new Date(data.slaDeadline);
-
-
-
-
-
              caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
-             caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
+             //caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);
-
-
-             //console.log(caseData.caseDetail.payments);
 
              caseData.payments = caseData.caseDetail.payments;
              caseData.notes = caseData.caseDetail.notes;
@@ -125,24 +111,16 @@
                  }
              }
 
-
              caseData.caseDetail.payments = null;
              caseData.caseDetail.notes = null;
-
-             caseData.isWatched = true;
-             if (caseData.assignedTo === "N/A") {
-                 caseData.isWatched = false;
-             }
-             console.log("intially watched = " + caseData.isWatched);
 
              return caseData;
          }
 
          function transformManyAchCases(caseArray) {
-             for (var i = 0; i < caseArray.length; i++) {
+             for (var i = 0; i < caseArray.length; i++)
                  caseArray[i] = transformSingleAchCase(caseArray[i]);
 
-             }
              return caseArray
          }
      }

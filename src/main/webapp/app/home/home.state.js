@@ -55,6 +55,11 @@
                         templateUrl: 'app/entities/ach-case/ach-case.html',
                         controller: 'ACHCaseController',
                         controllerAs: 'vm'
+                    },
+                resolve: {
+                    entity: ['User', function(User) {
+                        return User.get(null);
+                        }]
                     }
                 },
                 resolve: {}

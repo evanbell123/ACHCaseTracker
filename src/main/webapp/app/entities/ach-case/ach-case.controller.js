@@ -5,9 +5,9 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseController', ACHCaseController);
 
-    ACHCaseController.$inject = ['$scope', '$state', '$filter', 'ACHCase', 'ParseLinks', 'AlertService', 'Principal'];
+    ACHCaseController.$inject = ['$scope', '$state', '$filter', 'ACHCase', 'ParseLinks', 'AlertService', 'User'];
 
-    function ACHCaseController($scope, $state, $filter, ACHCase, ParseLinks, AlertService, Principal) {
+    function ACHCaseController($scope, $state, $filter, ACHCase, ParseLinks, AlertService, User) {
         var vm = this;
         $scope.filterParams = {};
         vm.ACHCases = [];
@@ -21,9 +21,9 @@
         vm.today();
         vm.previousMonth();
 
-        vm.slaPast = function(deadline){
-           return Date.parse(deadline) < new Date();
-        }
+        vm.currentUser = User.login;
+
+        vm.slaPast = function(deadline){ return Date.parse(deadline) < new Date(); };
 
         vm.loadAll = function() {
             var dateFormat = 'yyyy-MM-dd';
@@ -111,32 +111,28 @@
             });
         }
         */
-        $scope.watch = function(caseData) {
-            console.log(caseData.isWatched);
+
+        vm.watch = function(achCase) {
             /*
              If the user checks 'watch item'
              assign that user to the case
              */
-            if (caseData.assignedTo === "N/A") {
-                console.log("assign case");
-                var copyAccount;
-                Principal.identity().then(function(account) {
-                    copyAccount = account;
-                    caseData.assignedTo = copyAccount.login;
-                    //caseData.isWatched = true;
-                });
-            } else { //If the user unchecks 'watch item', unassign the currently assigned user
-                console.log("unassign case");
-                caseData.assignedTo = "N/A";
-                //caseData.isWatched = true;
+            if (achCase.assignedTo === true) {
+                //var copyAccount;
+                //Principal.identity().then(function(account) {
+                  //  copyAccount = account;
+                   // caseData.assignedTo = copyAccount.login;
+                //});
+                achCase.assignedTo = vm.currentUser;
+            } else { //If the user unchecks 'watch item', unassign the currently assigned user q
+                achCase.assignedTo = null;
             }
             /*
              notify the server of this change of assignment
              */
-            ACHCase.update(caseData);
-            console.log(caseData.isWatched);
 
-        }
+            ACHCase.update(achCase);
+        };
 
         // Allow filtering of nested objects - will need to update once more case types are added (better yet, probably a rewrite)
         $scope.$on('advanced-searchbox:modelUpdated', function (event, model) {
@@ -209,7 +205,7 @@
             { key: "caseDetail.recoveryInfo.method", name: "Recovery Method", placeholder: "Recovery Method", restrictToSuggestedValues: true, suggestedValues: ['ACH_RETURN', 'CHECK_MAILED', 'MIXED_METHOD', 'COMMERCE', 'CUST_DDA', 'NO_FUNDS', 'OTHER']},
             { key: "caseDetail.recoveryInfo.detailValue", name: "Recovery Detail", placeholder: "Recovery Detail", restrictToSuggestedValues: true, suggestedValues: ['CHK_NUM', 'GL_COST', 'IN_ACCT', 'DESC']},
             { key: "caseDetail.recoveryInfo.detailString", name: "Recovery Comment", placeholder: "Recovery Comment" },
-            //TODO: Find out if it is possible to filter on values in an array of objects within an object, within another object.
+            //TODO: Can we filter on values in an array of objects, within an object, within another object?
             //{ key: "caseDetail.payments.effectiveOn", name: "Effective Date", placeholder: "mm-dd-yyyy" },
             //{ key: "caseDetail.payments.amount", name: "Payment Amount", placeholder: "$$$" },
             //{ key: "caseDetail.notes.note", name: "Case Note", placeholder: "Note" },
