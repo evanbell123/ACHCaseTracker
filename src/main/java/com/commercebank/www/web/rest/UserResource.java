@@ -196,9 +196,7 @@ public class UserResource {
     @Timed
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
-        //No login supplied, so return current user
-        if (login == null || login.isEmpty())
-            return new ResponseEntity<>(new ManagedUserDTO(userService.getUserWithAuthorities()), HttpStatus.OK);
+        if (login == null) { return new ResponseEntity<>(new ManagedUserDTO(userService.getUserWithAuthorities()), HttpStatus.OK); }
         return userService.getUserWithAuthoritiesByLogin(login)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))

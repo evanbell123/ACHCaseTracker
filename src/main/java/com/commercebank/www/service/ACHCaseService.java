@@ -72,7 +72,7 @@ public class ACHCaseService {
 
         Beneficiary beneficiary = achCase.getBeneficiary();
         if (beneficiary == null) { return "There is no beneficiary assigned to this case."; }
-        if (beneficiary.getName() == null || beneficiary.getName().isEmpty()) { return "The beneficiary doesn't have a name."; }
+        if (beneficiary.getName() == null) { return "The beneficiary doesn't have a name."; }
         if (beneficiary.getAccountNum() == null) { return "The beneficiary's account number is not set."; }
         if (beneficiary.getDateOfDeath() == null) { return "The beneficiary's date of death is not set."; }
         if (beneficiary.getDateCBAware() == null) { return "The date Commerce Bank became aware of beneficiary's death is not set."; }
@@ -81,7 +81,7 @@ public class ACHCaseService {
         GovRec govRec = (GovRec) achCase.getCaseDetail();
         if (govRec == null) { return "There are no details regarding the case subtype."; }
         if (govRec.getSubtype() == CaseSubtype.TREAS_REFUND || govRec.getSubtype() == CaseSubtype.TREAS_REFERRAL)
-            if (govRec.getClaimNumber() == null || govRec.getClaimNumber().isEmpty()) { return "There is no claim number for this case."; }
+            if (govRec.getClaimNumber() == null) { return "There is no claim number for this case."; }
         if (govRec.getPayments() != null) {
             for (Payment p : govRec.getPayments()) {
                 if (p.getAmount() == null || p.getEffectiveOn() == null) { return "There is missing payment information for this case."; }
@@ -93,7 +93,7 @@ public class ACHCaseService {
         if (recovery.getMethod() == null) { return "There is no recovery method for this case."; }
         RecoveryDetail detail = recovery.getDetailType();
         if (detail == RecoveryDetail.GL_COST || detail == RecoveryDetail.IN_ACCT || detail == RecoveryDetail.DESC)
-            if (recovery.getDetailValue() == null || recovery.getDetailValue().isEmpty()) { return "The recovery method is missing details."; }
+            if (recovery.getDetailValue() == null) { return "The recovery method is missing details."; }
 
         achCase.setStatus(Status.CLOSED);
         achCaseRepository.save(achCase);
@@ -111,7 +111,7 @@ public class ACHCaseService {
     public ACHCase updateOnSave(ACHCase achCase)
     {
         updateSLA(achCase);
-        if (achCase.getAssignedTo() != null || !achCase.getAssignedTo().isEmpty()) {
+        if (achCase.getAssignedTo() != null) {
             achCase.setStatus(Status.IN_PROGRESS);
         }
         else {
@@ -134,12 +134,14 @@ public class ACHCaseService {
         if (achCase.getType() == GOV_REC) {
             //Cases of treasury subtypes do not update their SLAs
             if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
-                achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                 //Case is being watched for the first time
-                if (achCase.getAssignedTo() != null && !achCase.getAssignedTo().isEmpty() && achCase.getSla() == slaRepository.findOneById("non-treasury-initial").get())
-                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec)achCase.getCaseDetail()).latestPaymentDate(), achCase.getSla().getBusinessDays()));
+                if (achCase.getAssignedTo() != null && achCase.getSla() == slaRepository.findOneById("non-treasury-initial").get()) {
+                    achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
+                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec) achCase.getCaseDetail()).latestPaymentDate(), achCase.getSla().getBusinessDays()));
+                }
                 //Other cases get reset starting from today's date
                 else
+                    achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
             }
         }

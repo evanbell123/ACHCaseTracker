@@ -41,7 +41,6 @@ public class JaversEntityAuditResource {
     @Inject
     private Javers javers;
 
-
     /**
      * fetches all the audited entity types
      *

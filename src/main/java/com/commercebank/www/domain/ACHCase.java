@@ -43,7 +43,7 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("sla_deadline")
     private LocalDate slaDeadline;
 
-    @Field("sla_count")
+    @Field("missed_sla_count")
     private Long missedSLACount = new Long(0);
 
     @DBRef
@@ -181,12 +181,12 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
             ", status='" + status + "'" +
            // ", lastPaymentOn='" + lastPaymentOn + "'" +
             ", slaDeadline='" + slaDeadline + "'" +
-            ", slaType='" + sla.getId() + "'" +
+            ", sla='" + sla.getId() + "'" +
             ", daysOpen='" + daysOpen + "'" +
             ", type='" + type + "'" +
             ", completedOn='" + completedOn + "'" +
             ", beneficiary='" + beneficiary.getName() + "'" +
-            ", assigned to'" + assignedTo + "'" +
+            ", assignedTo='" + assignedTo + "'" +
             '}';
     }
 }

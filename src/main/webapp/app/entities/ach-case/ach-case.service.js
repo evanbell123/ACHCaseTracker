@@ -52,6 +52,7 @@
              },
              'update': {
                  method: 'PUT',
+                 params: { watchItem: false },
                  transformRequest: function(caseData) {
                      return transformCaseRequest(caseData);
                  },
@@ -62,24 +63,13 @@
          });
 
          function transformCaseRequest(caseData) {
-             /*
-              make a copy
-              */
-             var copyData = caseData;
-             /*
-              Copy the payments and notes JSON,
-              into the proper spot
-              */
-             copyData.caseDetail.payments = copyData.payments;
-             copyData.caseDetail.notes = copyData.notes;
+                 caseData.caseDetail.payments = caseData.payments;
+                 caseData.caseDetail.notes = caseData.notes;
 
-             /*
-              Then get rid the copied payments and notes
-              */
-             delete copyData.payments;
-             delete copyData.notes;
+                 delete caseData.payments;
+                 delete caseData.notes;
 
-             return angular.toJson(copyData);
+             return angular.toJson(caseData);
          }
 
          function transformSingleAchCase(caseData) {
@@ -97,7 +87,6 @@
              }
 
              caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
-             //caseData.lastPaymentOn = DateUtils.convertDateTimeFromServer(caseData.lastPaymentOn);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);

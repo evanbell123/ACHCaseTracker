@@ -83,11 +83,13 @@ public class ACHCaseResource {
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        params = { "watchItem" })
     @Timed
-    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
+    public ResponseEntity<ACHCase> updateACHCase(@RequestParam("watchItem") boolean watchItem, @Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
         if (achCase.getId() == null) { return createACHCase(achCase); }
+        if (watchItem) { achCase.setAssignedTo(SecurityUtils.getCurrentUserLogin()); }
         ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId()))

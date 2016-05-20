@@ -37,7 +37,7 @@
             });
         }
 
-        // Date picker configuration
+        //Date picker configuration
         function today () {
             // Today + 1 day - needed if the current day must be included
             var today = new Date();

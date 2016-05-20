@@ -44,6 +44,7 @@
 
         vm.save = function () {
             vm.isSaving = true;
+            vm.watchItem = true;
             if (vm.model.id !== null) {
                 ACHCase.update(vm.model, onSaveSuccess, onSaveError);
             } else {
@@ -139,6 +140,9 @@
                 //    }
                 //},
                 {
+                    template: '<br/><div><strong><font size ="6px">Case Info</font></strong></div>',
+                },
+                {
                     className: 'row',
                     //key:'random',
                     fieldGroup: [
@@ -201,7 +205,7 @@
                     ]
                 }, {
 
-                    template: '<hr /><div><strong><font size ="6px">Beneficiary Information:</font></strong></div>',
+                    template: '<br/><div><strong><font size ="6px">Beneficiary</font></strong></div>',
                 }, {
                     className: 'row',
                     fieldGroup: [{
@@ -288,7 +292,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Disposition</font></strong></div>'
+                    template: '<br/><div><strong><font size ="6px">Disposition</font></strong></div>'
                 },
 
 
@@ -431,7 +435,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Payments</font></strong></div>'
+                    template: '<br/><div><strong><font size ="6px">Payments</font></strong></div>'
                 },
 
                 {
@@ -462,7 +466,7 @@
                                     templateOptions: {
                                         type: 'text',
                                         label: 'Effective Date',
-                                        placeholder: 'Enter effective date',
+                                        placeholder: 'mm/dd/yyyy',
                                         datepickerPopup: 'dd-MMMM-yyyy'
                                     }
                                 }]
@@ -474,7 +478,7 @@
                 },
                 {
                     className: 'section-label',
-                    template: '<hr /><div><strong><font size ="6px">Notes</font></strong></div>'
+                    template: '<br/><div><H2><strong>Notes</strong></H2></div>'
                 },
 
                 {
@@ -483,12 +487,11 @@
                     key: 'notes',
                     templateOptions: {
                         fields: [{
-                            //className: 'col-xs-4',
                             key: 'note',
                             type: 'textarea',
                             templateOptions: {
                                 type: 'text',
-                                placeholder: 'This has 5 rows',
+                                placeholder: '',
                                 rows: 5
                             }
                         }],

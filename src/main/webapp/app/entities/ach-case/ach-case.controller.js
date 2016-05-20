@@ -5,23 +5,21 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseController', ACHCaseController);
 
-    ACHCaseController.$inject = ['$scope', '$state', '$filter', 'ACHCase', 'ParseLinks', 'AlertService', 'User'];
+    ACHCaseController.$inject = ['$scope', '$state', '$filter', 'ACHCase', 'ParseLinks', 'AlertService'];
 
-    function ACHCaseController($scope, $state, $filter, ACHCase, ParseLinks, AlertService, User) {
+    function ACHCaseController($scope, $state, $filter, ACHCase, ParseLinks, AlertService) {
         var vm = this;
-        $scope.filterParams = {};
         vm.ACHCases = [];
         vm.predicate = 'id';
         vm.reverse = true;
         vm.page = 0;
-        vm.previousMonth = previousMonth;
         vm.toDate = null;
+        vm.currentUser = null;
         vm.today = today;
+        vm.previousMonth = previousMonth;
 
         vm.today();
         vm.previousMonth();
-
-        vm.currentUser = User.login;
 
         vm.slaPast = function(deadline){ return Date.parse(deadline) < new Date(); };
 
@@ -61,6 +59,10 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
+                    if (data[i].assignedTo !== undefined && data[i].assignedTo !== null) {
+                        data[i].isWatched = true;
+                    }
+                    else { data[i].isWatched = false; }
                     vm.ACHCases.push(data[i]);
                 }
             }
@@ -103,7 +105,7 @@
             var dateFormat = 'yyyy-MM-dd';
             var fromDate = $filter('date')(vm.fromDate, dateFormat);
             var toDate = $filter('date')(vm.toDate, dateFormat);
-            //TODO: This is copied from audits.controller.js, it needs to include the status parameter before use
+            //TODO: This is copied from audits.controller.js, it needs to be changed before use
             AuditsService.query({page: vm.page -1, size: 20, fromDate: fromDate, toDate: toDate}, function(result, headers){
                 vm.audits = result;
                 vm.links = ParseLinks.parse(headers('link'));
@@ -112,28 +114,16 @@
         }
         */
 
-        vm.watch = function(achCase) {
-            /*
-             If the user checks 'watch item'
-             assign that user to the case
-             */
-            if (achCase.assignedTo === true) {
-                //var copyAccount;
-                //Principal.identity().then(function(account) {
-                  //  copyAccount = account;
-                   // caseData.assignedTo = copyAccount.login;
-                //});
-                achCase.assignedTo = vm.currentUser;
-            } else { //If the user unchecks 'watch item', unassign the currently assigned user q
-                achCase.assignedTo = null;
-            }
-            /*
-             notify the server of this change of assignment
-             */
-
-            ACHCase.update(achCase);
+        $scope.watch = function(achCase) {
+            if (achCase.isWatched == false) { achCase.assignedTo = null; }
+            ACHCase.update({watchItem: achCase.isWatched}, achCase, function(result){
+                achCase.assignedTo = result.assignedTo;
+                achCase.status = result.status;
+                achCase.slaDeadline = result.slaDeadline;
+            })
         };
 
+        $scope.filterParams = {};
         // Allow filtering of nested objects - will need to update once more case types are added (better yet, probably a rewrite)
         $scope.$on('advanced-searchbox:modelUpdated', function (event, model) {
             if (model === undefined) { return; }
@@ -184,15 +174,15 @@
             { key: "daysOpen", name: "Days Open", placeholder: "Days Open..." },
             { key: "type", name: "Type", placeholder: "Case Type...", restrictToSuggestedValues: true, suggestedValues: ['GOV_REC', 'POA', 'REV_DEL', 'RETURN', 'UNRESOLVED']},
             { key: "totalAmount", name: "Total Amount", placeholder: "Total Amount..." },
-            { key: "slaDeadline", name: "SLA Deadline", placeholder: "mm-dd-yyyy" },
+            { key: "slaDeadline", name: "SLA Deadline", placeholder: "yyyy-mm-dd" },
             { key: "assignedTo", name: "Assigned To", placeholder: "Assigned To..." },
-            { key: "completedOn", name: "Date Closed", placeholder: "mm-dd-yyyy" },
+            { key: "completedOn", name: "Date Closed", placeholder: "yyyy-mm-dd" },
             { key: "completedBy", name: "Closed By", placeholder: "Closed By..." },
             { key: "beneficiary.name", name: "Beneficiary Name", placeholder: "Name" },
             { key: "beneficiary.ssn", name: "Beneficiary SSN", placeholder: "###-##-####" },
             { key: "beneficiary.customerID", name: "Customer ID", placeholder: "Cust. ID" },
-            { key: "beneficiary.dateOfDeath", name: "Date of Death", placeholder: "mm-dd-yyyy" },
-            { key: "beneficiary.dateCBAware", name: "Date CB Aware", placeholder: "mm-dd-yyyy" },
+            { key: "beneficiary.dateOfDeath", name: "Date of Death", placeholder: "yyyy-mm-dd" },
+            { key: "beneficiary.dateCBAware", name: "Date CB Aware", placeholder: "yyyy-mm-dd" },
             { key: "beneficiary.otherGovBenefits", name: "Other Benefits", placeholder: "Other Benefits?" },
             { key: "beneficiary.govBenefitsComment", name: "Benefits Comment", placeholder: "Comment" },
             { key: "caseDetail.claimNumber", name: "Claim Number", placeholder: "Claim #" },
@@ -201,12 +191,12 @@
             { key: "caseDetail.paymentCount", name: "# of Payments", placeholder: "# Payments" },
             { key: "caseDetail.subtype", name: "Case Subtype", placeholder: "Subtype", restrictToSuggestedValues: true, suggestedValues: ['DNE', 'CRF', 'DCN', 'GOV_REC', 'TREAS_REFERRAL', 'TREAS_REFUND']},
             { key: "caseDetail.verifiedBy", name: "Verified By", placeholder: "Verified By" },
-            { key: "caseDetail.verifiedOn", name: "Date Verified", placeholder: "mm-dd-yyyy" },
+            { key: "caseDetail.verifiedOn", name: "Date Verified", placeholder: "yyyy-mm-dd" },
             { key: "caseDetail.recoveryInfo.method", name: "Recovery Method", placeholder: "Recovery Method", restrictToSuggestedValues: true, suggestedValues: ['ACH_RETURN', 'CHECK_MAILED', 'MIXED_METHOD', 'COMMERCE', 'CUST_DDA', 'NO_FUNDS', 'OTHER']},
             { key: "caseDetail.recoveryInfo.detailValue", name: "Recovery Detail", placeholder: "Recovery Detail", restrictToSuggestedValues: true, suggestedValues: ['CHK_NUM', 'GL_COST', 'IN_ACCT', 'DESC']},
             { key: "caseDetail.recoveryInfo.detailString", name: "Recovery Comment", placeholder: "Recovery Comment" },
             //TODO: Can we filter on values in an array of objects, within an object, within another object?
-            //{ key: "caseDetail.payments.effectiveOn", name: "Effective Date", placeholder: "mm-dd-yyyy" },
+            //{ key: "caseDetail.payments.effectiveOn", name: "Effective Date", placeholder: "yyyy-mm-dd" },
             //{ key: "caseDetail.payments.amount", name: "Payment Amount", placeholder: "$$$" },
             //{ key: "caseDetail.notes.note", name: "Case Note", placeholder: "Note" },
             { key: "sla.id", name: "SLA Type", placeholder: "SLA Type" },

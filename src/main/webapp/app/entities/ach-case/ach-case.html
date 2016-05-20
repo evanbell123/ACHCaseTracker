@@ -38,7 +38,7 @@
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:filterParams track by ACHCase.id ">
                     <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
                     <td>
-                        <md-checkbox class="md-warn" aria-label="Watch Item" ng-model="ACHCase.assignedTo" ng-change="vm.watch(ACHCase)"></md-checkbox>
+                        <md-checkbox class="md-warn" aria-label="Watch Item" ng-model="ACHCase.isWatched" ng-change='watch(ACHCase)'></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
@@ -48,8 +48,7 @@
                     <td><span ng-class="{'text-danger':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.type}}</td>
                     <td>{{ACHCase.daysOpen}}</td>
-                    <td>{{ACHCase.createdDate | date:'medium' }}</td>
-                    <td>{{ACHCase.beneficiary.dateOfDeath | date:'mediumDate'}}</td>
+                    <td>{{ACHCase.createdDate | date:'medium' }}</td>>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">

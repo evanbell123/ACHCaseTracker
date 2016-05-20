@@ -56,11 +56,6 @@
                         controller: 'ACHCaseController',
                         controllerAs: 'vm'
                     },
-                resolve: {
-                    entity: ['User', function(User) {
-                        return User.get(null);
-                        }]
-                    }
                 },
                 resolve: {}
             })
@@ -128,7 +123,6 @@
                                     "slaDeadline": null,
                                     "missedSLACount": 0,
                                     "sla": {
-                                        "createdDate": null,
                                         "id": null,
                                         "businessDays": null
                                     },
@@ -180,7 +174,7 @@
         parent: 'ach-case',
         url: '{id}/edit',
         data: {
-            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
+            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
         },
         onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
             $uibModal.open({
@@ -211,7 +205,7 @@
         parent: 'ach-case',
         url: '{id}/delete',
         data: {
-            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER']
+            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
         },
         onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
             $uibModal.open({
