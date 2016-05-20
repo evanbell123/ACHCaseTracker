@@ -16,9 +16,6 @@
     function CaseFormController($scope, $rootScope, $uibModalInstance, entity, Enums, ACHCase, formlyVersion) {
         var vm = this;
 
-
-        //console.log(vm.model);
-
         var unsubscribe = $rootScope.$on('achCaseTrackingApp:ACHCaseUpdate', function (event, result) {
             vm.model = result;
         });
@@ -52,7 +49,6 @@
             }
         };
 
-
         vm.clear = function () {
             $uibModalInstance.dismiss('cancel');
         };
@@ -65,22 +61,6 @@
         vm.model = entity;
 
         vm.formData = {};
-
-        /*
-         Specify the JSON model
-         This is the model object that we reference
-         on the <formly-form> element in caseForm.html
-         */
-
-
-        /*
-         specify form options
-         */
-        //vm.options = {
-        //    formState: {
-        //        awesomeIsForced: true
-        //    }
-        //};
 
         init();
 
@@ -116,12 +96,8 @@
                 }
             }
 
-            //console.log(hideExpression);
-
             return hideExpression;
-
         }
-
 
         function init() {
 
@@ -129,20 +105,48 @@
             // and options set. We make reference to this in
             // the 'fields' attribute on the <formly-form> element
             vm.fields = [
-                //{
-                //    type: "radio",
-                //    key: "status",
-                //    defaultValue: 'open',
-                //    templateOptions: {
-                //        options: FormDataService.status(),
-                //        label: "Case Status",
-                //        required: true,
-                //    }
-                //},
                 {
-                    template: '<br/><div><strong><font size ="6px">Case Info</font></strong></div>',
-                },
-                {
+                    template: '<br/><div><H3><strong>Case Info</strong></H3></div>',
+                },{
+                    className: 'row',
+                    fieldGroup: [{
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'assignedTo',
+                        templateOptions: {
+                            label: 'Assigned To'
+                        }
+
+                    }, {
+                        className: 'col-xs-6',
+                        type: 'input',
+                        key: 'totalAmount',
+                        templateOptions: {
+                            type: 'currency',
+                            label: 'Total Amount'
+                        }
+
+                    }]
+                },{
+                    className: 'row',
+                    fieldGroup: [{
+                        className: 'col-xs-6',
+                        type: 'textarea',
+                        key: 'daysOpen',
+                        templateOptions: {
+                            label: 'Days Open'
+                        }
+
+                    }, {
+                        className: 'col-xs-6',
+                        type: 'textarea',
+                        key: 'createdDate',
+                        templateOptions: {
+                            label: 'Created On'
+                        }
+
+                    }]
+                },{
                     className: 'row',
                     //key:'random',
                     fieldGroup: [
@@ -165,13 +169,7 @@
                             },
                             watcher: {
                                 listener: function (field, newValue, oldValue, scope, stopWatching) {
-                                    /*
-                                     If the user changes case type, the model must be reset
-                                     */
-                                    //if (oldValue !== null) {
-                                    //    vm.options.resetModel();
-                                    //}
-
+                                    /*If the user changes case type, the model must be reset*/
                                 }
                             }
                         }, {
@@ -205,7 +203,7 @@
                     ]
                 }, {
 
-                    template: '<br/><div><strong><font size ="6px">Beneficiary</font></strong></div>',
+                    template: '<br/><div><H3><strong>Beneficiary</strong></H3></div>',
                 }, {
                     className: 'row',
                     fieldGroup: [{
@@ -292,7 +290,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<br/><div><strong><font size ="6px">Disposition</font></strong></div>'
+                    template: '<br/><div><H3><strong>Disposition</strong></H3></div>'
                 },
 
 
@@ -435,7 +433,7 @@
 
                 {
                     className: 'section-label',
-                    template: '<br/><div><strong><font size ="6px">Payments</font></strong></div>'
+                    template: '<br/><div><H3><strong>Payments</strong></H3></div>'
                 },
 
                 {
@@ -478,7 +476,7 @@
                 },
                 {
                     className: 'section-label',
-                    template: '<br/><div><H2><strong>Notes</strong></H2></div>'
+                    template: '<br/><div><H3><strong>Notes</strong></H3></div>'
                 },
 
                 {

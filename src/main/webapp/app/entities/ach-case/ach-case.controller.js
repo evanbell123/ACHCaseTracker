@@ -111,8 +111,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
             });
-        }
-        */
+        }*/
 
         $scope.watch = function(achCase) {
             if (achCase.isWatched == false) { achCase.assignedTo = null; }
@@ -124,7 +123,7 @@
         };
 
         $scope.filterParams = {};
-        // Allow filtering of nested objects - will need to update once more case types are added (better yet, probably a rewrite)
+        //Allow filtering of nested objects - will probably need to be rewritten once more case types are added
         $scope.$on('advanced-searchbox:modelUpdated', function (event, model) {
             if (model === undefined) { return; }
             if (model['query'] !== undefined) { return $scope.filterParams = model['query']; }
