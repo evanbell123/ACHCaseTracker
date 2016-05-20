@@ -1,11 +1,11 @@
 ![commercebank](http://imgh.us/CommerceFDIC_RevTM_G.svg)
 ======
 
-## **ACH Case Tracking Phase I**
+### **ACH Case Tracking Phase I**
 #####*An innovative solution to enhance visibility, increase efficiency, and manage risk for ACH processes.*
 
-######Created by team Deft Developers
-+   Steven Evans (Project Manager, Back-End Developer) - [github.com/stevenMevans](https://github.com/stevenMevans)
+#####Created by team Deft Developers
++   Steven Evans (Project Manager, Lead Developer) - [github.com/stevenMevans](https://github.com/stevenMevans)
 +   Muying Cui (UI Designer, Front-End Developer) - [github.com/MuyingCui](https://github.com/MuyingCui)
 +   Kien Chiem (Quality Manager, Back-End Developer) - [github.com/Kienc123](https://github.com/Kienc123)
 +   Evan Bell (Architect, Front-End Developer) - [github.com/evanbell123](https://github.com/evanbell123)
@@ -16,7 +16,7 @@ This application was generated using JHipster, you can find documentation and he
 
 ## Installation
 
-MongoDB will need to be installed on the target machine. For help
+MongoDB will need to be installed on the target machine. For help setting up MongoDB please visit [https://docs.mongodb.com/manual/installation/](https://docs.mongodb.com/manual/installation/).
 
 ## Development
 

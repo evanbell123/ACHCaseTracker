@@ -223,17 +223,19 @@
                         }
 
                     }]
-                }, {
+                },{
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        type: 'input',
-                        key: 'beneficiary.accountNum',
+                        type: 'datepicker',
+                        key: 'beneficiary.dateOfDeath',
                         templateOptions: {
-                            label: 'Account Number'
+                            type: 'text',
+                            label: 'Date of Death',
+                            placeholder: 'Enter date of death',
+                            datepickerPopup: 'dd-MMMM-yyyy'
                         }
-
-                    }, {
+                    },{
                         className: 'col-xs-6',
                         type: 'input',
                         key: 'beneficiary.ssn',
@@ -249,21 +251,10 @@
                                 },
                                 message: '$viewValue + " is not a valid ssn"'
                             }
-                        },
+                        }
                     }, {
                         className: 'row',
                         fieldGroup: [{
-                            className: 'col-xs-6',
-                            type: 'datepicker',
-                            key: 'beneficiary.dateOfDeath',
-                            templateOptions: {
-                                type: 'text',
-                                label: 'Date of Death',
-                                placeholder: 'Enter date of death',
-                                datepickerPopup: 'dd-MMMM-yyyy'
-                            }
-
-                        }, {
                             className: 'col-xs-6',
                             type: 'datepicker',
                             key: 'beneficiary.dateCBAware',
@@ -272,6 +263,13 @@
                                 label: 'Awareness Date',
                                 placeholder: 'Enter date CB became aware',
                                 datepickerPopup: 'dd-MMMM-yyyy'
+                            }
+                        }, {
+                            className: 'col-xs-6',
+                            type: 'input',
+                            key: 'beneficiary.accountNum',
+                            templateOptions: {
+                                label: 'Account Number'
                             }
                         }]
                     }, {
@@ -283,7 +281,6 @@
                             templateOptions: {
                                 label: 'Other Government Benefits',
                             }
-
                         }]
                     }]
                 },
@@ -291,10 +288,7 @@
                 {
                     className: 'section-label',
                     template: '<br/><div><H3><strong>Disposition</strong></H3></div>'
-                },
-
-
-                {
+                },{
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
@@ -469,7 +463,6 @@
                                     }
                                 }]
                             }
-
                         ],
                         btnText: 'Add another payment'
                     },
@@ -490,7 +483,7 @@
                             templateOptions: {
                                 type: 'text',
                                 placeholder: '',
-                                rows: 5
+                                rows: 2
                             }
                         }],
                         btnText: 'Add another note'
