@@ -40,7 +40,6 @@
         };
 
         vm.datePickerOpenStatus = {};
-        vm.datePickerOpenStatus.lastPaymentOn = false;
         vm.datePickerOpenStatus.slaDeadline = false;
 
         vm.openCalendar = function(date) {

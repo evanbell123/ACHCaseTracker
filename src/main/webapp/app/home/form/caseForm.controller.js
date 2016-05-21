@@ -131,13 +131,12 @@
                     className: 'row',
                     fieldGroup: [{
                         className: 'col-xs-6',
-                        type: 'textarea',
+                        type: 'input',
                         key: 'daysOpen',
                         templateOptions: {
                             label: 'Days Open'
                         }
-
-                    }, {
+                    },{
                         className: 'col-xs-6',
                         type: 'textarea',
                         key: 'createdDate',

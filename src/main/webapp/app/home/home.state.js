@@ -63,8 +63,8 @@
                 parent: 'home',
                 url: 'my-cases/',
                 data: {
-                    authorities: ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
-                    pageTitle: 'ACHCases'
+                    authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'],
+                    pageTitle: 'ACH Cases'
                 },
                 views: {
                     'content@': {
@@ -94,9 +94,7 @@
                 },
                 resolve: {
                     entity: ['$stateParams', 'ACHCase', function ($stateParams, ACHCase) {
-                        return ACHCase.one({
-                            id: $stateParams.id
-                        });
+                        return ACHCase.one({id: $stateParams.id});
                     }]
                 }
             })
@@ -109,7 +107,7 @@
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/ach-case/ach-case-dialog.html',
-                        controller: 'CaseFormController',
+                        controller: 'ACHCaseDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
                         size: 'lg',
@@ -158,98 +156,88 @@
                                     }
                                 }
                             }
-                    }
-                }).result.then(function () {
-            $state.go('ach-case', null, {
-                reload: true
-            });
-        }, function () {
-            $state.go('ach-case');
-        });
-    }
-
-    ]
-})
-    .state('ach-case.edit', {
-        parent: 'ach-case',
-        url: '{id}/edit',
-        data: {
-            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
-        },
-        onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-            $uibModal.open({
-                templateUrl: 'app/entities/ach-case/ach-case-dialog.html',
-                controller: 'CaseFormController',
-                controllerAs: 'vm',
-                backdrop: 'static',
-                size: 'lg',
-                resolve: {
-                    entity: ['ACHCase', function (ACHCase) {
-                        return ACHCase.one({
-                            id: $stateParams.id
-                        });
-
-
-                    }]
-                }
-            }).result.then(function () {
+                        }
+                    }).result.then(function () {
                 $state.go('ach-case', null, {
                     reload: true
                 });
-            }, function () {
-                $state.go('^');
-            });
-        }]
-    })
-    .state('ach-case.delete', {
-        parent: 'ach-case',
-        url: '{id}/delete',
-        data: {
-            authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
-        },
-        onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-            $uibModal.open({
-                templateUrl: 'app/entities/ach-case/ach-case-delete-dialog.html',
-                controller: 'ACHCaseDeleteController',
-                controllerAs: 'vm',
-                size: 'md',
-                resolve: {
-                    entity: ['ACHCase', function (ACHCase) {
-                        return ACHCase.one({
-                            id: $stateParams.id
-                        });
-                    }]
-                }
-            }).result.then(function () {
-                $state.go('ach-case', null, {
-                    reload: true
+                }, function () {
+                    $state.go('ach-case');
                 });
-            }, function () {
-                $state.go('^');
-            });
-        }]
-    })
+                }]
+            })
+            .state('ach-case.edit', {
+                parent: 'ach-case',
+                url: '{id}/edit',
+                data: {
+                    authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/ach-case/ach-case-dialog.html',
+                        controller: 'ACHCaseDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['ACHCase', function (ACHCase) {
+                                return ACHCase.one({id: $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function () {
+                        $state.go('ach-case', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
+                    });
+                }]
+            })
+            .state('ach-case.delete', {
+                parent: 'ach-case',
+                url: '{id}/delete',
+                data: {
+                    authorities: ['ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/ach-case/ach-case-delete-dialog.html',
+                        controller: 'ACHCaseDeleteController',
+                        controllerAs: 'vm',
+                        size: 'md',
+                        resolve: {
+                            entity: ['ACHCase', function (ACHCase) {
+                                return ACHCase.one({id: $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function () {
+                        $state.go('ach-case', null, {
+                            reload: true
+                        });
+                    }, function () {
+                        $state.go('^');
+                    });
+                }]
+            })
 
-    .state('import', {
-        parent: 'home',
-        url: "import",
-        templateUrl: "app/home/import/import.html",
-        controller: 'ImportController',
-        controllerAs: 'vm',
-        data: {
-            pageTitle: 'File import',
-            authorities: []
-        },
-        resolve: {
-            loadPlugin: function ($ocLazyLoad) {
-                return $ocLazyLoad.load([
-                    {
-                        files: ['app/content/css/basic.css', 'app/content/css/dropzone.css', 'app/home/import/dropzone.js']
+            .state('import', {
+                parent: 'home',
+                url: "import",
+                templateUrl: "app/home/import/import.html",
+                controller: 'ImportController',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'File import',
+                    authorities: []
+                },
+                resolve: {
+                    loadPlugin: function ($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            {
+                                files: ['app/content/css/basic.css', 'app/content/css/dropzone.css', 'app/home/import/dropzone.js']
+                            }
+                        ]);
                     }
-                ]);
-            }
-        }
-    });
+                }
+            });
 }
 })
 ();

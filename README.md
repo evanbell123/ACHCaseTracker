@@ -10,9 +10,9 @@
 +   Kien Chiem (Quality Manager, Back-End Developer) - [github.com/Kienc123](https://github.com/Kienc123)
 +   Evan Bell (Architect, Front-End Developer) - [github.com/evanbell123](https://github.com/evanbell123)
    
-If you have any questions or concerns while using this product, please feel free to contact [Steven Evans](mailto:smep77@mail.umkc.edu).
+Should you have any questions or concerns while using this product, please feel free to contact [Steven Evans](mailto:smep77@mail.umkc.edu).
 
-This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
+This application was generated using JHipster. You can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 ## Installation
 

@@ -132,7 +132,7 @@ public class ACHCaseResource {
     }
 
     /**
-     * GET  /ach-case/:id : get the "id" ACHCase.
+     * GET  /ach-case/:id : get the "id" of achCase.
      *
      * @param id the id of the ACHCase to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the ACHCase, or with status 404 (Not Found)
@@ -143,8 +143,8 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<ACHCase> getACHCase(@PathVariable String id) {
         log.debug("REST request to get ACHCase : {}", id);
-        ACHCase ACHCase = achCaseRepository.findOne(id);
-        return Optional.ofNullable(ACHCase)
+        ACHCase achCase = achCaseRepository.findOne(id);
+        return Optional.ofNullable(achCaseService.updateOnRetrieve(achCase))
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
