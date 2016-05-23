@@ -10,6 +10,7 @@
     function ACHCaseDialogController ($scope, $uibModalInstance, entity, ACHCase) {
         var vm = this;
         vm.ACHCase = entity;
+        vm.payments= ACHCase.payments;
         vm.load = function(id) {
             ACHCase.one({id : id}, function(result) {
                     vm.ACHCase = result;

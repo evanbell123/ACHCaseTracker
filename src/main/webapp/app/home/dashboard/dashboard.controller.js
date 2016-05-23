@@ -37,7 +37,7 @@
             });
         }
 
-        // Date picker configuration
+        //Date picker configuration
         function today() {
             // Today + 1 day - needed if the current day must be included
             var today = new Date();
@@ -58,6 +58,13 @@
             vm.page = page;
             vm.onChangeDate();
         }
-    }
 
+        vm.datePickerOpenStatus = {};
+        vm.datePickerOpenStatus.fromDate = false;
+        vm.datePickerOpenStatus.toDate = false;
+
+        vm.openCalendar = function(date) {
+            vm.datePickerOpenStatus[date] = true;
+        };
+    }
 })();

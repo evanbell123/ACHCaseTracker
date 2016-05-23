@@ -113,8 +113,8 @@
             });
         }*/
 
+        //TODO: Add check so that only assignee can un-assign themselves, or admin
         $scope.watch = function(achCase) {
-            if (achCase.isWatched == false) { achCase.assignedTo = null; }
             ACHCase.update({watchItem: achCase.isWatched}, achCase, function(result){
                 achCase.assignedTo = result.assignedTo;
                 achCase.status = result.status;
@@ -168,10 +168,9 @@
          });
 
         $scope.availableSearchParams = [
-            //TODO: Search for enum values based on their display name, rather than by their literal name. ex: 'In Progress' would find cases with status 'IN_PROGRESS'
-            { key: "status", name: "Status", placeholder: "Status...", restrictToSuggestedValues: true, suggestedValues: ['OPEN', 'IN_PROGRESS', 'CLOSED']},
+            { key: "status", name: "Status", placeholder: "Status...", restrictToSuggestedValues: true, suggestedValues: ['Open', 'In Progress', 'Closed']},
             { key: "daysOpen", name: "Days Open", placeholder: "Days Open..." },
-            { key: "type", name: "Type", placeholder: "Case Type...", restrictToSuggestedValues: true, suggestedValues: ['GOV_REC', 'POA', 'REV_DEL', 'RETURN', 'UNRESOLVED']},
+            { key: "type", name: "Type", placeholder: "Case Type...", restrictToSuggestedValues: true, suggestedValues: ['Government Reclamation', 'POA', 'Reversal/Deletion', 'Return', 'Unresolved/Dishonored Return']},
             { key: "totalAmount", name: "Total Amount", placeholder: "Total Amount..." },
             { key: "slaDeadline", name: "SLA Deadline", placeholder: "yyyy-mm-dd" },
             { key: "assignedTo", name: "Assigned To", placeholder: "Assigned To..." },
@@ -180,6 +179,7 @@
             { key: "beneficiary.name", name: "Beneficiary Name", placeholder: "Name" },
             { key: "beneficiary.ssn", name: "Beneficiary SSN", placeholder: "###-##-####" },
             { key: "beneficiary.customerID", name: "Customer ID", placeholder: "Cust. ID" },
+            //TODO: Fix date format to be dd/mm/yyyy. May need to change it in many other places.
             { key: "beneficiary.dateOfDeath", name: "Date of Death", placeholder: "yyyy-mm-dd" },
             { key: "beneficiary.dateCBAware", name: "Date CB Aware", placeholder: "yyyy-mm-dd" },
             { key: "beneficiary.otherGovBenefits", name: "Other Benefits", placeholder: "Other Benefits?" },
@@ -188,11 +188,11 @@
             { key: "caseDetail.fullRecovery", name: "Full Recovery", placeholder: "Full Recovery?" },
             { key: "caseDetail.paymentTotal", name: "Payments Total", placeholder: "Sum of Payments" },
             { key: "caseDetail.paymentCount", name: "# of Payments", placeholder: "# Payments" },
-            { key: "caseDetail.subtype", name: "Case Subtype", placeholder: "Subtype", restrictToSuggestedValues: true, suggestedValues: ['DNE', 'CRF', 'DCN', 'GOV_REC', 'TREAS_REFERRAL', 'TREAS_REFUND']},
+            { key: "caseDetail.subtype", name: "Case Subtype", placeholder: "Subtype", restrictToSuggestedValues: true, suggestedValues: ['DNE', 'CRF', 'DCN', 'Government Reclamation', 'Treasury Referral', 'Treasury Refund']},
             { key: "caseDetail.verifiedBy", name: "Verified By", placeholder: "Verified By" },
             { key: "caseDetail.verifiedOn", name: "Date Verified", placeholder: "yyyy-mm-dd" },
-            { key: "caseDetail.recoveryInfo.method", name: "Recovery Method", placeholder: "Recovery Method", restrictToSuggestedValues: true, suggestedValues: ['ACH_RETURN', 'CHECK_MAILED', 'MIXED_METHOD', 'COMMERCE', 'CUST_DDA', 'NO_FUNDS', 'OTHER']},
-            { key: "caseDetail.recoveryInfo.detailValue", name: "Recovery Detail", placeholder: "Recovery Detail", restrictToSuggestedValues: true, suggestedValues: ['CHK_NUM', 'GL_COST', 'IN_ACCT', 'DESC']},
+            { key: "caseDetail.recoveryInfo.method", name: "Recovery Method", placeholder: "Recovery Method", restrictToSuggestedValues: true, suggestedValues: ['ACH Return', 'Cashiers Check Mailed', 'Mixed Method', 'Commerce Bank', 'Customer DDA', 'No Funds', 'Other']},
+            { key: "caseDetail.recoveryInfo.detailValue", name: "Recovery Detail", placeholder: "Recovery Detail", restrictToSuggestedValues: true, suggestedValues: ['Check Number', 'GL Cost Center', 'Account Number', 'Description']},
             { key: "caseDetail.recoveryInfo.detailString", name: "Recovery Comment", placeholder: "Recovery Comment" },
             //TODO: Can we filter on values in an array of objects, within an object, within another object?
             //{ key: "caseDetail.payments.effectiveOn", name: "Effective Date", placeholder: "yyyy-mm-dd" },

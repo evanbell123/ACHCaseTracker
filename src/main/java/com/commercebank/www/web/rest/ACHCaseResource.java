@@ -31,6 +31,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.commercebank.www.AchCaseTrackingApp.NACHA_DIR_NAME;
@@ -88,8 +89,14 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<ACHCase> updateACHCase(@RequestParam("watchItem") boolean watchItem, @Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
+        //Newly created case
         if (achCase.getId() == null) { return createACHCase(achCase); }
-        if (watchItem) { achCase.setAssignedTo(SecurityUtils.getCurrentUserLogin()); }
+        //TODO: Incorporate isWatched
+        //Case now being watched by current user
+        if (watchItem && achCase.getAssignedTo() == null) { achCase.setAssignedTo(SecurityUtils.getCurrentUserLogin()); }
+        //Current user un-assigning themselves from case
+        else if (!watchItem && Objects.equals(achCase.getAssignedTo(), SecurityUtils.getCurrentUserLogin())) { achCase.setAssignedTo(null); }
+
         ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId()))

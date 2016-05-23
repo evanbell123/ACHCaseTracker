@@ -116,7 +116,7 @@
                                 return {
                                     "createdDate": null,
                                     "id": null,
-                                    "status": "OPEN",
+                                    "status": null,
                                     "totalAmount": null,
                                     "slaDeadline": null,
                                     "missedSLACount": 0,
@@ -158,9 +158,7 @@
                             }
                         }
                     }).result.then(function () {
-                $state.go('ach-case', null, {
-                    reload: true
-                });
+                        $state.go('ach-case', null, {reload: true});
                 }, function () {
                     $state.go('ach-case');
                 });

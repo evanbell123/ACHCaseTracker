@@ -63,6 +63,9 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     @Field("assigned_to")
     private String assignedTo;
 
+    @Field("is_watched")
+    private boolean isWatched;
+
     @NotNull
     @Field("type")
     private CaseType type;
@@ -128,6 +131,10 @@ public class ACHCase extends AbstractAuditingEntity implements Serializable {
     public String getAssignedTo() { return assignedTo; }
 
     public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
+
+    public boolean isWatched() { return isWatched; }
+
+    public void setWatched(boolean watched) { isWatched = watched; }
 
     public CaseDetail getCaseDetail() { return caseDetail; }
 

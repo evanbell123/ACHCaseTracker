@@ -130,19 +130,26 @@ public class ACHCaseService {
 
     private ACHCase updateSLA(ACHCase achCase)
     {
+        //TODO: Incorporate isWatched
         //Only concerned with government reclamation type cases
         if (achCase.getType() == GOV_REC) {
             //Cases of treasury subtypes do not update their SLAs
             if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
-                //Case is being watched for the first time
+                //Case is being assigned
                 if (achCase.getAssignedTo() != null && achCase.getSla() == slaRepository.findOneById("non-treasury-initial").get()) {
                     achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(((GovRec) achCase.getCaseDetail()).latestPaymentDate(), achCase.getSla().getBusinessDays()));
                 }
-                //Other cases get reset starting from today's date
-                else
+                //Case is being un-assigned
+                else if (achCase.getAssignedTo() == null && achCase.getSla() == slaRepository.findOneById("non-treasury-standard").get()) {
+                    achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
+                    achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+                }
+                //Case has been modified with no change to assignee
+                else {
                     achCase.setSla(slaRepository.findOneById("non-treasury-standard").get());
                     achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
+                }
             }
         }
         return achCase;
@@ -150,11 +157,14 @@ public class ACHCaseService {
 
     private ACHCase initializeSLA(ACHCase achCase)
     {
+        //Only concerned with government reclamation type cases
         if (achCase.getType() == GOV_REC) {
+            //Non-treasury cases
             if (achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFERRAL && achCase.getCaseDetail().getSubtype() != CaseSubtype.TREAS_REFUND) {
                 achCase.setSla(slaRepository.findOneById("non-treasury-initial").get());
                 achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));
             }
+            //Treasury cases
             else {
                 achCase.setSla(slaRepository.findOneById("treasury-standard").get());
                 achCase.setSlaDeadline(BusinessDayUtil.addBusinessDays(LocalDate.now(), achCase.getSla().getBusinessDays()));

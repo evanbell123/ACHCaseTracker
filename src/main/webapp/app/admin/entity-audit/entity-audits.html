@@ -1,7 +1,4 @@
 <div ng-cloak class="pad">
-    <div class="row">
-        <h3 class="col-sm-12">Entity Audits</h3>
-    </div>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-md-12 pad">
@@ -23,7 +20,6 @@
                             ng-options="option for option in vm.limits"
                             ng-model="vm.limit"></select>
                 </div>
-            </div>
             <div class="row pad">
                 <button ng-disabled="auditForm.$invalid"
                         class="btn btn-primary btn-raised pull-right" ng-click="vm.loadChanges()"><i

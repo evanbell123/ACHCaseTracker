@@ -14,9 +14,9 @@
       CaseType: [
         { id: 0, name: "GOV_REC", displayName: "Government Reclamation", domain: "com.commercebank.www.domain.GovRec"},
         { id: 1, name: "POA", displayName: "POA", domain: "com.commercebank.www.domain.POA"},
-        { id: 2, name: "REV_DEL", displayName: "Reversals/Deletions", domain: "com.commercebank.www.domain.RevDel"},
+        { id: 2, name: "REV_DEL", displayName: "Reversal/Deletion", domain: "com.commercebank.www.domain.RevDel"},
         { id: 3, name: "RETURN", displayName: "Return", domain: "com.commercebank.www.domain.Return"},
-        { id: 4, name: "UNRESOLVED", displayName: "Unresolved/Dishonored Returns", domain: "com.commercebank.www.domain.Unresolved"}
+        { id: 4, name: "UNRESOLVED", displayName: "Unresolved/Dishonored Return", domain: "com.commercebank.www.domain.Unresolved"}
       ],
 
       /*

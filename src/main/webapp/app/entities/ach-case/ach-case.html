@@ -1,5 +1,4 @@
 <div>
-    <h2>ACH Cases</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
@@ -14,7 +13,7 @@
             </div>
         </div>
     </div>
-    <br>
+    <br/>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
@@ -41,12 +40,12 @@
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
                     <td>{{ACHCase.beneficiary.name}}</td>
-                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-info': ACHCase.status == 'IN_PROGRESS', 'label-inverse': ACHCase.status == 'CLOSED'}">
+                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'Open', 'label-info': ACHCase.status == 'In Progress', 'label-inverse': ACHCase.status == 'CLOSED'}">
                         {{ACHCase.status}}</span></td>
                     <td><span ng-class="{'text-danger':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.type}}</td>
                     <td>{{ACHCase.daysOpen}}</td>
-                    <td>{{ACHCase.createdDate | date:'medium' }}</td>>
+                    <td>{{ACHCase.createdDate | date:'medium' }}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit" ui-sref="ach-case-detail({id:ACHCase.id})" class="btn btn-info btn-sm">

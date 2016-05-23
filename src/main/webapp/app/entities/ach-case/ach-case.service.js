@@ -63,27 +63,28 @@
          });
 
          function transformCaseRequest(caseData) {
-                 caseData.caseDetail.payments = caseData.payments;
-                 caseData.caseDetail.notes = caseData.notes;
+             caseData.status = EnumsService.getEnumNameFromDisplay(Enums.CaseStatus, caseData.status);
+             caseData.type = EnumsService.getEnumNameFromDisplay(Enums.CaseType, caseData.type);
+             caseData.caseDetail.subtype = EnumsService.getEnumNameFromDisplay(Enums.CaseSubtype, caseData.caseDetail.subtype);
+             if (caseData.caseDetail.recoveryInfo !== null) {
+                 caseData.caseDetail.recoveryInfo.method = EnumsService.getEnumNameFromDisplay(Enums.RecoveryMethod, caseData.caseDetail.recoveryInfo.method);
+             }
 
-                 delete caseData.payments;
-                 delete caseData.notes;
+             caseData.caseDetail.payments = caseData.payments;
+             caseData.caseDetail.notes = caseData.notes;
+
+             delete caseData.payments;
+             delete caseData.notes;
 
              return angular.toJson(caseData);
          }
 
          function transformSingleAchCase(caseData) {
-             /*
-              convert enums to integers
-              */
-             if ($state.is("ach-case.edit")) {
-                 caseData.status = EnumsService.getEnumIdFromName(Enums.CaseStatus, caseData.status);
-                 caseData.type = EnumsService.getEnumIdFromName(Enums.CaseType, caseData.type);
-                 caseData.caseDetail.subtype = EnumsService.getEnumIdFromName(Enums.CaseSubtype, caseData.caseDetail.subtype);
-
-                 if (caseData.caseDetail.recoveryInfo !== null) {
-                     caseData.caseDetail.recoveryInfo.method = EnumsService.getEnumIdFromName(Enums.RecoveryMethod, caseData.caseDetail.recoveryInfo.method);
-                 }
+             caseData.status = EnumsService.getEnumDisplayFromName(Enums.CaseStatus, caseData.status);
+             caseData.type = EnumsService.getEnumDisplayFromName(Enums.CaseType, caseData.type);
+             caseData.caseDetail.subtype = EnumsService.getEnumDisplayFromName(Enums.CaseSubtype, caseData.caseDetail.subtype);
+             if (caseData.caseDetail.recoveryInfo !== null) {
+                 caseData.caseDetail.recoveryInfo.method = EnumsService.getEnumDisplayFromName(Enums.RecoveryMethod, caseData.caseDetail.recoveryInfo.method);
              }
 
              caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
