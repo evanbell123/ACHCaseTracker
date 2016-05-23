@@ -142,7 +142,8 @@
                     table: { headerRows: 1, body: [] }
                 },
                 styles: style,
-                pageOrientation: 'landscape'
+                pageOrientation: 'landscape',
+                pageSize: 'LETTER'
             };
 
             function createTable(audits) {

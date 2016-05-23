@@ -1,7 +1,6 @@
 package com.commercebank.www.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.commercebank.www.domain.ACHCase;
 import com.commercebank.www.repository.ACHCaseRepository;
 import com.commercebank.www.service.ACHCaseService;
 import com.commercebank.www.web.rest.dto.DashboardDTO;
@@ -17,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)

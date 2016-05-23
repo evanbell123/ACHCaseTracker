@@ -10,7 +10,6 @@
                 <span class="icon-bar"></span>
             </button>
             <img src="../content/images/logo.svg" height="60px" layout-padding="10px">
-        <!--<img src="../content/images/commerce-bank-1.jpg" alt="Commerce-Bank" width="200px" height="auto" style = "margin:10px 0 0 0">-->
         </div>
         <div class="row" ng-switch-when="true">
         <div class="collapse navbar-collapse" id="navbar-collapse" uib-collapse="vm.navCollapsed" ng-switch="vm.isAuthenticated()">
@@ -34,7 +33,7 @@
                     </a>
                 </li>
                 <li ui-sref-active="active">
-                    <a ui-sref="my-cases" ng-click="vm.navCollapsed = true">
+                    <a ui-sref="ach-case-assigned" ng-click="vm.navCollapsed = true">
                         <i class="material-icons">&#xE85E;</i>
                         <span class="hidden-sm">My Cases</span>
                     </a>
@@ -45,12 +44,12 @@
                         <!--<span class="hidden-sm">Create Case</span>-->
                     <!--</a>-->
                 <!--</li>-->
-                <li ui-sref-active="active">
-                    <a ui-sref="import" ng-click="vm.navCollapsed = true">
-                        <i class="material-icons">&#xE2C6;</i>
-                        <span class="hidden-sm">Import</span>
-                    </a>
-                </li>
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref="import" ng-click="vm.navCollapsed = true">-->
+                        <!--<i class="material-icons">&#xE2C6;</i>-->
+                        <!--<span class="hidden-sm">Import</span>-->
+                    <!--</a>-->
+                <!--</li>-->
                 <li ui-sref-active="active">
                     <a ui-sref="entity-audit" ng-click="vm.navCollapsed = true">
                         <i class="material-icons">&#xE889;</i>
@@ -124,7 +123,7 @@
                         <!-- Moved to main navbar, under Audit Log
                         <li ui-sref-active="active" ><a ui-sref="entity-audit" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE889;</i></span>
                             &#xA0;<span >Entity Audit</span></a></li> -->
-                        <li ui-sref-active="active"><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE8F9;</i></span>
+                        <li ui-sref-active="active"><a ui-sref="sla" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="material-icons">&#xE8F9;</i>
                             &#xA0;<span>SLA Configuration</span></a></li>
                         <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
                             &#xA0;<span>User Management</span></a></li>
@@ -146,6 +145,6 @@
             </ul>
         </div>
     </div>
-        </div>
+</div>
 </nav>
 </div>

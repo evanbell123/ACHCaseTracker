@@ -31,6 +31,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.commercebank.www.AchCaseTrackingApp.NACHA_DIR_NAME;
@@ -78,19 +79,27 @@ public class ACHCaseResource {
      * @param achCase the achCase to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated achCase,
      * or with status 400 (Bad Request) if the achCase is not valid,
-     * or with status 500 (Internal Server Error) if the achCase couldnt be updated
+     * or with status 500 (Internal Server Error) if the achCase couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/ach-case",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        params = { "watchItem" })
     @Timed
-    public ResponseEntity<ACHCase> updateACHCase(@Valid @RequestBody ACHCase achCase) throws URISyntaxException {
+    public ResponseEntity<ACHCase> updateACHCase(@RequestParam("watchItem") boolean watchItem, @Valid @RequestBody ACHCase achCase) throws URISyntaxException {
         log.debug("REST request to update achCase : {}", achCase);
+        //Newly created case
         if (achCase.getId() == null) { return createACHCase(achCase); }
+        //TODO: Incorporate isWatched
+        //Case now being watched by current user
+        if (watchItem && achCase.getAssignedTo() == null) { achCase.setAssignedTo(SecurityUtils.getCurrentUserLogin()); }
+        //Current user un-assigning themselves from case
+        else if (!watchItem && Objects.equals(achCase.getAssignedTo(), SecurityUtils.getCurrentUserLogin())) { achCase.setAssignedTo(null); }
+
         ACHCase result = achCaseService.updateOnSave(achCase);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("achCase", achCase.getId()))
             .body(result);
     }
 
@@ -130,7 +139,7 @@ public class ACHCaseResource {
     }
 
     /**
-     * GET  /ach-case/:id : get the "id" ACHCase.
+     * GET  /ach-case/:id : get the "id" of achCase.
      *
      * @param id the id of the ACHCase to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the ACHCase, or with status 404 (Not Found)
@@ -141,8 +150,8 @@ public class ACHCaseResource {
     @Timed
     public ResponseEntity<ACHCase> getACHCase(@PathVariable String id) {
         log.debug("REST request to get ACHCase : {}", id);
-        ACHCase ACHCase = achCaseRepository.findOne(id);
-        return Optional.ofNullable(ACHCase)
+        ACHCase achCase = achCaseRepository.findOne(id);
+        return Optional.ofNullable(achCaseService.updateOnRetrieve(achCase))
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))

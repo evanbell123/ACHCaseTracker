@@ -1,14 +1,11 @@
 <div>
-    <h2>ACH Cases</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
                 <button class="btn btn-primary btn-raised" ui-sref="ach-case.new">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span>
-                        Create new ACH Case
-                    </span>
+                    <span>Create new ACH Case</span>
                 </button>
             </div>
             <div class="col-md-6 col-md-offset-2">
@@ -22,15 +19,15 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <!--<th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <th jh-sort-by=""><span>Watch Item</span></span></th>
+                    <th jh-sort-by=""><span>Watch Item</span></th>
                     <th jh-sort-by="assignedTo"><span>Assigned To</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="totalAmount"><span>Total Amount</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="beneficiary.name"><span>Beneficiary Name</span><span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="status"><span>Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="status"><span>Status</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="slaDeadline"><span>SLA Deadline</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="type"><span>Type</span><span class="glyphicon glyphicon-sort"></span></th></th>
+                    <th jh-sort-by="type"><span>Type</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="daysOpen"><span>Days Open</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="createdDate"><span>Opened On</span><span class="glyphicon glyphicon-sort"></span></th></th>
+                    <th jh-sort-by="createdDate"><span>Opened On</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,12 +35,13 @@
                 <tr ng-repeat="ACHCase in vm.ACHCases | filter:filterParams track by ACHCase.id ">
                     <!--<td><a ui-sref="ach-case-detail({id:ACHCase.id})">{{ACHCase.id}}</a></td>-->
                     <td>
-                        <md-checkbox class="md-warn" aria-label="checkbox" ng-model="ACHCase.isWatched" ng-init="watched=ACHCase.isWatched" ng-change="watch(ACHCase)"></md-checkbox>
+                        <md-checkbox class="md-warn" aria-label="Watch Item" ng-model="ACHCase.isWatched" ng-change='watch(ACHCase)'></md-checkbox>
                     </td>
                     <td>{{ACHCase.assignedTo}}</td>
                     <td>{{ACHCase.totalAmount}}</td>
                     <td>{{ACHCase.beneficiary.name}}</td>
-                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'OPEN', 'label-inverse': ACHCase.status == 'CLOSED'}">{{ACHCase.status}}</span></td>
+                    <td><span ng-class="{'label': true, 'label-success': ACHCase.status == 'Open', 'label-info': ACHCase.status == 'In Progress', 'label-inverse': ACHCase.status == 'CLOSED'}">
+                        {{ACHCase.status}}</span></td>
                     <td><span ng-class="{'text-danger':vm.slaPast(ACHCase.slaDeadline)}">{{ACHCase.slaDeadline | date:'mediumDate'}}</span></td>
                     <td>{{ACHCase.type}}</td>
                     <td>{{ACHCase.daysOpen}}</td>

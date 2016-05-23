@@ -5,14 +5,15 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseDialogController', ACHCaseDialogController);
 
-    ACHCaseDialogController.$inject = ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'ACHCase'];
+    ACHCaseDialogController.$inject = ['$scope', '$uibModalInstance', 'entity', 'ACHCase'];
 
-    function ACHCaseDialogController ($scope, $stateParams, $uibModalInstance, entity, ACHCase) {
+    function ACHCaseDialogController ($scope, $uibModalInstance, entity, ACHCase) {
         var vm = this;
         vm.ACHCase = entity;
+        vm.payments= ACHCase.payments;
         vm.load = function(id) {
             ACHCase.one({id : id}, function(result) {
-                vm.ACHCase = result;
+                    vm.ACHCase = result;
             });
         };
 
@@ -31,7 +32,7 @@
             if (vm.ACHCase.id !== null) {
                 ACHCase.update(vm.ACHCase, onSaveSuccess, onSaveError);
             } else {
-                ACHCase.save(vm.ACHCase, onSaveSuccess, onSaveError);
+                ACHCase.create(vm.ACHCase, onSaveSuccess, onSaveError);
             }
         };
 
@@ -40,7 +41,6 @@
         };
 
         vm.datePickerOpenStatus = {};
-        vm.datePickerOpenStatus.lastPaymentOn = false;
         vm.datePickerOpenStatus.slaDeadline = false;
 
         vm.openCalendar = function(date) {

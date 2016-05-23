@@ -1,10 +1,8 @@
 package com.commercebank.www.web.rest;
 
-import com.commercebank.www.domain.Beneficiary;
 import com.commercebank.www.domain.EntityAuditEvent;
 import com.commercebank.www.web.rest.util.PaginationUtil;
 import org.javers.core.Javers;
-import org.javers.core.JaversBuilder;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.QueryBuilder;
 import com.commercebank.www.security.AuthoritiesConstants;
@@ -42,7 +40,6 @@ public class JaversEntityAuditResource {
 
     @Inject
     private Javers javers;
-
 
     /**
      * fetches all the audited entity types
@@ -113,7 +110,7 @@ public class JaversEntityAuditResource {
                                                            @RequestParam(value = "commitVersion") Long commitVersion)
         throws URISyntaxException, ClassNotFoundException {
 
-        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + qualifiedName);
+        Class entityTypeToFetch = Class.forName("com.commercebank.www.domain." + qualifiedName.replaceAll("\\s+",""));
 
         QueryBuilder jqlQuery = QueryBuilder.byInstanceId(entityId, entityTypeToFetch)
                                            .limit(1)
