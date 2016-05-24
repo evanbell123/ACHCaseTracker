@@ -42,9 +42,23 @@
 
         vm.datePickerOpenStatus = {};
         vm.datePickerOpenStatus.slaDeadline = false;
+        vm.datePickerOpenStatus.dateOfDeath = false;
+        vm.datePickerOpenStatus.dateCBAware = false;
+        vm.datePickerOpenStatus.completedOn = false;
+        vm.datePickerOpenStatus.verifiedOn = false;
+        vm.datePickerOpenStatus.effectiveOn = false;
 
         vm.openCalendar = function(date) {
             vm.datePickerOpenStatus[date] = true;
         };
+
+        $scope.addNewPayment = function() {
+            var newItemNo = $scope.vm.ACHCase.caseDetail.payments.length + 1;
+            $scope.vm.ACHCase.caseDetail.payments.push({'id': 'pmt' + newItemNo});
+        };
+
+        $scope.deletePayment = function() {
+            $scope.vm.ACHCase.caseDetail.payments.pop();
+        }
     }
 })();

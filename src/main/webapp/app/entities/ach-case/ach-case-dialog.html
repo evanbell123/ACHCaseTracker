@@ -168,7 +168,7 @@
             <div class="form-group col-xs-6">
                 <label for="field_dateCBAware">Date CB Became Aware</label>
                 <div class="input-group">
-                    <input id="field_dateCBAware" type="text" class="form-control" name="dateCBAware" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.beneficiary.dateCBAware"
+                    <input id="field_dateCBAware" type="text" class="form-control" name="dateCBAware" uib-datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.beneficiary.dateCBAware"
                            is-open="vm.datePickerOpenStatus.dateCBAware" ng-disabled="vm.ACHCase.status == 'Closed'" />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateCBAware')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -201,21 +201,39 @@
         </div>
         <h3><strong>Payments</strong></h3>
         <div class="row">
-            <div class="form-group col-xs-6" ng-repeat="payment in vm.payments track by payment.id">
-                {{payment.amount}}
-                <!--<input type="number" class="form-control" name="amount" id="field_amount" ng-model="payment.amount" ng-disabled="vm.ACHCase.status == 'Closed'"/>-->
+            <div ng-repeat="payment in vm.ACHCase.caseDetail.payments track by payment.id">
+            <div class="form-group col-xs-6">
+                <label ng-show="payment" for="field_amount">Payment Amount</label>
+                <input type="number" step="0.01" class="form-control" name="amount" id="field_amount" ng-model="payment.amount" ng-disabled="vm.ACHCase.status == 'Closed'"/>
+            </div>
+            <div class="form-group col-xs-6">
+                <label ng-show="payment" for="field_effectiveOn">Effective On</label>
+                <div ng-show="payment" class="input-group">
+                    <input id="field_effectiveOn" type="text" class="form-control" name="effectiveOn" uib-datetime-picker="{{dateformat}}" ng-model="payment.effectiveOn"
+                           is-open="vm.datePickerOpenStatus.effectiveOn" ng-disabled="vm.ACHCase.status == 'Closed'" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('effectiveOn')" ng-disabled="vm.ACHCase.status == 'Closed'">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
             </div>
         </div>
-
+        </div>
+        <div>
+            <button type="button" class="btn btn-info btn-raised" ng-click="addNewPayment()" ng-disabled="vm.ACHCase.status == 'Closed'"><i class="material-icons">&#xE148;</i> Add</button>
+            <button type="button" class="btn btn-danger btn-raised" ng-click="deletePayment()" ng-disabled="vm.ACHCase.status == 'Closed'"><i class="material-icons">&#xE15D;</i> Remove</button>
+        </div>
         <h3><strong>Notes</strong></h3>
-
+        <button type="button" class="btn btn-info btn-raised" ng-click="addNewPayment()" ng-disabled="vm.ACHCase.status == 'Closed'"><i class="material-icons">&#xE148;</i> Add</button>
+        <button type="button" class="btn btn-danger btn-raised" ng-click="deletePayment()" ng-disabled="vm.ACHCase.status == 'Closed'"><i class="material-icons">&#xE15D;</i> Remove</button>
         <h3><strong>Disposition</strong></h3>
         <!-- end -->
         <div class="row">
             <div class="form-group col-xs-6">
                 <label for="field_completedOn">Completed On</label>
                 <div class="input-group">
-                    <input id="field_completedOn" type="text" class="form-control" name="completedOn" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.caseDetail.completedOn" is-open="vm.datePickerOpenStatus.completedOn"
+                    <input id="field_completedOn" type="text" class="form-control" name="completedOn" uib-datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.caseDetail.completedOn" is-open="vm.datePickerOpenStatus.completedOn"
                     />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('completedOn')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -225,7 +243,7 @@
             <div class="form-group col-xs-6">
                 <label for="field_verifiedOn">Verified On</label>
                 <div class="input-group">
-                    <input id="field_verifiedOn" type="text" class="form-control" name="verifiedOn" datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.caseDetail.verifiedOn" is-open="vm.datePickerOpenStatus.verifiedOn"
+                    <input id="field_verifiedOn" type="text" class="form-control" name="verifiedOn" uib-datetime-picker="{{dateformat}}" ng-model="vm.ACHCase.caseDetail.verifiedOn" is-open="vm.datePickerOpenStatus.verifiedOn"
                     />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('verifiedOn')"><i class="glyphicon glyphicon-calendar"></i></button>
