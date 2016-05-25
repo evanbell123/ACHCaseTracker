@@ -1,5 +1,4 @@
 <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
@@ -14,13 +13,12 @@
             </div>
             <div class="form-group col-xs-6">
                 <label for="field_status">Status</label>
-                <input type="text" class="form-control" id="field_status" name="status" ng-model="vm.ACHCase.status" readonly />
                 <!--TODO: Make field editable for admin -->
-                <!--<select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" required>
+                <select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" required>
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Closed">Closed</option>
-                </select>-->
+                </select>
                 <div ng-show="editForm.status.$invalid">
                     <p class="help-block"
                        ng-show="editForm.status.$error.required">
@@ -36,11 +34,9 @@
             </div>
             <div class="form-group col-xs-6">
                 <label  for="field_slaDeadline">SLA Deadline</label>
-                <!--<input id="field_slaDeadline" type="text" class="form-control" name="slaDeadline" ng-model="vm.ACHCase.slaDeadline" readonly/>-->
                 <div class="input-group">
-                    <input id="field_slaDeadline" type="text" class="form-control"
-                           name="slaDeadline" uib-datepicker-popup="{{vm.dateformat}}" ng-model="vm.ACHCase.slaDeadline"
-                           is-open="vm.datePickerOpenStatus.slaDeadline" ng-disabled="vm.ACHCase.status == 'Closed' || vm.isAdmin()"/>
+                    <input id="field_slaDeadline" type="text"  class="form-control" name="slaDeadline" uib-datepicker-popup="{{vm.dateformat}}" ng-model="vm.ACHCase.slaDeadline"
+                       is-open="vm.datePickerOpenStatus.slaDeadline" ng-disabled="vm.ACHCase.status == 'Closed'" />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('slaDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -50,8 +46,7 @@
         <div class="row">
             <div class="form-group col-xs-6">
                 <label  for="field_daysOpen">Days Open</label>
-                <input type="number" class="form-control" name="daysOpen" id="field_daysOpen" ng-model="vm.ACHCase.daysOpen" readonly/>
-               <!--        min="0" />
+                <input type="number" class="form-control" name="daysOpen" id="field_daysOpen" ng-model="vm.ACHCase.daysOpen" min="0" />
                 <div ng-show="editForm.daysOpen.$invalid">
                     <p class="help-block"
                        ng-show="editForm.daysOpen.$error.min" translate-value-min="0">
@@ -61,11 +56,12 @@
                        ng-show="editForm.daysOpen.$error.number">
                         This field should be a number.
                     </p>
-                </div>-->
+                </div>
             </div>
             <div class="form-group col-xs-6" >
                 <label  for="field_createdDate">Created On</label>
-                <input type="text" class="form-control" name="createdDate" id="field_createdDate" ng-model="vm.ACHCase.createdDate" readonly/>
+                <input type="text" class="form-control" name="createdDate" id="field_createdDate" ng-model="vm.ACHCase.createdDate" uib-datepicker-popup="{{vm.datetimeformat}}"
+                       is-open="vm.datePickerOpenStatus.createdDate" ng-disabled="vm.ACHCase.status == 'Closed'" />
             </div>
         </div>
         <h3><strong>Case Info</strong></h3>
@@ -295,7 +291,7 @@
         <div class="row">
             <div class="form-group col-xs-6">
                 <label>Full Recovery?</label>&nbsp;&nbsp;
-                <md-checkbox class="md-warn" aria-label="Full Recovery" ng-model="vm.ACHCase.caseDetail.recoveryInfo.fullRecovery" ng-disabled="vm.ACHCase.status == 'Closed'"></md-checkbox>
+                <md-checkbox class="md-warn" aria-label="Full Recovery" ng-model="vm.ACHCase.caseDetail.fullRecovery" ng-disabled="vm.ACHCase.status == 'Closed'"></md-checkbox>
             </div>
         </div>
         <h3><strong>Verification</strong></h3>
