@@ -58,7 +58,7 @@
       */
       RecoveryDetail: [
         { id: 0, name: "CHK_NUM", displayName: "Check Number", fk: [1]},
-        { id: 1, name: "GL_COST", displayName: "GL Cost Center", fk: [3]},
+        { id: 1, name: "GL_COST", displayName: "GL and Cost Center", fk: [3]},
         { id: 2, name: "IN_ACCT", displayName: "Account Number", fk: [4]},
         { id: 3, name: "DESC", displayName: "Description", fk: [6]},
       ],

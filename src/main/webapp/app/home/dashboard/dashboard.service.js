@@ -16,7 +16,7 @@
                 transformResponse: function(data) {
                     data = angular.fromJson(data);
                     var cases = data.cases;
-                    if (cases !== undefined || cases.length !== 0) {
+                    if (cases !== undefined && cases.length !== 0) {
                         cases = transformManyAchCases(cases);
                         data.cases = cases;
                         return data;

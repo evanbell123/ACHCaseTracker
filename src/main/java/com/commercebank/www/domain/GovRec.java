@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,10 +59,10 @@ public class GovRec implements Serializable, CaseDetail {
     private Recovery recoveryInfo;
 
     @Field("notes")
-    private List<CaseNote> notes;
+    private List<CaseNote> notes = new ArrayList<>();
 
     @Field("payments")
-    private List<Payment> payments;
+    private List<Payment> payments = new ArrayList<>();
 
     public GovRec() {}
 

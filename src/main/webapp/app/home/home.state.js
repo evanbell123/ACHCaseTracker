@@ -151,8 +151,8 @@
                                         "subtype": null,
                                         "verifiedBy": null,
                                         "recoveryInfo": null,
-                                        "notes": null,
-                                        "payments": null
+                                        "notes": {},
+                                        "payments": {}
                                     }
                                 }
                             }

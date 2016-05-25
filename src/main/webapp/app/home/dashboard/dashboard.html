@@ -1,59 +1,33 @@
 <div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-3 col-xs-offset-6">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">From:</span>
-                        <input id="field_from" type="text" class="form-control" name="from" uib-datepicker-popup="{{dateformat}}" ng-model="vm.fromDate" ng-change="vm.onChangeDate()"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="uib-datepicker-popup.open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-xs-3">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">To:</span>
-                        <input id="field_to" type="text" class="form-control" name="to" uib-datepicker-popup ng-model="vm.toDate" is-open="vm.datePickerOpenStatus.toDate"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('toDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 col-xs-offset-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">From:</span>
+                    <input id="field_from" type="text" class="form-control" name="from" uib-datepicker-popup="{{'MM/dd/yyyy'}}" ng-model="vm.fromDate" is-open="vm.datePickerOpenStatus.fromDate"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('fromDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
                 </div>
                 </div>
             </div>
-        <!--<h1>Dashboard
-                <div class="form-group col-xs-2 pull-right">
-                    <label class="input-group-addon" for="field_fromDate">From:</label>
-                    <input id="field_fromDate" type="text" class="form-control" name="start" ng-model="vm.fromDate" ng-change="vm.onChangeDate()" uib-datepicker-popup="{{to.datepickerOptions.format}}" is-open="datepicker.opened" datepicker-options="to.datepickerOptions" required/>
-                    <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="datepicker.open($event)" ng-disabled="to.disabled"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+            <div class="col-xs-3">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon2">To:</span>
+                    <input id="field_to" type="text" class="form-control" name="to" uib-datepicker-popup="{{'MM/dd/yyyy'}}" ng-model="vm.toDate" is-open="vm.datePickerOpenStatus.toDate"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('toDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
                 </div>
-                <div class="form-group col-xs-2 pull-right">
-                    <label class="input-group-addon" for="field_toDate">To:</label>
-                    <input id="field_toDate" type="text" class="form-control" name="end" ng-model="vm.toDate" ng-change="vm.onChangeDate()" uib-datepicker-popup="{{to.datepickerOptions.format}}" is-open="datepicker.opened" datepicker-options="to.datepickerOptions" required/>
-                    <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="datepicker.open($event)" ng-disabled="to.disabled"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </h1>-->
+            </div>
+            </div>
+        </div>
     </div>
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-xs-3">
-          <!-- <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <span class="font-bold text-success pull-right"><i class="material-icons">&#xE89C;</i></span>
-                    <h3>Cases Opened</h3>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins">{{vm.totals.createdCount}}</h1>
-                </div>
-                <div class="ibox-title"></div>
-            </div> -->
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <span class="font-bold pull-right"><i class="material-icons">&#xE89C;</i></span>
@@ -65,16 +39,6 @@
             </div>
         </div>
         <div class="col-xs-3">
-           <!-- <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <span class="font-bold text-inverse pull-right"><i class="material-icons">&#xE2C7;</i></span>
-                    <h3>Cases Closed</h3>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins">{{vm.totals.closedCount}}</h1>
-                </div>
-
-            </div>-->
             <div class="panel panel-inverse">
                 <div class="panel-heading">
                     <span class="font-bold pull-right"><i class="material-icons">&#xE2C7;</i></span>
@@ -86,16 +50,6 @@
             </div>
         </div>
     <div class="col-xs-3">
-       <!-- <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <span class="font-bold text-info pull-right"><i class="material-icons">&#xE263;</i></span>
-                <h3>Payments Returned</h3>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">{{vm.totals.paymentsReturned}}</h1>
-            </div>
-            <div class="ibox-title"></div>
-        </div>-->
         <div class="panel panel-info">
             <div class="panel-heading">
                 <span class="font-bold pull-right"><i class="material-icons">&#xE263;</i></span>
@@ -107,16 +61,6 @@
         </div>
     </div>
         <div class="col-xs-3">
-           <!-- <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <span class="text-danger font-bold pull-right"><i class="material-icons">&#xE002;</i></span>
-                    <h3>Overdue SLA</h3>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins">{{vm.totals.slaPassed}}</h1>
-                </div>
-                <div class="ibox-title"></div>
-            </div>-->
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <span class="font-bold pull-right"><i class="material-icons">&#xE002;</i></span>
