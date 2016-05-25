@@ -82,6 +82,7 @@
              }
 
              caseData.createdDate = DateUtils.convertDateTimeFromServer(caseData.createdDate);
+             caseData.slaDeadline = DateUtils.convertDateTimeFromServer(caseData.slaDeadline);
              caseData.beneficiary.dateOfDeath = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateOfDeath);
              caseData.beneficiary.dateCBAware = DateUtils.convertDateTimeFromServer(caseData.beneficiary.dateCBAware);
              caseData.completedOn = DateUtils.convertDateTimeFromServer(caseData.completedOn);

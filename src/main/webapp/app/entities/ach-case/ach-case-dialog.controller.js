@@ -13,9 +13,7 @@
         vm.payments= ACHCase.payments;
         vm.dateformat = DateUtils.dateformat();
         vm.datetimeformat = 'MM/dd/yyyy h:mm';
-        vm.isAdmin = function() {
-            return Principal.hasAuthority("ROLE_ADMIN");
-        };
+        $scope.isAdmin = Principal.hasAuthority("ROLE_ADMIN").then(function(result) { return result; });
         vm.load = function(id) {
             ACHCase.one({id : id}, function(result) {
                     vm.ACHCase = result;
@@ -58,6 +56,7 @@
         };
 
         $scope.addNewPayment = function() {
+            //if (ACHCase.caseDetail === undefined) { ACHCase.caseDetail  }
             var newItemNo = vm.ACHCase.caseDetail.payments.length + 1;
             vm.ACHCase.caseDetail.payments.push({'id': 'pmt' + newItemNo});
         };
