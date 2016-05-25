@@ -5,12 +5,17 @@
         .module('achCaseTrackingApp')
         .controller('ACHCaseDialogController', ACHCaseDialogController);
 
-    ACHCaseDialogController.$inject = ['$scope', '$uibModalInstance', 'entity', 'ACHCase'];
+    ACHCaseDialogController.$inject = ['$scope', '$uibModalInstance', 'entity', 'ACHCase', 'DateUtils', 'Principal'];
 
-    function ACHCaseDialogController ($scope, $uibModalInstance, entity, ACHCase) {
+    function ACHCaseDialogController ($scope, $uibModalInstance, entity, ACHCase, DateUtils, Principal) {
         var vm = this;
         vm.ACHCase = entity;
         vm.payments= ACHCase.payments;
+        vm.dateformat = DateUtils.dateformat();
+        vm.datetimeformat = 'MM/dd/yyyy h:mm';
+        vm.isAdmin = function() {
+            return Principal.hasAuthority("ROLE_ADMIN");
+        };
         vm.load = function(id) {
             ACHCase.one({id : id}, function(result) {
                     vm.ACHCase = result;
@@ -53,12 +58,21 @@
         };
 
         $scope.addNewPayment = function() {
-            var newItemNo = $scope.vm.ACHCase.caseDetail.payments.length + 1;
-            $scope.vm.ACHCase.caseDetail.payments.push({'id': 'pmt' + newItemNo});
+            var newItemNo = vm.ACHCase.caseDetail.payments.length + 1;
+            vm.ACHCase.caseDetail.payments.push({'id': 'pmt' + newItemNo});
         };
 
         $scope.deletePayment = function() {
-            $scope.vm.ACHCase.caseDetail.payments.pop();
-        }
+            vm.ACHCase.caseDetail.payments.pop();
+        };
+
+        $scope.addNewNote = function() {
+            var newItemNo = vm.ACHCase.caseDetail.notes.length + 1;
+            vm.ACHCase.caseDetail.notes.push({'id': 'note' + newItemNo});
+        };
+
+        $scope.deleteNote = function() {
+            vm.ACHCase.caseDetail.notes.pop();
+        };
     }
 })();

@@ -9,7 +9,7 @@
 
     function EntityAuditController ($scope, $filter, $uibModal, EntityAuditService, AlertService, ObjectDiff) {
         var vm = this;
-
+        //TODO: Figure out why errors thrown for GOV_REC types
         vm.entities = [];
         vm.audits = [];
         vm.limits = [25, 50, 100, 200];

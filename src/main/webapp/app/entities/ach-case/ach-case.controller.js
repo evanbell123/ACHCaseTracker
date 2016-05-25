@@ -102,7 +102,7 @@
         }
         /* TODO: Add date range picker and update data according to chosen dates
         function onChangeDate () {
-            var dateFormat = 'yyyy-MM-dd';
+            var dateFormat = 'MM-dd-yyyy';
             var fromDate = $filter('date')(vm.fromDate, dateFormat);
             var toDate = $filter('date')(vm.toDate, dateFormat);
             //TODO: This is copied from audits.controller.js, it needs to be changed before use
