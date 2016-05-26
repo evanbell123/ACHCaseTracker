@@ -9,12 +9,11 @@
         <div class="row">
             <div class="form-group col-xs-6">
                 <label for="id">ID</label>
-                <input type="text" class="form-control" id="id" name="id" ng-model="vm.ACHCase.id" readonly />
+                <input type="text" class="form-control" id="id" name="id" ng-model="vm.ACHCase.id" ng-disabled="true"/>
             </div>
             <div class="form-group col-xs-6">
                 <label for="field_status">Status</label>
-                <!--TODO: Make field editable for admin -->
-                <select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" required>
+                <select class="form-control" name="status" ng-model="vm.ACHCase.status" id="field_status" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin" required>
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Closed">Closed</option>
@@ -29,16 +28,20 @@
         </div>
         <div class="row">
             <div class="form-group col-xs-6">
-                <label  for="field_assigned_to">Assigned To</label>
-                <input type="text" class="form-control" name="assignedTo" id="field_assigned_to" ng-model="vm.ACHCase.assignedTo" readonly/>
+                <label>Assigned To</label>
+                <select class="form-control" name="assignedTo" ng-model="vm.users" ng-options="user.login for user in vm.users track by user.id"
+                        ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin">
+                </select>
             </div>
             <div class="form-group col-xs-6">
                 <label  for="field_slaDeadline">SLA Deadline</label>
                 <div class="input-group">
                     <input id="field_slaDeadline" type="text"  class="form-control" name="slaDeadline" uib-datepicker-popup="{{vm.dateformat}}" ng-model="vm.ACHCase.slaDeadline"
-                       is-open="vm.datePickerOpenStatus.slaDeadline" ng-disabled="vm.ACHCase.status == 'Closed'" />
+                       is-open="vm.datePickerOpenStatus.slaDeadline" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin" />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('slaDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('slaDeadline')" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
                     </span>
                 </div>
             </div>
@@ -46,7 +49,7 @@
         <div class="row">
             <div class="form-group col-xs-6">
                 <label  for="field_daysOpen">Days Open</label>
-                <input type="number" class="form-control" name="daysOpen" id="field_daysOpen" ng-model="vm.ACHCase.daysOpen" min="0" />
+                <input type="number" class="form-control" name="daysOpen" id="field_daysOpen" ng-model="vm.ACHCase.daysOpen" min="0" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin"/>
                 <div ng-show="editForm.daysOpen.$invalid">
                     <p class="help-block"
                        ng-show="editForm.daysOpen.$error.min" translate-value-min="0">
@@ -60,8 +63,15 @@
             </div>
             <div class="form-group col-xs-6" >
                 <label  for="field_createdDate">Created On</label>
-                <input type="text" class="form-control" name="createdDate" id="field_createdDate" ng-model="vm.ACHCase.createdDate" uib-datepicker-popup="{{vm.datetimeformat}}"
-                       is-open="vm.datePickerOpenStatus.createdDate" ng-disabled="vm.ACHCase.status == 'Closed'" />
+                <div class="input-group">
+                    <input type="text" class="form-control" name="createdDate" id="field_createdDate" ng-model="vm.ACHCase.createdDate" uib-datepicker-popup="{{vm.datetimeformat}}"
+                           is-open="vm.datePickerOpenStatus.createdDate" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin"/>
+                    <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="vm.openCalendar('createdDate')" ng-disabled="vm.ACHCase.status == 'Closed' || !isAdmin">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                    </span>
+                </div>
             </div>
         </div>
         <h3><strong>Case Info</strong></h3>
@@ -84,13 +94,14 @@
             </div>
             <div class="form-group col-xs-6">
                 <label  for="field_subtype">Subtype</label>
-                <select class="form-control" name="subtype" ng-model="vm.ACHCase.caseDetail.subtype" id="field_subtype" ng-disabled="vm.ACHCase.status == 'Closed'" required>
-                    <option value="DNE">DNE</option>
-                    <option value="CRF">CRF</option>
-                    <option value="DCN">DCN</option>
-                    <option value="Government Reclamation">Government Reclamation</option>
-                    <option value="Treasury Referral">Treasury Referral</option>
-                    <option value="Treasury Refund">Treasury Refund</option>
+                <!--Taking on technical debt in order to complete project. This should be refactored-->
+                <select class="form-control" name="subtype" ng-model="vm.ACHCase.caseDetail.subtype" id="field_subtype" ng-switch on="vm.ACHCase.type" ng-disabled="vm.ACHCase.status == 'Closed'" required>
+                    <option value="DNE" ng-switch-when="Government Reclamation">DNE</option>
+                    <option value="CRF" ng-switch-when="Government Reclamation">CRF</option>
+                    <option value="DCN" ng-switch-when="Government Reclamation">DCN</option>
+                    <option value="Government Reclamation" ng-switch-when="Government Reclamation">Government Reclamation</option>
+                    <option value="Treasury Referral" ng-switch-when="Government Reclamation">Treasury Referral</option>
+                    <option value="Treasury Refund" ng-switch-when="Government Reclamation">Treasury Refund</option>
                 </select>
                 <div ng-show="editForm.subtype.$invalid">
                     <p class="help-block"
@@ -244,13 +255,15 @@
         <div class="row">
             <div class="form-group col-xs-6">
                 <label for="field_method">Recovery Method</label>
-                <select class="form-control" name="method" ng-model="vm.ACHCase.caseDetail.recoveryInfo.method" id="field_method" ng-disabled="vm.ACHCase.status == 'Closed'" required>
-                    <option value="ACH Return" >ACH Return</option>
-                    <option value="Cashiers Check Mailed">Cashier's Check Mailed</option>
-                    <option value="Mixed Method">Mixed Method</option>
-                    <option value="Commerce Bank">Commerce Bank</option>
-                    <option value="Customer DDA">Customer DDA</option>
-                    <option value="Other">Other</option>
+                <select class="form-control" name="method" ng-model="vm.ACHCase.caseDetail.recoveryInfo.method" id="field_method" ng-disabled="vm.ACHCase.status == 'Closed'"
+                        ng-change="vm.setRecoveryDetail()" ng-switch on="(vm.ACHCase.caseDetail.subtype != 'Treasury Refund') && (vm.ACHCase.caseDetail.subtype != 'Treasury Referral')" required>
+                    <option value="ACH Return" ng-switch-when="true">ACH Return</option>
+                    <option value="Cashiers Check Mailed" ng-switch-when="true">Cashier's Check Mailed</option>
+                    <option value="Mixed Method" ng-switch-when="true">Mixed Method</option>
+                    <option value="Commerce Bank" ng-switch-when="false">Commerce Bank</option>
+                    <option value="Customer DDA" ng-switch-when="false">Customer DDA</option>
+                    <option value="Other" ng-switch-when="false">Other</option>
+                    <option value="No Funds">No Funds</option>
                 </select>
                 <div ng-show="editForm.method.$invalid">
                     <p class="help-block"
@@ -260,14 +273,19 @@
                 </div>
             </div>
             <div class="form-group col-xs-6">
-                <!--<label for="field_detailType">Detail Type</label>
-                <select class="form-control" name="detailType" ng-model="vm.recovery.detailType" id="field_detailType">
-                    <option value="Check Number">Check Number</option>
-                    <option value="GL and Cost Center">GL and Cost Center</option>
-                    <option value="Input Account">Account Number</option>
-                    <option value="Description">Description</option>
-                </select>-->
-
+                <label ng-show="vm.ACHCase.caseDetail.recoveryInfo.detailType" for="field_detailType">{{vm.ACHCase.caseDetail.recoveryInfo.detailType}}</label>
+                <input ng-show="vm.ACHCase.caseDetail.recoveryInfo.detailType" class="form-control" type="text" name="detailType" id="field_detailType"
+                       ng-model="vm.ACHCase.caseDetail.recoveryInfo.detailType" />
+            </div>
+            <div class="form-group col-xs-6" ng-switch on="">
+                <label ng-show="stringType" for="field_description">{{stringType}}</label>
+                <input ng-show="stringType" class="form-control" type="text" name="detailString" id="field_description" ng-model="vm.ACHCase.caseDetail.recoveryInfo.detailString"/>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-6 pull-right">
+                    <label ng-show="stringType" for="field_mailedTo">{{stringType}}</label>
+                    <input ng-show="stringType" class="form-control" type="text" name="detailString" id="field_mailedTo" ng-model="vm.ACHCase.caseDetail.recoveryInfo.detailString"/>
+                </div>
             </div>
         </div>
         <div class="row">
