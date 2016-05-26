@@ -10,7 +10,7 @@
     function UserManagementController(Principal, User, ParseLinks, paginationConstants) {
         var vm = this;
 
-        vm.authorities = ['ROLE_ACHOPS', 'ROLE_ADMIN'];
+        vm.authorities = ['ROLE_CALLCENTER', 'ROLE_ACHOPS', 'ROLE_MANAGER', 'ROLE_ADMIN'];
         vm.clear = clear;
         vm.currentAccount = null;
         vm.languages = null;
@@ -27,7 +27,7 @@
         Principal.identity().then(function(account) {
             vm.currentAccount = account;
         });
-        
+
         function loadAll () {
             User.query({page: vm.page - 1, size: paginationConstants.itemsPerPage}, function (result, headers) {
                 vm.links = ParseLinks.parse(headers('link'));

@@ -5,8 +5,6 @@
         .module('achCaseTrackingApp')
         .factory('EnumsService', EnumsService);
 
-    //EnumService.$inject = ['Enums'];
-
     function EnumsService() {
         return {
             getEnumIdFromName: function (CaseEnum, name) {
